@@ -70,10 +70,6 @@ namespace RSSFluxSD
 				Console.WriteLine(msgError);
 				return items;
 			}
-
-
-
-
 		}
 		public List<SyndicationItem> DeleteFlow(int id, SyndicationFeed feed)
 		{

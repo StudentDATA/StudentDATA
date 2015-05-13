@@ -89,5 +89,13 @@ namespace RSSFluxSD
 				writer.Close();
 			}
 		}
+
+		public void RemoveRSS()
+		{
+			if (File.Exists(Url))
+			{
+				File.Delete(Url);
+			}
+		}
 	}
 }

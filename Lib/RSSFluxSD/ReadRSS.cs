@@ -38,7 +38,7 @@ namespace RSSFluxSD
 				reader.Close();
 				return feed;
             }
-            catch (CommunicationException ce)
+            catch (XmlException ce)
             {
                 Console.WriteLine("An exception occurred: {0}", ce.Message);
 				return null;
