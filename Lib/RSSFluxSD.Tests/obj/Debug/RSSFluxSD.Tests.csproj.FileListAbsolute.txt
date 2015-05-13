@@ -19,3 +19,10 @@ C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFlu
 C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.csprojResolveAssemblyReference.cache
 C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.dll
 C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.pdb
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.Tests.dll
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.Tests.pdb
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.dll
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.pdb
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.csprojResolveAssemblyReference.cache
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.dll
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.pdb

@@ -8,3 +8,8 @@ C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\JobsFluxSD\bin\Debug\JobsFluxSD.
 C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\JobsFluxSD\obj\Debug\JobsFluxSD.csprojResolveAssemblyReference.cache
 C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\JobsFluxSD\obj\Debug\JobsFluxSD.dll
 C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\JobsFluxSD\obj\Debug\JobsFluxSD.pdb
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\JobsFluxSD\bin\Debug\JobsFluxSD.dll
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\JobsFluxSD\bin\Debug\JobsFluxSD.pdb
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\JobsFluxSD\obj\Debug\JobsFluxSD.csprojResolveAssemblyReference.cache
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\JobsFluxSD\obj\Debug\JobsFluxSD.dll
+C:\Users\Steph\Documents\INTECH\Projt Student DATA\StudentDATA\StudentDATA\Lib\JobsFluxSD\obj\Debug\JobsFluxSD.pdb
