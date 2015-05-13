@@ -33,11 +33,11 @@ namespace RSSFluxSD
 
 		public SyndicationFeed ReadOrCreateRSS()
 		{
-			//Verifier si c'est un lien ou un fichier
+			//TODO : Verifier si c'est un lien ou un fichier
 			
 			Uri uriResult;
 			bool result = Uri.TryCreate(Url, UriKind.Absolute, out uriResult)
-				&& (   uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps );
+				&& ( uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps );
 
 			if (File.Exists(Url) || result)
 			{
@@ -54,12 +54,14 @@ namespace RSSFluxSD
 
 		public void InitRSS()
 		{
-			//Regarder si le fichier existe deja et pas l'ecraser
+			//TODO : Regarder si le fichier existe deja et pas l'ecraser
+			//
 			feed = cRSS.CreateInit();
 			feed.Items = uRSS.AddFlow(feed);
 			AddinXml();
 		}
 
+		//TODO : Pouvoir en ajouter plusieurs sans ecrire dans le xml 1 par 1
 		public void AddFlow()
 		{
 			feed = ReadOrCreateRSS();
@@ -67,6 +69,7 @@ namespace RSSFluxSD
 			AddinXml();
 		}
 
+		//Pouvoir en retirer plusieurs sans ecrire dans le xml 1 par 1
 		public void RemoveFlow(int id)
 		{
 			feed = ReadOrCreateRSS();
@@ -74,6 +77,7 @@ namespace RSSFluxSD
 			AddinXml();
 		}
 
+		//TODO : Pouvoir en modifier plusieurs sans ecrire dans le xml 1 par 1
 		public void UpdateFlow(int id)
 		{
 			feed = ReadOrCreateRSS();

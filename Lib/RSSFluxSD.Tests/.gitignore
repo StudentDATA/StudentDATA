@@ -6,6 +6,8 @@
 *.xml
 *.tmp
 *.pdb
+*.user
+*.pdb
 
 # Build results
 [Dd]ebug/
