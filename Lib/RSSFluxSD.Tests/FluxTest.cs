@@ -13,7 +13,7 @@ namespace RSSFluxSD.Tests
 		[TestMethod]
 		public void TestReadRSS()
 		{
-			ReadRSS flux = new ReadRSS("C:/Users/DEXSEVEN/Desktop/test.xml");
+			ReadRSS flux = new ReadRSS("test.xml");
 
 			//SyndicationFeed feed = flux.ReadWithURI("http://www.developpez.com/index/rss");
 			SyndicationFeed feed = flux.ReadWithURI();
@@ -42,7 +42,7 @@ namespace RSSFluxSD.Tests
 		[TestMethod]
 		public void TestCreateRSS()
 		{
-			string uri = "C:/Users/DEXSEVEN/Desktop/test.xml";
+			string uri = "test.xml";
 			RSS rss = new RSS(uri);
 
 			rss.InitRSS();
@@ -51,7 +51,7 @@ namespace RSSFluxSD.Tests
 		[TestMethod]
 		public void TestAddFlow()
 		{
-			string uri = "C:/Users/DEXSEVEN/Desktop/test.xml";
+			string uri = "test.xml";
 			RSS rss = new RSS(uri);
 
 			rss.AddFlow();
@@ -61,7 +61,7 @@ namespace RSSFluxSD.Tests
 		[TestMethod]
 		public void TestDeleteFlow()
 		{
-			string uri = "C:/Users/DEXSEVEN/Desktop/test.xml";
+			string uri = "test.xml";
 			UpdateRSS aFlow = new UpdateRSS(uri);
 			//aFlow.DeleteFlow(0);
 
