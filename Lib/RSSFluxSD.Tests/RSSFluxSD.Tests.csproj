@@ -54,6 +54,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="FluxTest.cs" />
+    <Compile Include="HelpTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

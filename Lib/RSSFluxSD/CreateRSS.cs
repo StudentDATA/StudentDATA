@@ -10,7 +10,6 @@ using System.Text;
 
 namespace RSSFluxSD
 {
-
 		public class CreateRSS
 		{
 

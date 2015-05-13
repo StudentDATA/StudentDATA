@@ -13,29 +13,14 @@ namespace RSSFluxSD.Tests
 		[TestMethod]
 		public void TestReadRSS()
 		{
-			ReadRSS flux = new ReadRSS("test.xml");
+			string uri = "http://www.developpez.com/index/rss";
+			RSS rss = new RSS(uri);
+
+			SyndicationFeed feed = rss.ReadOrCreateRSS();
 
 			//SyndicationFeed feed = flux.ReadWithURI("http://www.developpez.com/index/rss");
-			SyndicationFeed feed = flux.ReadWithURI();
 
-			Console.WriteLine(feed.Title.Text);
-			Console.WriteLine("Items:");
-			foreach (SyndicationItem item in feed.Items)
-			{
-				Console.WriteLine("Title: {0}\n", item.Title.Text);
-				Console.WriteLine("Summary: {0}\n", ((TextSyndicationContent)item.Summary).Text);
-				foreach (SyndicationLink link in item.Links)
-				{
-
-					if (link.MediaType != "image/jpeg")
-					{
-						Console.WriteLine("Test: {0}", link.MediaType);
-						Console.WriteLine("Link: {0}\n", link.Uri.AbsoluteUri);
-					}
-
-				}
-				Console.WriteLine("Date: {0}\n", item.PublishDate.DateTime);
-			}
+			HelpTest.HelpRead(feed);
 
 		}
 
@@ -53,7 +38,6 @@ namespace RSSFluxSD.Tests
 		{
 			string uri = "test.xml";
 			RSS rss = new RSS(uri);
-
 			rss.AddFlow();
 			
 		}
@@ -62,9 +46,32 @@ namespace RSSFluxSD.Tests
 		public void TestDeleteFlow()
 		{
 			string uri = "test.xml";
-			UpdateRSS aFlow = new UpdateRSS(uri);
-			//aFlow.DeleteFlow(0);
+			int id = 0;
+			RSS rss = new RSS(uri);
+			rss.RemoveFlow(id);
+		}
 
+		[TestMethod]
+		public void TestUpdateFlow()
+		{
+			string uri = "test.xml";
+			int id = 0;
+			RSS rss = new RSS(uri);
+			rss.UpdateFlow(id);
+		}
+
+		[TestMethod]
+		public void TestAllRSS()
+		{
+			string uri = "testRSS.xml";
+			int id = 0;
+			RSS rss = new RSS(uri);
+			rss.InitRSS();
+			rss.AddFlow();
+			rss.RemoveFlow(id);
+			rss.UpdateFlow(id);
+			SyndicationFeed feed = rss.ReadOrCreateRSS();
+			HelpTest.HelpRead(feed);
 		}
 
 

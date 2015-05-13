@@ -2,3 +2,7 @@
 *.mdf
 *.ldf
 *.cache
+*.xml
+obj/*
+bin/*
+

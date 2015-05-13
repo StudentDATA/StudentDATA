@@ -11,21 +11,8 @@ namespace RSSFluxSD
 {
 	public class UpdateRSS
 	{
-		string _uri;
+
 		List<SyndicationItem> items;
-
-		public string Uri
-		{
-			get { return _uri; }
-			set { _uri = value; }
-		}
-
-		public UpdateRSS(string uri)
-		{
-			this.Uri = uri;
-		}
-
-
 
 		public List<SyndicationItem> AddFlow(SyndicationFeed feed)
 		{
@@ -43,28 +30,73 @@ namespace RSSFluxSD
 			return items;
 		}
 
-		public void UpdateFlow()
+		public List<SyndicationItem> AddFlow(SyndicationFeed feed,string titre,string content,string url, string id)
 		{
+			SyndicationItem item = new SyndicationItem(
+				titre,
+				content,
+				new Uri(url),
+				id,
+				DateTime.Now);
 
-			List<SyndicationItem> items = new List<SyndicationItem>();
+			List<SyndicationItem> items = GetItemFeed(feed);
+
+			items.Add(item);
+
+			return items;
+		}
+
+		public List<SyndicationItem> UpdateFlow(int id, SyndicationFeed feed)
+		{
+			string msgError = "L'article n'existe pas";
+			List<SyndicationItem> items = GetItemFeed(feed);
+			if (items.Count > 0)
+			{
+				try
+				{	
+					items = DeleteFlow(id, feed);
+					feed.Items = items;
+					items.InsertRange(id, AddFlow(feed, "Titre", "Content", "http://url.com", "IdFlow1"));				
+					return items;
+				}
+				catch
+				{
+					Console.WriteLine(msgError);
+					return items;
+				}
+			}
+			else
+			{
+				Console.WriteLine(msgError);
+				return items;
+			}
+
+
 
 
 		}
-		public void DeleteFlow(int id, SyndicationFeed feed)
+		public List<SyndicationItem> DeleteFlow(int id, SyndicationFeed feed)
 		{
 			List<SyndicationItem> items = GetItemFeed(feed);
-
+			string msgError = "L'article n'existe pas";
 
 			if ( items.Count > 0)
 			{
 				try
 				{
 					items.RemoveAt(id);
+					return items;
 				}
 				catch
 				{
-					Console.WriteLine("L'article n'existe pas");
+					Console.WriteLine(msgError);
+					return items;
 				}
+			}
+			else
+			{
+				Console.WriteLine(msgError);
+				return items;
 			}
 		}
 
