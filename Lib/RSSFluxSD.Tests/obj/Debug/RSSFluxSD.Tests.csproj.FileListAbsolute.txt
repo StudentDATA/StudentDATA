@@ -1,0 +1,21 @@
+C:\Users\DEXSEVEN\Documents\Visual Studio 2013\Projects\StudentDATA\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.Tests.dll
+C:\Users\DEXSEVEN\Documents\Visual Studio 2013\Projects\StudentDATA\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.Tests.pdb
+C:\Users\DEXSEVEN\Documents\Visual Studio 2013\Projects\StudentDATA\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.dll
+C:\Users\DEXSEVEN\Documents\Visual Studio 2013\Projects\StudentDATA\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.pdb
+C:\Users\DEXSEVEN\Documents\Visual Studio 2013\Projects\StudentDATA\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.csprojResolveAssemblyReference.cache
+C:\Users\DEXSEVEN\Documents\Visual Studio 2013\Projects\StudentDATA\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.dll
+C:\Users\DEXSEVEN\Documents\Visual Studio 2013\Projects\StudentDATA\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.pdb
+C:\Users\DEXSEVEN\documents\visual studio 2013\Projects\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.Tests.dll
+C:\Users\DEXSEVEN\documents\visual studio 2013\Projects\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.Tests.pdb
+C:\Users\DEXSEVEN\documents\visual studio 2013\Projects\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.dll
+C:\Users\DEXSEVEN\documents\visual studio 2013\Projects\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.pdb
+C:\Users\DEXSEVEN\documents\visual studio 2013\Projects\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.csprojResolveAssemblyReference.cache
+C:\Users\DEXSEVEN\documents\visual studio 2013\Projects\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.dll
+C:\Users\DEXSEVEN\documents\visual studio 2013\Projects\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.pdb
+C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.Tests.dll
+C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.Tests.pdb
+C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.dll
+C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\bin\Debug\RSSFluxSD.pdb
+C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.csprojResolveAssemblyReference.cache
+C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.dll
+C:\Users\DEXSEVEN\Desktop\LabSD\StudentDATA\Lib\RSSFluxSD.Tests\obj\Debug\RSSFluxSD.Tests.pdb

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>CK.Core</id>
+    <version>4.0.0</version>
+    <title />
+    <authors>Invenietis</authors>
+    <owners>Invenietis</owners>
+    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
+    <projectUrl>https://github.com/Invenietis/ck-core</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>CK.Core is the foundation of CiviKey project. CK.Core.dll contains general utilities 
+but, above all, the IActivityMonitor model and its ActivityMonitor and some basics IActivityMonitorClient
+implementations. (The CK.Monitoring package should be used at the application level to centralize and collect logs.)</description>
+    <summary>Utility interfaces, classes, code and ActivityMonitor implementation.</summary>
+    <releaseNotes />
+    <copyright>Invenietis &amp; In'Tech Info</copyright>
+    <language>en-US</language>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="Microsoft.Bcl" version="1.1.9" />
+        <dependency id="Microsoft.Bcl.Build" version="1.0.14" />
+      </group>
+      <group targetFramework=".NETFramework4.5" />
+    </dependencies>
+  </metadata>
+</package>
