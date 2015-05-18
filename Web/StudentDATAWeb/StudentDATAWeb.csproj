@@ -184,6 +184,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FlowController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -309,6 +310,7 @@
     <Content Include="_AppStart.cshtml" />
     <Content Include="Views\Account\_ProfileViewPartial.cshtml" />
     <Content Include="Views\Account\_ModifyProfilePartial.cshtml" />
+    <Content Include="Views\SchoolFlow\Flow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
