@@ -321,6 +321,16 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\JobsFluxSD\JobsFluxSD.csproj">
+      <Project>{740c0d9f-5656-4f07-9f49-02b05246d23c}</Project>
+      <Name>JobsFluxSD</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Lib\RSSFluxSD\RSSFluxSD.csproj">
+      <Project>{22452efc-687e-4771-8214-da611bd2a9f8}</Project>
+      <Name>RSSFluxSD</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
