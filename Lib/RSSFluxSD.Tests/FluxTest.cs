@@ -4,6 +4,7 @@ using RSSFluxSD;
 using System.Threading;
 using System.ServiceModel.Syndication;
 using System.Xml;
+using System.Collections.Generic;
 
 namespace RSSFluxSD.Tests
 {
@@ -11,9 +12,31 @@ namespace RSSFluxSD.Tests
 	public class FluxTest
 	{
 		[TestMethod]
+		public void TestL()
+		{
+			RSSManage rssM = new RSSManage();
+			foreach (RSS rss in rssM.GetAllRSS())
+			{
+				//rss.GetRSS().Titre = "1";
+				Console.WriteLine(rss.GetRSS().Titre);
+				Console.WriteLine();
+				Console.WriteLine(rss.GetRSS().TitreDescription);
+				Console.WriteLine();
+				Console.WriteLine(rss.GetRSS().Author);
+				Console.WriteLine();
+				Console.WriteLine(rss.GetRSS().Categorie);
+				Console.WriteLine();
+				Console.WriteLine(rss.GetRSS().Content);
+				Console.WriteLine();
+				Console.WriteLine(rss.GetRSS().Url);
+			}
+
+		}
+		[TestMethod]
 		public void TestReadRSS()
 		{
-			string url = "http://www.developpez.com/index/rss";
+			//TODO : Gerer exeption mauvais lien url
+			string url = "http://www.developpez.com/index/rss/ff";
 			string url2 = "https://fr.news.yahoo.com/rss/world";
 			string urlFail = "https://fr.news.yahoo.com/sitemap/";
 			string url3 = "test.xml";
@@ -44,11 +67,12 @@ namespace RSSFluxSD.Tests
 		{
 			string uri = "test.xml";
 			RSS rss = new RSS(uri);
-
-			rss.InitRSS();
+			
+			rss.InitRSSSingle();
 			SyndicationFeed feed = rss.ReadOrCreateRSS();
 			HelpTest.HelpRead(feed);
 			rss.RemoveRSS();
+
 		}
 
 		[TestMethod]
@@ -56,8 +80,8 @@ namespace RSSFluxSD.Tests
 		{
 			string uri = "test.xml";
 			RSS rss = new RSS(uri);
-			rss.InitRSS();
-			rss.AddFlow();
+			rss.InitRSSSingle();
+			rss.AddFlowSingle();
 			SyndicationFeed feed = rss.ReadOrCreateRSS();
 			HelpTest.HelpRead(feed);
 			rss.RemoveRSS();
@@ -70,10 +94,10 @@ namespace RSSFluxSD.Tests
 			string uri = "test.xml";
 			int id = 0;
 			RSS rss = new RSS(uri);
-			rss.InitRSS();
-			rss.RemoveFlow(8);
-			rss.RemoveFlow(id);
-			rss.RemoveFlow(id);
+			rss.InitRSSSingle();
+			rss.RemoveFlowSingle(8);
+			rss.RemoveFlowSingle(id);
+			rss.RemoveFlowSingle(id);
 			SyndicationFeed feed = rss.ReadOrCreateRSS();
 			HelpTest.HelpRead(feed);
 			rss.RemoveRSS();
@@ -85,11 +109,11 @@ namespace RSSFluxSD.Tests
 			string uri = "test.xml";
 			int id = 0;
 			RSS rss = new RSS(uri);
-			rss.InitRSS();
-			rss.UpdateFlow(8);
-			rss.UpdateFlow(id);
-			rss.RemoveFlow(id);
-			rss.UpdateFlow(id);
+			rss.InitRSSSingle();
+			rss.UpdateFlowSingle(8);
+			rss.UpdateFlowSingle(id);
+			rss.RemoveFlowSingle(id);
+			rss.UpdateFlowSingle(id);
 			SyndicationFeed feed = rss.ReadOrCreateRSS();
 			HelpTest.HelpRead(feed);
 			rss.RemoveRSS();
@@ -101,10 +125,10 @@ namespace RSSFluxSD.Tests
 			string uri = "testRSS.xml";
 			int id = 0;
 			RSS rss = new RSS(uri);
-			rss.InitRSS();
-			rss.AddFlow();
-			rss.RemoveFlow(id);
-			rss.UpdateFlow(id);
+			rss.InitRSSSingle();
+			rss.AddFlowSingle();
+			rss.RemoveFlowSingle(id);
+			rss.UpdateFlowSingle(id);
 			SyndicationFeed feed = rss.ReadOrCreateRSS();
 			HelpTest.HelpRead(feed);
 			rss.RemoveRSS();
