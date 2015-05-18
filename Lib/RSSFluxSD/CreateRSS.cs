@@ -54,12 +54,14 @@ namespace RSSFluxSD
 			{
 				this.Titre = "IN'TECH INFO RSS";
 				this.TitreDescription = "RSS de IN'TECH INFO";
-				//Gerer le url
-				this.Url = "http://urlofxml";
+				//Gerer le url par le titre
+				this.Url = "http://student-data.itinet.fr";
 				this.Author = "Student DATA RSS";
 				this.Categorie = "Actualité IN'TECH INFO";
 				this.Content = "L'actualité de l'école IN'TECH INFO";
 			}
+
+
 			public CreateRSS(string titre,string titredescription, string url, string author, string categorie, string content)
 			{
 				this.Titre = titre;

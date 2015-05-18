@@ -46,6 +46,7 @@
     <Compile Include="ReadRSS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RSS.cs" />
+    <Compile Include="RSSManage.cs" />
     <Compile Include="UpdateRSS.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
