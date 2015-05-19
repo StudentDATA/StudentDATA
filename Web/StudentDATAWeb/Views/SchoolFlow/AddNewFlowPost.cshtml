@@ -3,21 +3,21 @@
 }
 
 <h2>Ajoutez un nouveau post</h2>
-using(@Html.BeginForm("AddNewPost", "Flow"))
+@using(@Html.BeginForm("AddNewPost", "Flow"))
 {
 <fieldset>
     <ol>
         <li>
             <label>Titre du post : </label>
-            @Html.TextBox("PostTitle")
+            @Html.TextBox("PostTitle", null, htmlAttributes: new { name = "title" })
         </li>
         <li>
             <label>Contenu :  </label>
-            @Html.TextArea("PostContent")
+            @Html.TextArea("PostContent", htmlAttributes: new { name = "content" })
         </li>
         <li>
             <label>Url à suivre :  </label>
-            @Html.TextBox("URL")
+            @Html.TextBox("URL", null, htmlAttributes: new { name = "url" })
         </li>
 
     </ol>
