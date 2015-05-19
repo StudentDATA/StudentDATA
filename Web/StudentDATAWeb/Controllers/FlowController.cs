@@ -24,11 +24,15 @@ namespace StudentDATAWeb.Controllers
         }
         public ActionResult AddPost()
         {
-            return View("/View/Flow/AddNewFlowPost.cshtml");
+            return View("/Views/SchoolFlow/AddNewFlowPost.cshtml");
         }
         [HttpPost]
-        public ActionResult AddNewPost(ViewDataDictionary vd)
+        public ActionResult AddNewPost()
         {
+            object title;
+            ViewData.TryGetValue("PostTitle", out title);
+            string titre = (string)title;
+            Console.Write(titre);
             return RedirectToAction("Index");
         }
 
