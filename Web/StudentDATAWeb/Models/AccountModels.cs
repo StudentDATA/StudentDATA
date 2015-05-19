@@ -124,6 +124,10 @@ namespace StudentDATAWeb.Models
         [DataType(DataType.Text)]
         [Display(Name = "Titre")]
         public string Title { get; set; }
+        [Required]
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Contenu")]
+        public string Title { get; set; }
 
     }
     public class ProfileModel
