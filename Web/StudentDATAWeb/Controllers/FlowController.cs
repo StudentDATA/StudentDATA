@@ -33,7 +33,5 @@ namespace StudentDATAWeb.Controllers
             Console.Write(fpm.Title);
             return RedirectToAction("Index");
         }
-
-
     }
 }

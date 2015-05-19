@@ -99,6 +99,7 @@ namespace StudentDATAWeb.Controllers
             studyField.Add(new SelectListItem { Text = "IL", Value = "IL" });
             studyField.Add(new SelectListItem { Text = "SR", Value = "SR" });
             studyField.Add(new SelectListItem { Text = "Tronc Commun", Value = "Common" });
+            studyField.Add(new SelectListItem { Text = "Equipe pédagogique", Value = "pedago" });
 
             List<SelectListItem> semester = new List<SelectListItem>();
             semester.Add(new SelectListItem { Text = "01", Value = "01" });
