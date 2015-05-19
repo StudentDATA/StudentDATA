@@ -118,6 +118,14 @@ namespace StudentDATAWeb.Models
         [Required]
         public string Adress { get; set; }
     }
+    public class FlowPostModel
+    {
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Titre")]
+        public string Title { get; set; }
+
+    }
     public class ProfileModel
     {
         [Required]
