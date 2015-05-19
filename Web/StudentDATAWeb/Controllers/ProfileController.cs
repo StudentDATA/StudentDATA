@@ -31,8 +31,11 @@ namespace StudentDATAWeb.Controllers
                 List<string> tmpCodeList = CodeCutter(user.Code);
                 ViewBag.UserPseudo = user.UserName;
                 ViewBag.UserName = user.FirstName + " " + user.LastName;
-                ViewBag.UserSemester = tmpCodeList[0];
-                ViewBag.UserField = tmpCodeList[1];
+                if (tmpCodeList != null)
+                {
+                    ViewBag.UserSemester = tmpCodeList[0];
+                    ViewBag.UserField = tmpCodeList[1];
+                }
                 ViewBag.UserActivity = user.ActualActivity;
                 ViewBag.MailAdress = user.MailAdress;
                 //Add here the Url for photo
@@ -49,32 +52,38 @@ namespace StudentDATAWeb.Controllers
         /// <returns></returns>
         public List<string> CodeCutter(string code)
         {
-            List<string> tmpList = new List<string>();
-            bool isCommon = true;
-
-            string tmpString = code.Substring(1, 2);
-            
-            int tmpInteger = Convert.ToInt32(tmpString);
-            if (tmpInteger < 10)
-
-            if (tmpInteger < 10 && tmpInteger >= 3)
+            if (code != null)
             {
-                tmpList.Add("0" + tmpInteger.ToString());
-                isCommon = false;
+                List<string> tmpList = new List<string>();
+                bool isCommon = true;
+
+                string tmpString = code.Substring(1, 2);
+
+                int tmpInteger = Convert.ToInt32(tmpString);
+                if (tmpInteger < 10)
+
+                    if (tmpInteger < 10 && tmpInteger >= 3)
+                    {
+                        tmpList.Add("0" + tmpInteger.ToString());
+                        isCommon = false;
+                    }
+                    else if (tmpInteger < 3)
+                    {
+                        tmpList.Add("0" + tmpInteger.ToString());
+                        isCommon = true;
+                    }
+                if (code.Contains("IL") && !isCommon)
+                    tmpList.Add("IL");
+                else if (code.Contains("SR") && !isCommon)
+                    tmpList.Add("SR");
+                else
+                    tmpList.Add("Tronc Commun");
+                return tmpList;
             }
-            else if (tmpInteger < 3)
-            {
-                tmpList.Add("0" + tmpInteger.ToString());
-                isCommon = true;
-            }
-            if (code.Contains("IL") && !isCommon)
-                tmpList.Add("IL");
-            else if (code.Contains("SR") && !isCommon)
-                tmpList.Add("SR");
             else
-                tmpList.Add("Tronc Commun");
+                return null;
 
-            return tmpList;
+            
         }
 
         public string CodeCreator(List<string> ls)
@@ -90,8 +99,11 @@ namespace StudentDATAWeb.Controllers
             ViewBag.UserPseudo = user.UserName;
             ViewBag.FirstName = user.FirstName;
             ViewBag.LastName = user.LastName;
-            ViewBag.UserSemester = CodeCutter(user.Code)[0];
-            ViewBag.UserField = CodeCutter(user.Code)[1];
+            if (user.Code != null)
+            {
+                ViewBag.UserSemester = CodeCutter(user.Code)[0];
+                ViewBag.UserField = CodeCutter(user.Code)[1];
+            }
             ViewBag.UserActivity = user.ActualActivity;
             ViewBag.MailAdress = user.MailAdress;
 
