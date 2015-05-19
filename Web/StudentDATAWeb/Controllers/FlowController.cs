@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using RSSFluxSD;
+using StudentDATAWeb.Models;
 
 namespace StudentDATAWeb.Controllers
 {
@@ -27,12 +28,9 @@ namespace StudentDATAWeb.Controllers
             return View("/Views/SchoolFlow/AddNewFlowPost.cshtml");
         }
         [HttpPost]
-        public ActionResult AddNewPost()
+        public ActionResult AddNewPost(FlowPostModel fpm)
         {
-            object title;
-            ViewData.TryGetValue("PostTitle", out title);
-            string titre = (string)title;
-            Console.Write(titre);
+            Console.Write(fpm.Title);
             return RedirectToAction("Index");
         }
 

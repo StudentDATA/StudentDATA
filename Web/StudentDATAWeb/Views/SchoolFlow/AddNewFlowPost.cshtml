@@ -1,26 +1,27 @@
-﻿@{
+﻿@model StudentDATAWeb.Models.FlowPostModel
+@{
     ViewBag.Title = "AddNewFlowPost";
 }
 
 <h2>Ajoutez un nouveau post</h2>
-@using(@Html.BeginForm("AddNewPost", "Flow"))
+@using (@Html.BeginForm("AddNewPost", "Flow"))
 {
-<fieldset>
-    <ol>
-        <li>
-            <label>Titre du post : </label>
-            @Html.TextBox("PostTitle", null, htmlAttributes: new { name = "title" })
-        </li>
-        <li>
-            <label>Contenu :  </label>
-            @Html.TextArea("PostContent", htmlAttributes: new { name = "content" })
-        </li>
-        <li>
-            <label>Url à suivre :  </label>
-            @Html.TextBox("URL", null, htmlAttributes: new { name = "url" })
-        </li>
+    <fieldset>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Title)
+                @Html.TextBoxFor(m => m.Title)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Content)
+                @Html.TextAreaFor(m => m.Content)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Url)
+                @Html.TextBoxFor(m => m.Url)
+            </li>
 
-    </ol>
-    <input type="submit" />
-</fieldset>
+        </ol>
+        <input type="submit" />
+    </fieldset>
 }
