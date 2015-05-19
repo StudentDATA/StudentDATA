@@ -30,18 +30,30 @@ namespace RSSFluxSD
 			return items;
 		}
 
-		public List<SyndicationItem> AddFlow(SyndicationFeed feed,Flow flow)
+		public List<SyndicationItem> AddFlow(SyndicationFeed feed,List<Flow> flowList)
 		{
-			SyndicationItem item = new SyndicationItem(
+			List<SyndicationItem> items = new List<SyndicationItem>(); ;
+			foreach ( Flow flow in flowList)
+			{
+				items.Add(new SyndicationItem(
+					flow.Title,
+					flow.Content,
+					new Uri(flow.Url),
+					flow.Id,
+					DateTime.Now));
+			}
+			return items;
+		}
+
+		public List<SyndicationItem> AddFlow(SyndicationFeed feed, Flow flow)
+		{
+			List<SyndicationItem> items = new List<SyndicationItem>(); ;
+			items.Add(new SyndicationItem(
 				flow.Title,
 				flow.Content,
 				new Uri(flow.Url),
 				flow.Id,
-				DateTime.Now);
-
-			List<SyndicationItem> items = GetItemFeed(feed);
-
-			items.Add(item);
+				DateTime.Now));
 
 			return items;
 		}

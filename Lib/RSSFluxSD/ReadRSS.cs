@@ -22,18 +22,19 @@ namespace RSSFluxSD
 		public string Uri
 		{
 			get { return _uri; }
-			set { _uri = value; }
+			private set { _uri = value; }
 		}
 
 		public string Msg_error
 		{
 			get { return msg_error; }
-			set { msg_error = value; }
+			private set { msg_error = value; }
 		}
 
 		public ReadRSS(string uri)
 		{
 			this.Uri = uri;
+			Msg_error = "Null";
 		}
 
 		public SyndicationFeed ReadWithURI()
@@ -47,7 +48,7 @@ namespace RSSFluxSD
             }
             catch (XmlException e)
             {
-				msg_error = "Lien Invalide : Message D'erreur : " + e.Message;
+				msg_error = "Lien ou Fichier Invalide : Message D'erreur : " + e.Message;
 				return null;
             }
         }

@@ -10,19 +10,29 @@ namespace RSSFluxSD
 	{
 		List<RSS> RSSList = new List<RSS>();
 
-		public void addRSS()
+		public void addRSS(string url)
 		{
-			RSSList.Add(new RSS("text.xml"));
+			RSSList.Add(new RSS(url));
 		}
 
 		public IReadOnlyList<RSS> GetAllRSS()
 		{
-			addRSS();
 			return RSSList;
+		}
+
+		public void addToXml()
+		{
+			foreach (RSS rss in RSSList)
+			{
+				rss.AddinXml();
+			}
 		}
 
 		//Retourner un objet rss avec ses liste de ses articles
 
+		
+		
+		
 		//Creation du flux rss :  retourner le nom du fichier xml
 
 		//Ajouter, SUPP, archives, update  : RSS

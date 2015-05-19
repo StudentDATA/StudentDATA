@@ -16,22 +16,22 @@ namespace RSSFluxSD
 		public string Title
 		{
 			get { return _title; }
-			set { _title = value; }
+			private set { _title = value; }
 		}
 		public string Content
 		{
 			get { return _content; }
-			set { _content = value; }
+			private set { _content = value; }
 		}
 		public string Url
 		{
 			get { return _url; }
-			set { _url = value; }
+			private set { _url = value; }
 		}
 		public string Id
 		{
 			get { return _id; }
-			set { _id = value; }
+			private set { _id = value; }
 		}
 
 		public Flow(string title,string content,string url,string id)

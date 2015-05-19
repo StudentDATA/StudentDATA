@@ -15,20 +15,30 @@ namespace RSSFluxSD.Tests
 		public void TestL()
 		{
 			RSSManage rssM = new RSSManage();
+			rssM.addRSS("https://fr.news.yahoo.com/rss/world");
 			foreach (RSS rss in rssM.GetAllRSS())
 			{
-				//rss.GetRSS().Titre = "1";
-				Console.WriteLine(rss.GetRSS().Titre);
+				Console.WriteLine(rss.GetStartRSS().Titre);
 				Console.WriteLine();
-				Console.WriteLine(rss.GetRSS().TitreDescription);
+				Console.WriteLine(rss.GetStartRSS().Author);
 				Console.WriteLine();
-				Console.WriteLine(rss.GetRSS().Author);
+				Console.WriteLine(rss.GetStartRSS().Categorie);
 				Console.WriteLine();
-				Console.WriteLine(rss.GetRSS().Categorie);
+				Console.WriteLine(rss.GetStartRSS().Content);
 				Console.WriteLine();
-				Console.WriteLine(rss.GetRSS().Content);
-				Console.WriteLine();
-				Console.WriteLine(rss.GetRSS().Url);
+				Console.WriteLine(rss.GetStartRSS().Url);
+				foreach ( Flow flow in rss.GetAllFlow())
+				{
+					Console.WriteLine("FLOW");
+					Console.WriteLine(flow.Title);
+					Console.WriteLine();
+					Console.WriteLine(flow.Content);
+					Console.WriteLine();
+					Console.WriteLine(flow.Url);
+					Console.WriteLine();
+					Console.WriteLine(flow.Id);
+					Console.WriteLine();
+				}
 			}
 
 		}
@@ -47,18 +57,20 @@ namespace RSSFluxSD.Tests
 			RSS rssFail = new RSS(urlFail);
 			rss3.RemoveRSS();
 
-			SyndicationFeed feed = rss.ReadOrCreateRSS();
-			SyndicationFeed feed2 = rss2.ReadOrCreateRSS();
-			SyndicationFeed feed3 = rss3.ReadOrCreateRSS();
-			SyndicationFeed feedFail = rssFail.ReadOrCreateRSS();
+			rss.ReadOrCreateRSS();
+			rss2.ReadOrCreateRSS();
+			rss3.ReadOrCreateRSS();
+			rssFail.ReadOrCreateRSS();
 
-			HelpTest.HelpRead(feed);
+			
+
+			HelpTest.HelpRead(rss.Feed);
 			Console.WriteLine("Other FEED WEB\n\n");
-			HelpTest.HelpRead(feed2);
+			HelpTest.HelpRead(rss2.Feed);
 			Console.WriteLine("Other FEED FILE\n\n\n");
-			HelpTest.HelpRead(feed3);
+			HelpTest.HelpRead(rss3.Feed);
 			Console.WriteLine("Other FEED FAIL\n\n\n");
-			HelpTest.HelpRead(feedFail);
+			HelpTest.HelpRead(rssFail.Feed);
 			rss3.RemoveRSS();
 		}
 
@@ -69,9 +81,9 @@ namespace RSSFluxSD.Tests
 			RSS rss = new RSS(uri);
 			
 			rss.InitRSSSingle();
-			SyndicationFeed feed = rss.ReadOrCreateRSS();
-			HelpTest.HelpRead(feed);
-			rss.RemoveRSS();
+			rss.ReadOrCreateRSS();
+			HelpTest.HelpRead(rss.Feed);
+			//rss.RemoveRSS();
 
 		}
 
@@ -82,8 +94,8 @@ namespace RSSFluxSD.Tests
 			RSS rss = new RSS(uri);
 			rss.InitRSSSingle();
 			rss.AddFlowSingle();
-			SyndicationFeed feed = rss.ReadOrCreateRSS();
-			HelpTest.HelpRead(feed);
+			rss.ReadOrCreateRSS();
+			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
 			
 		}
@@ -98,8 +110,8 @@ namespace RSSFluxSD.Tests
 			rss.RemoveFlowSingle(8);
 			rss.RemoveFlowSingle(id);
 			rss.RemoveFlowSingle(id);
-			SyndicationFeed feed = rss.ReadOrCreateRSS();
-			HelpTest.HelpRead(feed);
+			rss.ReadOrCreateRSS();
+			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
 		}
 
@@ -114,8 +126,8 @@ namespace RSSFluxSD.Tests
 			rss.UpdateFlowSingle(id);
 			rss.RemoveFlowSingle(id);
 			rss.UpdateFlowSingle(id);
-			SyndicationFeed feed = rss.ReadOrCreateRSS();
-			HelpTest.HelpRead(feed);
+			rss.ReadOrCreateRSS();
+			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
 		}
 
@@ -129,8 +141,8 @@ namespace RSSFluxSD.Tests
 			rss.AddFlowSingle();
 			rss.RemoveFlowSingle(id);
 			rss.UpdateFlowSingle(id);
-			SyndicationFeed feed = rss.ReadOrCreateRSS();
-			HelpTest.HelpRead(feed);
+			rss.ReadOrCreateRSS();
+			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
 		}
 
