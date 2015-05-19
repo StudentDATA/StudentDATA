@@ -32,7 +32,7 @@ namespace RSSFluxSD
 			return flowList;
 		}
 
-		public CreateRSS GetStartRSS()
+		public CreateRSS GetHeaderRSS()
 		{
 			return cRSS;
 		}
@@ -53,7 +53,7 @@ namespace RSSFluxSD
 			
 		}
 
-		public void ReadOrCreateRSS()
+		public void ReadRSS()
 		{
 			//TODO : Verifier si c'est un lien ou un fichier
 			
@@ -70,77 +70,75 @@ namespace RSSFluxSD
 				string categorieFeed;
 				string descriptionFeed;
 				Feed = rRSS.ReadWithURI();
-				Feed.Links.LastOrDefault();
 
-				if ( Feed.Title.Text != null )
+				if ( Feed != null )
 				{
-					titleFeed = Feed.Title.Text;
-				}
-				else
-				{
-					titleFeed = null;
-				}
-
-				if (Feed.Links.LastOrDefault().ToString() != null )
-				{
-					linkFeed = Feed.Links.LastOrDefault().ToString();
-				}
-				else
-				{
-					linkFeed = "";
-				}
-
-				if (Feed.Authors.LastOrDefault().ToString() != null)
-				{
-					authorFeed = Feed.Authors.LastOrDefault().ToString();
-				}
-				else
-				{
-					authorFeed = "";
-				}
-
-				if (Feed.Categories.LastOrDefault().Name != null)
-				{
-					categorieFeed =	Feed.Categories.LastOrDefault().Name;
-				}
-				else
-				{
-					categorieFeed = "";
-				}
-
-				if (Feed.Description.Text != null)
-				{
-					descriptionFeed = Feed.Description.Text;
-				}
-				else
-				{
-					descriptionFeed = "";
-				}
-
-				cRSS.AddInitRSS(Feed.Title.Text, linkFeed, authorFeed,categorieFeed,descriptionFeed);
-
-				linkV = "";
-				foreach ( SyndicationItem item in Feed.Items)
-				{
-					foreach (SyndicationLink link in item.Links)
+					if (Feed.Title != null)
 					{
-						linkV = "";
-						if (link.MediaType != "image/jpeg")
-						{
-							linkV = link.ToString();
-						}
+						titleFeed = Feed.Title.Text;
 					}
-					flowList.Add(new Flow(item.Title.Text, ((TextSyndicationContent)item.Summary).Text, linkV, item.Id));
+					else
+					{
+						titleFeed = "";
+					}
+
+					if (Feed.Links.Count > 0)
+					{
+						linkFeed = Feed.Links.LastOrDefault().Uri.AbsoluteUri;
+					}
+					else
+					{
+						linkFeed = "";
+					}
+
+					if (Feed.Authors.Count > 0)
+					{
+						authorFeed = Feed.Authors.LastOrDefault().ToString();
+					}
+					else
+					{
+						authorFeed = "";
+					}
+
+					if (Feed.Categories.Count > 0)
+					{
+						categorieFeed = Feed.Categories.LastOrDefault().Name;
+					}
+					else
+					{
+						categorieFeed = "";
+					}
+
+					if (Feed.Description.Text != null)
+					{
+						descriptionFeed = Feed.Description.Text;
+					}
+					else
+					{
+						descriptionFeed = "";
+					}
+					cRSS.AddInitRSS(Feed.Title.Text, linkFeed, authorFeed, categorieFeed, descriptionFeed);
+
+					linkV = "";
+					foreach (SyndicationItem item in Feed.Items)
+					{
+						foreach (SyndicationLink link in item.Links)
+						{
+							linkV = "";
+							if (link.MediaType != "image/jpeg")
+							{
+								linkV = link.Uri.OriginalString;
+							}
+						}
+						flowList.Add(new Flow(item.Title.Text, ((TextSyndicationContent)item.Summary).Text, linkV, item.Id));
+					}
 				}
-				
 			}
 			else
 			{
 				//Demande de création du rss
 				Feed = cRSS.CreateInit();
-				
 			}
-
 		}
 
 		public void InitRSSSingle()
@@ -152,20 +150,19 @@ namespace RSSFluxSD
 		public void InitRSS()
 		{
 			Feed = cRSS.CreateInit();
-			
 		}
 
 		//TODO : Pouvoir en ajouter plusieurs sans ecrire dans le xml 1 par 1
 		public void AddFlowSingle()
 		{
-			ReadOrCreateRSS();
+			ReadRSS();
 			Feed.Items = uRSS.AddFlow(Feed);
 			AddinXml();
 		}
 
 		public void AddFlow()
 		{
-			ReadOrCreateRSS();
+			ReadRSS();
 			flowList.Add(new Flow("1", "2", "3", "4"));
 			Feed.Items = uRSS.AddFlow(Feed,flowList);
 		}
@@ -174,14 +171,14 @@ namespace RSSFluxSD
 		//Pouvoir en retirer plusieurs sans ecrire dans le xml 1 par 1
 		public void RemoveFlowSingle(int id)
 		{
-			ReadOrCreateRSS();
+			ReadRSS();
 			Feed.Items = uRSS.DeleteFlow(id, Feed);
 			AddinXml();
 		}
 
 		public void RemoveFlow(int id)
 		{
-			ReadOrCreateRSS();
+			ReadRSS();
 			Feed.Items = uRSS.DeleteFlow(id, Feed);
 			AddinXml();
 		}
@@ -189,7 +186,7 @@ namespace RSSFluxSD
 		//TODO : Pouvoir en modifier plusieurs sans ecrire dans le xml 1 par 1
 		public void UpdateFlowSingle(int id)
 		{
-			ReadOrCreateRSS();
+			ReadRSS();
 			Feed.Items = uRSS.UpdateFlow(id,Feed);
 			AddinXml();
 		}

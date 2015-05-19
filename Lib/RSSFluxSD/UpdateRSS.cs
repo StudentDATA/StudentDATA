@@ -42,7 +42,12 @@ namespace RSSFluxSD
 					flow.Id,
 					DateTime.Now));
 			}
-			return items;
+
+			List<SyndicationItem> itemsList = GetItemFeed(feed);
+
+			itemsList.AddRange(items);
+
+			return itemsList;
 		}
 
 		public List<SyndicationItem> AddFlow(SyndicationFeed feed, Flow flow)
@@ -55,7 +60,11 @@ namespace RSSFluxSD
 				flow.Id,
 				DateTime.Now));
 
-			return items;
+			List<SyndicationItem> itemsList = GetItemFeed(feed);
+
+			itemsList.AddRange(items);
+
+			return itemsList;
 		}
 
 		public List<SyndicationItem> UpdateFlow(int id, SyndicationFeed feed)

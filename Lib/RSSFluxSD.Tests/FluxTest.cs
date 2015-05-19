@@ -18,25 +18,25 @@ namespace RSSFluxSD.Tests
 			rssM.addRSS("https://fr.news.yahoo.com/rss/world");
 			foreach (RSS rss in rssM.GetAllRSS())
 			{
-				Console.WriteLine(rss.GetStartRSS().Titre);
+				Console.WriteLine("Titre : " + rss.GetHeaderRSS().Titre);
 				Console.WriteLine();
-				Console.WriteLine(rss.GetStartRSS().Author);
+				Console.WriteLine("Auteur : " + rss.GetHeaderRSS().Author);
 				Console.WriteLine();
-				Console.WriteLine(rss.GetStartRSS().Categorie);
+				Console.WriteLine("Categorie : " + rss.GetHeaderRSS().Categorie);
 				Console.WriteLine();
-				Console.WriteLine(rss.GetStartRSS().Content);
+				Console.WriteLine("Content : " + rss.GetHeaderRSS().Content);
 				Console.WriteLine();
-				Console.WriteLine(rss.GetStartRSS().Url);
+				Console.WriteLine("Url : " + rss.GetHeaderRSS().Url);
 				foreach ( Flow flow in rss.GetAllFlow())
 				{
 					Console.WriteLine("FLOW");
-					Console.WriteLine(flow.Title);
+					Console.WriteLine("Titre : " + flow.Title);
 					Console.WriteLine();
-					Console.WriteLine(flow.Content);
+					Console.WriteLine("Content : " + flow.Content);
 					Console.WriteLine();
-					Console.WriteLine(flow.Url);
+					Console.WriteLine("Url : " + flow.Url);
 					Console.WriteLine();
-					Console.WriteLine(flow.Id);
+					Console.WriteLine("ID : " + flow.Id);
 					Console.WriteLine();
 				}
 			}
@@ -46,7 +46,7 @@ namespace RSSFluxSD.Tests
 		public void TestReadRSS()
 		{
 			//TODO : Gerer exeption mauvais lien url
-			string url = "http://www.developpez.com/index/rss/ff";
+			string url = "http://www.developpez.com/index/rss";
 			string url2 = "https://fr.news.yahoo.com/rss/world";
 			string urlFail = "https://fr.news.yahoo.com/sitemap/";
 			string url3 = "test.xml";
@@ -57,10 +57,10 @@ namespace RSSFluxSD.Tests
 			RSS rssFail = new RSS(urlFail);
 			rss3.RemoveRSS();
 
-			rss.ReadOrCreateRSS();
-			rss2.ReadOrCreateRSS();
-			rss3.ReadOrCreateRSS();
-			rssFail.ReadOrCreateRSS();
+			rss.ReadRSS();
+			rss2.ReadRSS();
+			rss3.ReadRSS();
+			rssFail.ReadRSS();
 
 			
 
@@ -81,9 +81,9 @@ namespace RSSFluxSD.Tests
 			RSS rss = new RSS(uri);
 			
 			rss.InitRSSSingle();
-			rss.ReadOrCreateRSS();
+			rss.ReadRSS();
 			HelpTest.HelpRead(rss.Feed);
-			//rss.RemoveRSS();
+			rss.RemoveRSS();
 
 		}
 
@@ -94,7 +94,7 @@ namespace RSSFluxSD.Tests
 			RSS rss = new RSS(uri);
 			rss.InitRSSSingle();
 			rss.AddFlowSingle();
-			rss.ReadOrCreateRSS();
+			rss.ReadRSS();
 			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
 			
@@ -110,7 +110,7 @@ namespace RSSFluxSD.Tests
 			rss.RemoveFlowSingle(8);
 			rss.RemoveFlowSingle(id);
 			rss.RemoveFlowSingle(id);
-			rss.ReadOrCreateRSS();
+			rss.ReadRSS();
 			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
 		}
@@ -126,7 +126,7 @@ namespace RSSFluxSD.Tests
 			rss.UpdateFlowSingle(id);
 			rss.RemoveFlowSingle(id);
 			rss.UpdateFlowSingle(id);
-			rss.ReadOrCreateRSS();
+			rss.ReadRSS();
 			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
 		}
@@ -141,7 +141,7 @@ namespace RSSFluxSD.Tests
 			rss.AddFlowSingle();
 			rss.RemoveFlowSingle(id);
 			rss.UpdateFlowSingle(id);
-			rss.ReadOrCreateRSS();
+			rss.ReadRSS();
 			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
 		}

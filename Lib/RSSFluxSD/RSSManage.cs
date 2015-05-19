@@ -13,6 +13,13 @@ namespace RSSFluxSD
 		public void addRSS(string url)
 		{
 			RSSList.Add(new RSS(url));
+			//RSSList.LastOrDefault().ReadRSS();
+			RSSList.ElementAt(0).ReadRSS();
+		}
+
+		public void createRSS(string url)
+		{
+			RSSList.Add(new RSS(url));
 		}
 
 		public IReadOnlyList<RSS> GetAllRSS()
