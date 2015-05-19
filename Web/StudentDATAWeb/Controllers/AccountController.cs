@@ -183,7 +183,7 @@ namespace StudentDATAWeb.Controllers
 					state.Errors.Clear();
 				}
 
-				if (ModelState.IsValid) //TODO : Overwrite this verification TO Pourrier
+				if (ModelState.IsValid)
 				{
 					try
 					{
@@ -271,9 +271,9 @@ namespace StudentDATAWeb.Controllers
 					if (user == null)
 					{
 						// Insérer le nom dans la table des profils
-						db.UserProfiles.Add(new UserProfile {UserName = model.UserName});
+						db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
 						db.SaveChanges();
-                        
+
 						OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
 						OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
 

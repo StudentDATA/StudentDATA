@@ -38,7 +38,7 @@ namespace StudentDATAWeb.Filters
 						}
 					}
 
-    				}
+				}
 				catch (Exception ex)
 				{
 					throw new InvalidOperationException("Impossible d'initialiser la base de données ASP.NET Simple Membership. Pour plus d'informations, consultez la page http://go.microsoft.com/fwlink/?LinkId=256588", ex);
