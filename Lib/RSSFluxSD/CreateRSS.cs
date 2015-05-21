@@ -50,9 +50,12 @@ namespace RSSFluxSD
 				School, 
 				Etudiant
 			};
-
-
 			public CreateRSS()
+			{
+
+			}
+
+			public void InitRSSBase()
 			{
 				this.Titre = "IN'TECH INFO RSS";
 				this.Url = "http://student-data.itinet.fr";
