@@ -31,8 +31,11 @@ namespace StudentDATAWeb.Controllers
                 List<string> tmpCodeList = CodeCutter(user.Code);
                 ViewBag.UserPseudo = user.UserName;
                 ViewBag.UserName = user.FirstName + " " + user.LastName;
-                ViewBag.UserSemester = tmpCodeList[0];
-                ViewBag.UserField = tmpCodeList[1];
+                if (tmpCodeList != null)
+                {
+                    ViewBag.UserSemester = tmpCodeList[0];
+                    ViewBag.UserField = tmpCodeList[1];
+                }
                 ViewBag.UserActivity = user.ActualActivity;
                 ViewBag.MailAdress = user.MailAdress;
                 //Add here the Url for photo
@@ -49,10 +52,12 @@ namespace StudentDATAWeb.Controllers
         /// <returns></returns>
         public List<string> CodeCutter(string code)
         {
-            List<string> tmpList = new List<string>();
-            bool isCommon = true;
+            if (code != null)
+            {
+                List<string> tmpList = new List<string>();
+                bool isCommon = true;
 
-            
+
             if (code != null)
             {
                 string tmpString = code.Substring(1, 2);
@@ -86,7 +91,6 @@ namespace StudentDATAWeb.Controllers
                         tmpList.Add("Tronc Commun");
                     else
                         tmpList.Add("pedago");
-
                     return tmpList;
                 }
                 catch (Exception e)

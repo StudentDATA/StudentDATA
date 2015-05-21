@@ -30,20 +30,41 @@ namespace RSSFluxSD
 			return items;
 		}
 
-		public List<SyndicationItem> AddFlow(SyndicationFeed feed,Flow flow)
+		public List<SyndicationItem> AddFlow(SyndicationFeed feed,List<Flow> flowList)
 		{
-			SyndicationItem item = new SyndicationItem(
+			List<SyndicationItem> items = new List<SyndicationItem>();
+			foreach ( Flow flow in flowList)
+			{
+				items.Add(new SyndicationItem(
+					flow.Title,
+					flow.Content,
+					new Uri(flow.Url),
+					flow.Id,
+					DateTime.Now));
+			}
+
+			List<SyndicationItem> itemsList = GetItemFeed(feed);
+
+			itemsList.AddRange(items);
+
+			return itemsList;
+		}
+
+		public List<SyndicationItem> AddFlow(SyndicationFeed feed, Flow flow)
+		{
+			List<SyndicationItem> items = new List<SyndicationItem>(); ;
+			items.Add(new SyndicationItem(
 				flow.Title,
 				flow.Content,
 				new Uri(flow.Url),
 				flow.Id,
-				DateTime.Now);
+				DateTime.Now));
 
-			List<SyndicationItem> items = GetItemFeed(feed);
+			List<SyndicationItem> itemsList = GetItemFeed(feed);
 
-			items.Add(item);
+			itemsList.AddRange(items);
 
-			return items;
+			return itemsList;
 		}
 
 		public List<SyndicationItem> UpdateFlow(int id, SyndicationFeed feed)
@@ -56,7 +77,7 @@ namespace RSSFluxSD
 				{	
 					items = DeleteFlow(id, feed);
 					feed.Items = items;
-					items.InsertRange(id, AddFlow(feed, new Flow ("Titre", "Content", "http://url.com", "IdFlow1")));				
+					items.InsertRange(id, AddFlow(feed, new Flow ("Titre", "Content", "http://url.com", "IdFlow1",DateTimeOffset.Now)));				
 					return items;
 				}
 				catch
