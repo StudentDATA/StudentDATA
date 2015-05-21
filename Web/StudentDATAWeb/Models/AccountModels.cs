@@ -125,7 +125,7 @@ namespace StudentDATAWeb.Models
         [DataType(DataType.Text)]
         [Display(Name = "Titre")]
         public string Title { get; set; }
-        /*[Required]
+        //[Required]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Contenu")]
         public string Content { get; set; }

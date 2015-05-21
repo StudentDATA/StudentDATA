@@ -57,9 +57,6 @@ namespace StudentDATAWeb.Controllers
                 List<string> tmpList = new List<string>();
                 bool isCommon = true;
 
-
-            if (code != null)
-            {
                 string tmpString = code.Substring(1, 2);
                 try
                 {
@@ -99,6 +96,7 @@ namespace StudentDATAWeb.Controllers
                     tmpList.Add(null);
                     return tmpList;
                 }
+
             }
             else return null;
 
