@@ -12,21 +12,23 @@ namespace RSSFluxSD.Tests
 	public class FluxTest
 	{
 		[TestMethod]
-		public void TestL()
+		public void TestReadWithManage()
 		{
 			RSSManage rssM = new RSSManage();
-			rssM.addRSS("https://fr.news.yahoo.com/rss/world");
-			foreach (RSS rss in rssM.GetAllRSS())
+			rssM.readRSS("https://fr.news.yahoo.com/rss/world");
+			rssM.readRSS("http://www.developpez.com/index/rssd");
+			foreach ( RSS rss in rssM.GetAllRSS())
 			{
-				Console.WriteLine("Titre : " + rss.GetHeaderRSS().Titre);
+				
+				Console.WriteLine("Titre : " + rss.Tilte());
 				Console.WriteLine();
-				Console.WriteLine("Auteur : " + rss.GetHeaderRSS().Author);
+				Console.WriteLine("Auteur : " + rss.Author());
 				Console.WriteLine();
-				Console.WriteLine("Categorie : " + rss.GetHeaderRSS().Categorie);
+				Console.WriteLine("Categorie : " + rss.Categorie());
 				Console.WriteLine();
-				Console.WriteLine("Content : " + rss.GetHeaderRSS().Content);
+				Console.WriteLine("Content : " + rss.Content());
 				Console.WriteLine();
-				Console.WriteLine("Url : " + rss.GetHeaderRSS().Url);
+				Console.WriteLine("Url : " + rss.Url());
 				foreach ( Flow flow in rss.GetAllFlow())
 				{
 					Console.WriteLine("FLOW");
@@ -38,10 +40,26 @@ namespace RSSFluxSD.Tests
 					Console.WriteLine();
 					Console.WriteLine("ID : " + flow.Id);
 					Console.WriteLine();
+					Console.WriteLine("Date : " + flow.Date);
 				}
 			}
 
 		}
+
+		[TestMethod]
+		public void TestCreateAndAddXML()
+		{
+			//TESTER que le fichier n'existe pas deja dans le dossier et dans le dictionaire
+			RSSManage rssM = new RSSManage();
+			rssM.createRSS("test.xml");
+			rssM.createRSS("https://fr.news.yahoo.com/rss/world");
+			if ( rssM.Msg_error != null)
+			{
+				Console.WriteLine(rssM.Msg_error);
+			}
+		}
+
+		//addflow Supp, Update File par le manager.
 		[TestMethod]
 		public void TestReadRSS()
 		{

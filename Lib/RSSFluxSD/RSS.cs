@@ -11,10 +11,8 @@ namespace RSSFluxSD
 {
 	public class RSS
 	{
-		string _uri_rss;
+		string _uri;
 		string _msg_error;
-		bool _feedIsNull;
-
 
 		ReadRSS rRSS;
 		CreateRSS cRSS;
@@ -27,12 +25,6 @@ namespace RSSFluxSD
 			private set { _feed = value; }
 		}
 
-		public bool FeedIsNull
-		{
-			get { return _feedIsNull; }
-			private set { _feedIsNull = value; }
-		}
-
 		List<Flow> flowList;
 
 		public IReadOnlyList<Flow> GetAllFlow()
@@ -40,42 +32,22 @@ namespace RSSFluxSD
 			return flowList;
 		}
 
-		public string Tilte()
+		public CreateRSS GetHeaderRSS()
 		{
-			return cRSS.Titre;
+			return cRSS;
 		}
 
-		public string Author()
+		public string Url
 		{
-			return cRSS.Author;
-		}
-
-		public string Categorie()
-		{
-			return cRSS.Categorie;
-		}
-
-		public string Url()
-		{
-			return cRSS.Url;
-		}
-
-		public string Content()
-		{
-			return cRSS.Content;
-		}
-
-		public string Uri_RSS
-		{
-			get { return _uri_rss; }
-			set { _uri_rss = value; }
+			get { return _uri; }
+			set { _uri = value; }
 		}
 
 		public RSS(string url)
 		{
-			this.Uri_RSS = url;
+			this.Url = url;
 			flowList = new List<Flow>();
-			rRSS = new ReadRSS(this.Uri_RSS);
+			rRSS = new ReadRSS(this.Url);
 			cRSS = new CreateRSS();
 			uRSS = new UpdateRSS();
 			
@@ -84,8 +56,12 @@ namespace RSSFluxSD
 		public void ReadRSS()
 		{
 			//TODO : Verifier si c'est un lien ou un fichier
+			
+			Uri uriResult;
+			bool result = Uri.TryCreate(Url, UriKind.Absolute, out uriResult)
+				&& ( uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps );
 
-			if (File.Exists(Uri_RSS) || Helper.TryUri(Uri_RSS))
+			if (File.Exists(Url) || result)
 			{
 				string linkV;
 				string linkFeed;
@@ -97,7 +73,6 @@ namespace RSSFluxSD
 
 				if ( Feed != null )
 				{
-					FeedIsNull = false;
 					if (Feed.Title != null)
 					{
 						titleFeed = Feed.Title.Text;
@@ -155,31 +130,25 @@ namespace RSSFluxSD
 								linkV = link.Uri.OriginalString;
 							}
 						}
-						flowList.Add(new Flow(item.Title.Text, ((TextSyndicationContent)item.Summary).Text, linkV, item.Id,item.PublishDate));
+						flowList.Add(new Flow(item.Title.Text, ((TextSyndicationContent)item.Summary).Text, linkV, item.Id));
 					}
-				}
-				else
-				{
-					_msg_error = "Aucune donnée exploitable";
-					FeedIsNull = true;
 				}
 			}
 			else
 			{
 				//Demande de création du rss
-				//Feed = cRSS.CreateInit();
+				Feed = cRSS.CreateInit();
 			}
 		}
 
 		public void InitRSSSingle()
-		{		
+		{
 			InitRSS();
 			AddinXml();
 		}
 
 		public void InitRSS()
 		{
-			cRSS.InitRSSBase();
 			Feed = cRSS.CreateInit();
 		}
 
@@ -193,7 +162,8 @@ namespace RSSFluxSD
 
 		public void AddFlow()
 		{
-			flowList.Add(new Flow("1", "2", "3", "4",DateTimeOffset.Now));
+			ReadRSS();
+			flowList.Add(new Flow("1", "2", "3", "4"));
 			Feed.Items = uRSS.AddFlow(Feed,flowList);
 		}
 
@@ -225,7 +195,7 @@ namespace RSSFluxSD
 			//Savoir si le fichier existe deja ou pas
 			if ( Feed != null )
 			{
-				using (var writer = XmlWriter.Create(this.Uri_RSS))
+				using (var writer = XmlWriter.Create(this.Url))
 				{
 					Feed.SaveAsRss20(writer);
 					writer.Flush();
@@ -237,9 +207,9 @@ namespace RSSFluxSD
 
 		public void RemoveRSS()
 		{
-			if (File.Exists(Uri_RSS))
+			if (File.Exists(Url))
 			{
-				File.Delete(Uri_RSS);
+				File.Delete(Url);
 			}
 		}
 	}

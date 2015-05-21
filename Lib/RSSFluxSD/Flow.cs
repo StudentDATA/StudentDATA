@@ -12,13 +12,6 @@ namespace RSSFluxSD
 		string _id;
 		string _content;
 		string _url;
-		DateTimeOffset _date;
-
-		public DateTimeOffset Date
-		{
-			get { return _date; }
-			set { _date = value; }
-		}
 
 		public string Title
 		{
@@ -41,24 +34,12 @@ namespace RSSFluxSD
 			private set { _id = value; }
 		}
 
-
-
-		public Flow(string title,string content,string url,string id,DateTimeOffset date)
+		public Flow(string title,string content,string url,string id)
 		{
 			this.Title = title;
 			this.Content = content;
-
-			if (Helper.TryUri(url))
-			{
-				this.Url = url;
-			}
-			else
-			{
-				this.Url = "http://www.google.com";
-			}
-
+			this.Url = url;
 			this.Id = id;
-			this.Date = date;
 		}
 	}
 }

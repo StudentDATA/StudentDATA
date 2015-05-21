@@ -8,18 +8,38 @@ namespace RSSFluxSD
 {
 	public class RSSManage
 	{
-		List<RSS> RSSList = new List<RSS>();
+		string msg_error = null;
 
-		public void addRSS(string url)
+		public string Msg_error
+		{
+			get { return msg_error; }
+			private set { msg_error = value; }
+		}
+
+		//Name pour les fichiers xml : xmlName
+		//Name pour les url : urlName
+		List<RSS> RSSList = new List<RSS>();
+		public void readRSS(string url)
 		{
 			RSSList.Add(new RSS(url));
-			//RSSList.LastOrDefault().ReadRSS();
-			RSSList.ElementAt(0).ReadRSS();
+			RSSList.Last().ReadRSS();
+			if (RSSList.Last().FeedIsNull) RSSList.Remove(RSSList.Last());
 		}
 
 		public void createRSS(string url)
 		{
-			RSSList.Add(new RSS(url));
+			if ( !Helper.TryUri(url))
+			{
+				RSSList.Add(new RSS(url));
+				RSSList.Last().InitRSS();
+				RSSList.Last().AddFlow();
+				addToXml();
+			}
+			else
+			{
+				Msg_error = "Impossible de Creer un flux RSS à partir d'un lien";
+			}
+
 		}
 
 		public IReadOnlyList<RSS> GetAllRSS()
@@ -31,17 +51,13 @@ namespace RSSFluxSD
 		{
 			foreach (RSS rss in RSSList)
 			{
-				rss.AddinXml();
+				if (!Helper.TryUri(rss.Uri_RSS))
+				{
+					rss.AddinXml();
+				};
 			}
 		}
-
-		//Retourner un objet rss avec ses liste de ses articles
-
 		
-		
-		
-		//Creation du flux rss :  retourner le nom du fichier xml
-
 		//Ajouter, SUPP, archives, update  : RSS
 
 
