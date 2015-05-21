@@ -13,7 +13,6 @@ namespace RSSFluxSD
 		public class CreateRSS
 		{
 			string _titre;
-			string _titreDescription;
 			string _url;
 			string _author;
 			string _categorie;
@@ -22,50 +21,59 @@ namespace RSSFluxSD
 			public string Titre
 			{
 				get { return _titre; }
-				set { _titre = value; }
+				private set { _titre = value; }
 			}
-			public string TitreDescription
-			{
-				get { return _titreDescription; }
-				set { _titreDescription = value; }
-			}
+
 			public string Url
 			{
 				get { return _url; }
-				set { _url = value; }
+				private set { _url = value; }
 			}
 			public string Author
 			{
 				get { return _author; }
-				set { _author = value; }
+				private set { _author = value; }
 			}
 			public string Categorie
 			{
 				get { return _categorie; }
-				set { _categorie = value; }
+				private set { _categorie = value; }
 			}
 			public string Content
 			{
 				get { return _content; }
-				set { _content = value; }
+				private set { _content = value; }
 			}
+
+			public enum CategorieEnum 
+			{
+				School, 
+				Etudiant
+			};
+
 
 			public CreateRSS()
 			{
 				this.Titre = "IN'TECH INFO RSS";
-				this.TitreDescription = "RSS de IN'TECH INFO";
-				//Gerer le url par le titre
 				this.Url = "http://student-data.itinet.fr";
 				this.Author = "Student DATA RSS";
-				this.Categorie = "Actualité IN'TECH INFO";
+				this.Categorie = CategorieEnum.Etudiant.ToString();
 				this.Content = "L'actualité de l'école IN'TECH INFO";
 			}
 
 
-			public CreateRSS(string titre,string titredescription, string url, string author, string categorie, string content)
+			public CreateRSS(string titre, string titredescription, string categorie, string content)
 			{
 				this.Titre = titre;
-				this.TitreDescription = titredescription;
+				this.Url = "http://student-data.itinet.fr";
+				this.Author = "Student DATA RSS";
+				this.Categorie = categorie;
+				this.Content = content;
+			}
+
+			public void AddInitRSS(string titre, string url, string author, string categorie, string content)
+			{
+				this.Titre = titre;
 				this.Url = url;
 				this.Author = author;
 				this.Categorie = categorie;
@@ -74,7 +82,7 @@ namespace RSSFluxSD
 
 			public SyndicationFeed CreateInit()
 			{
-				SyndicationFeed feed = new SyndicationFeed(Titre, TitreDescription, new Uri(Url));
+				SyndicationFeed feed = new SyndicationFeed(Titre, Titre, new Uri(Url));
 				feed.Authors.Add(new SyndicationPerson(Author));
 				feed.Categories.Add(new SyndicationCategory(Categorie));
 				feed.Description = new TextSyndicationContent(Content);
