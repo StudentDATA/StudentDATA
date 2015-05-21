@@ -52,46 +52,89 @@ namespace StudentDATAWeb.Controllers
             List<string> tmpList = new List<string>();
             bool isCommon = true;
 
-            string tmpString = code.Substring(1, 2);
             
-            int tmpInteger = Convert.ToInt32(tmpString);
-            if (tmpInteger < 10)
-
-            if (tmpInteger < 10 && tmpInteger >= 3)
+            if (code != null)
             {
-                tmpList.Add("0" + tmpInteger.ToString());
-                isCommon = false;
-            }
-            else if (tmpInteger < 3)
-            {
-                tmpList.Add("0" + tmpInteger.ToString());
-                isCommon = true;
-            }
-            if (code.Contains("IL") && !isCommon)
-                tmpList.Add("IL");
-            else if (code.Contains("SR") && !isCommon)
-                tmpList.Add("SR");
-            else
-                tmpList.Add("Tronc Commun");
+                string tmpString = code.Substring(1, 2);
+                try
+                {
+                    int tmpInteger = Convert.ToInt32(tmpString);
+                    if (tmpInteger < 10)
 
-            return tmpList;
+                        if (tmpInteger < 10 && tmpInteger >= 3)
+                        {
+                            tmpList.Add("0" + tmpInteger.ToString());
+                            isCommon = false;
+                        }
+                        else if (tmpInteger < 3)
+                        {
+                            tmpList.Add("0" + tmpInteger.ToString());
+                            isCommon = true;
+                        }
+                        else if (tmpInteger == 0)
+                        {
+                            tmpList.Add("00");
+                            isCommon = false;
+                        }
+
+
+                    if (code.Contains("IL") && !isCommon)
+                        tmpList.Add("IL");
+                    else if (code.Contains("SR") && !isCommon)
+                        tmpList.Add("SR");
+                    else if (code.Contains("TC") && !isCommon)
+                        tmpList.Add("Tronc Commun");
+                    else
+                        tmpList.Add("pedago");
+
+                    return tmpList;
+                }
+                catch (Exception e)
+                {
+                    tmpList.Add(e.ToString());
+                    tmpList.Add(null);
+                    return tmpList;
+                }
+            }
+            else return null;
+
         }
 
         public string CodeCreator(List<string> ls)
         {
-            if (ls[1] == "Common")
-                ls[1] = "";
-            return "S" + ls[0].ToString() + ls[1].ToString();
+            if (ls != null)
+            {
+                if (ls[1] == "Common")
+                    ls[1] = "TC";
+                else if (ls[1] == "pedago")
+                    ls[1] = "PO";
+
+                return "S" + ls[0].ToString() + ls[1].ToString();
+            }
+            else
+                return null;
         }
         public ActionResult ChangeFormProfile(UsersContext db)
         {
+            string tmpField;
+            string tmpSemester;
             user = db.UserProfiles.Find(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.Modifying = true;
             ViewBag.UserPseudo = user.UserName;
             ViewBag.FirstName = user.FirstName;
             ViewBag.LastName = user.LastName;
-            ViewBag.UserSemester = CodeCutter(user.Code)[0];
-            ViewBag.UserField = CodeCutter(user.Code)[1];
+            tmpField = CodeCutter(user.Code)[1];
+            tmpSemester = CodeCutter(user.Code)[0];
+            if (tmpField != null && tmpSemester != null)
+            {
+                ViewBag.UserSemester = tmpSemester;
+                ViewBag.UserField = tmpField;
+            }
+            else
+            {
+                ViewBag.UserSemester = null;
+                ViewBag.UserField = null;
+            }
             ViewBag.UserActivity = user.ActualActivity;
             ViewBag.MailAdress = user.MailAdress;
 
@@ -102,6 +145,7 @@ namespace StudentDATAWeb.Controllers
             studyField.Add(new SelectListItem { Text = "Equipe pédagogique", Value = "pedago" });
 
             List<SelectListItem> semester = new List<SelectListItem>();
+            semester.Add(new SelectListItem { Text = "Aucun", Value = "00" });
             semester.Add(new SelectListItem { Text = "01", Value = "01" });
             semester.Add(new SelectListItem { Text = "02", Value = "02" });
             semester.Add(new SelectListItem { Text = "03", Value = "03" });
@@ -141,7 +185,7 @@ namespace StudentDATAWeb.Controllers
                     user.Code = CodeCreator(new List<string>() { SemesterList, CodeCutter(user.Code)[1] });
                 else
                     user.Code = CodeCreator(CodeCutter(user.Code));
-                    
+
 
                 db.Entry(user).State = System.Data.EntityState.Modified;
                 db.SaveChanges();
