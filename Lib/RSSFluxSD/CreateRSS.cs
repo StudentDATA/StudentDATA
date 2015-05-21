@@ -52,7 +52,7 @@ namespace RSSFluxSD
 			};
 
 
-			public CreateRSS()
+			public void InitRSSBase()
 			{
 				this.Titre = "IN'TECH INFO RSS";
 				this.Url = "http://student-data.itinet.fr";
@@ -61,6 +61,10 @@ namespace RSSFluxSD
 				this.Content = "L'actualité de l'école IN'TECH INFO";
 			}
 
+			public CreateRSS()
+			{
+
+			}
 
 			public CreateRSS(string titre, string titredescription, string categorie, string content)
 			{
