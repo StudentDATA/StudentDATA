@@ -1,0 +1,36 @@
+﻿@model StudentDATAWeb.Models.RegisterModel
+@{
+    ViewBag.Title = "Créer un nouveau compte";
+}
+
+<hgroup class="title col-md-offset-5">
+    <h1>@ViewBag.Title :</h1>
+</hgroup>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <div class="row">
+            @Html.LabelFor(m => m.UserName, new { @class = "col-md-offset-5" })
+            @Html.TextBoxFor(m => m.UserName, new { @class = "col-md-offset-5" })
+
+
+            @Html.LabelFor(m => m.Password, new { @class = "col-md-offset-5" })
+            @Html.PasswordFor(m => m.Password, new { @class = "col-md-offset-5" })
+
+
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-offset-5" })
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "col-md-offset-5" })
+        </div>
+           
+        <div class="row">
+            <input class="col-md-offset-5 btn btn-primary" type="submit" value="S'inscrire" />
+        </div>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

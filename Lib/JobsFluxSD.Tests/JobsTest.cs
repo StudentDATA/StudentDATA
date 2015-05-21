@@ -6,9 +6,7 @@ namespace JobsFluxSD.Tests
 	[TestClass]
 	public class JobsTest
 	{
-		[TestMethod]
-		public void TestMethod1()
-		{
-		}
+		
+
 	}
 }

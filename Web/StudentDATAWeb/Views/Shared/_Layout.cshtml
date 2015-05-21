@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+    <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title - Mon application ASP.NET MVC</title>
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/bundles/BootstrapCss") 
+        @*@Styles.Render("~/Content/css")*@
+        @Scripts.Render("~/bundles/modernizr")
+    </head>
+
+<body>
+    <header>
+        <img src="~/Images/LogoSD.png" alt="test" class="img-rounded center-block">
+        <div class="row">
+            <section id="login">
+                @Html.Partial("_LoginPartial")
+            </section>
+        </div>
+    </header>
+
+    <div id="body" class="row">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+
+    <footer>
+        <div class="row">
+                <div class="col-md-offset-5">
+                    <p>&copy; @DateTime.Now.Year - Mon application ASP.NET MVC</p>
+            </div>
+        </div>
+
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

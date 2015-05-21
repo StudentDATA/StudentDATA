@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Flow";
+}
+
+<h2>Flow</h2>
+@if(ViewBag.IsWriter)
+{
+    @Html.ActionLink("Ajouter", "AddPost", "Flow", routeValues: null, htmlAttributes: new { id = "AddPostLink" })
+}
+@foreach(var post in ViewBag.FlowList)
+{
+    <div>
+        <label><a href="@post[2]">@post[0]</a></label>
+        <p>@post[1]</p>
+    </div>
+}

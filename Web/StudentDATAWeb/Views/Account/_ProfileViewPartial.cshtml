@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "_ProfileViewPartial";
+}
+
+@Html.ActionLink("Modifier", "ChangeFormProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileModifLink" })
+<label>
+    Pseudo : 
+</label>
+<p>
+    @ViewBag.UserPseudo
+</p>
+<label>
+    Nom et prénom :
+</label>
+<p>
+    @ViewBag.UserName
+</p>
+<label>
+    Semestre :
+</label>
+<p>
+    @ViewBag.UserSemester
+</p>
+<label>
+    Filière :
+</label>
+<p>
+    @ViewBag.UserField
+</p>
+<label>
+    Job ou Projet actuel:
+</label>
+<p>
+    @ViewBag.UserActivity
+</p>
+<label>
+    Adresse Mail : 
+</label>
+<p>
+    @ViewBag.MailAdress
+</p>
+
