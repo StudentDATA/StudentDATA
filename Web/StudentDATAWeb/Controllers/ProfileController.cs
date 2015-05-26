@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using StudentDATAWeb.Models;
 using WebMatrix.WebData;
+using System.Data.Entity;
 
 
 namespace StudentDATAWeb.Controllers
@@ -98,7 +99,7 @@ namespace StudentDATAWeb.Controllers
                 }
 
             }
-            else return null;
+            else return new List<string>(){"",""};
 
         }
 
@@ -188,8 +189,8 @@ namespace StudentDATAWeb.Controllers
                 else
                     user.Code = CodeCreator(CodeCutter(user.Code));
 
-
-                db.Entry(user).State = System.Data.EntityState.Modified;
+             
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 ViewBag.Modifying = false;
                 return RedirectToAction("ViewProfile", pm);
