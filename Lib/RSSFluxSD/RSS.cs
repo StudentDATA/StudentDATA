@@ -117,6 +117,7 @@ namespace RSSFluxSD
 
 					if (Feed.Authors.Count > 0)
 					{
+						//REFAIRE
 						authorFeed = Feed.Authors.LastOrDefault().ToString();
 					}
 					else
@@ -126,6 +127,7 @@ namespace RSSFluxSD
 
 					if (Feed.Categories.Count > 0)
 					{
+						//REFAIRE
 						categorieFeed = Feed.Categories.LastOrDefault().Name;
 					}
 					else
@@ -154,7 +156,10 @@ namespace RSSFluxSD
 								linkV = link.Uri.OriginalString;
 							}
 						}
-						flowList.Add(new Flow(item.Title.Text, ((TextSyndicationContent)item.Summary).Text, linkV, item.Id,item.PublishDate));
+						if (flowList.Find(x => x.Id == item.Id) == null)
+						{
+							flowList.Add(new Flow(item.Title.Text, ((TextSyndicationContent)item.Summary).Text, linkV, item.Id, item.PublishDate));
+						}
 					}
 				}
 				else
@@ -192,10 +197,38 @@ namespace RSSFluxSD
 
 		public void AddFlow()
 		{
-			flowList.Add(new Flow("1", "2", "3", "4", DateTimeOffset.Now));
-			Feed.Items = uRSS.AddFlow(Feed,flowList);
+			if (!Helper.TryUri(Uri_RSS))
+			{
+				flowList.Add(new Flow("1", "2", "3", "4", DateTimeOffset.Now));
+				Feed.Items = uRSS.AddFlow(Feed,flowList);
+			}
 		}
-
+		/// <summary>
+		/// Add a List of flow in your rss file.
+		/// </summary>
+		/// <param name="flow">List of flow's information : Title and Content</param>
+		public void AddFlow(List<string> flow)
+		{
+			int flowCount;
+			if ((flow.Count % 2) == 0)
+			{
+				flowCount = flow.Count;
+			}
+			else
+			{
+				flowCount = flow.Count-1;
+			}
+			if (!Helper.TryUri(Uri_RSS))
+			{
+				for (int i = 0; i < flowCount; i = i + 2)
+				{
+					//Trouver une idée pour l'id : la c'est nom de fichier + titre + numero du flow
+					flowList.Add(new Flow(flow.ElementAt(i), flow.ElementAt(i + 1), "http://student-data.com", Uri_RSS + flow.ElementAt(i) + i, DateTimeOffset.Now));
+				}
+				Feed.Items = uRSS.AddFlow(Feed, flowList);
+				AddinXml();
+			}
+		}
 
 		//Pouvoir en retirer plusieurs sans ecrire dans le xml 1 par 1
 		public void RemoveFlowSingle(int id)

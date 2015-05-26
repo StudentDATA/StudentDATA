@@ -16,33 +16,17 @@ namespace RSSFluxSD.Tests
 		{
 			RSSManage rssM = new RSSManage();
 			rssM.readRSS("https://fr.news.yahoo.com/rss/world");
-			rssM.readRSS("http://www.developpez.com/index/rssd");
-			foreach ( RSS rss in rssM.GetAllRSS())
+			rssM.readRSS("https://fr.news.yahoo.com/rss/world");
+			rssM.readRSS("http://www.developpez.com/index/rss");
+
+			Console.WriteLine(rssM.GetAllRSS().Count);
+			foreach( RSS rss in rssM.GetAllRSS())
 			{
-				
-				Console.WriteLine("Titre : " + rss.Tilte());
-				Console.WriteLine();
-				Console.WriteLine("Auteur : " + rss.Author());
-				Console.WriteLine();
-				Console.WriteLine("Categorie : " + rss.Categorie());
-				Console.WriteLine();
-				Console.WriteLine("Content : " + rss.Content());
-				Console.WriteLine();
-				Console.WriteLine("Url : " + rss.Url());
-				foreach ( Flow flow in rss.GetAllFlow())
-				{
-					Console.WriteLine("FLOW");
-					Console.WriteLine("Titre : " + flow.Title);
-					Console.WriteLine();
-					Console.WriteLine("Content : " + flow.Content);
-					Console.WriteLine();
-					Console.WriteLine("Url : " + flow.Url);
-					Console.WriteLine();
-					Console.WriteLine("ID : " + flow.Id);
-					Console.WriteLine();
-					Console.WriteLine("Date : " + flow.Date);
-				}
+				Console.WriteLine(rss.GetAllFlow().Count);
 			}
+			Console.WriteLine();
+
+			HelpTest.HelpReadWithManage(rssM);
 
 		}
 
@@ -50,15 +34,23 @@ namespace RSSFluxSD.Tests
 		public void TestCreateAndAddXML()
 		{
 			//TESTER que le fichier n'existe pas deja dans le dossier et dans le dictionaire
+			List<String> testFlow = new List<string> { "Jaune", "C'est jaune", "Vert", "C'est Vert","G" };
 			RSSManage rssM = new RSSManage();
 			rssM.createRSS("test.xml");
 			rssM.createRSS("https://fr.news.yahoo.com/rss/world");
+			rssM.addFlow("test.xml", testFlow);
 			if ( rssM.Msg_error != null)
 			{
 				Console.WriteLine(rssM.Msg_error);
 			}
+
+			HelpTest.HelpReadWithManage(rssM);
 		}
 
+		public void TestAddFlowWithManager()
+		{
+
+		}
 		//addflow Supp, Update File par le manager.
 		[TestMethod]
 		public void TestReadRSS()
