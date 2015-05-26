@@ -7,6 +7,7 @@ using RSSFluxSD;
 using StudentDATAWeb.Models;
 using WebMatrix.WebData;
 using System.IO;
+using System.Data.Entity.Validation;
 
 namespace StudentDATAWeb.Controllers
 {
@@ -16,29 +17,33 @@ namespace StudentDATAWeb.Controllers
         UsersContext db;
         public ActionResult Index(UsersContext db)
         {
-
-            this.db = db;
-            profile = db.UserProfiles.Find(WebSecurity.GetUserId(User.Identity.Name));
-            InitializeRSSFlowsDatas();
-            List<List<string>> ll = new List<List<string>>();
-
-            RSSManage rssManager = new RSSManage();
-            foreach (string adress in GetRSSByProfile())
+            if (WebSecurity.IsAuthenticated)
             {
-                rssManager.readRSS(adress);
-            }
-            foreach (RSS rss in rssManager.GetAllRSS())
-            {
-                foreach (Flow flow in rss.GetAllFlow())
+                this.db = db;
+                profile = db.UserProfiles.Find(WebSecurity.GetUserId(User.Identity.Name));
+                InitializeRSSFlowsDatas();
+                List<List<string>> ll = new List<List<string>>();
+
+                RSSManage rssManager = new RSSManage();
+                foreach (string adress in GetRSSByProfile())
                 {
-                    ll.Add(new List<string>() { flow.Title.ToString(), flow.Content.ToString(), flow.Url.ToString(), flow.Date.ToString() });
+                    rssManager.readRSS(adress);
                 }
+                foreach (RSS rss in rssManager.GetAllRSS())
+                {
+                    foreach (Flow flow in rss.GetAllFlow())
+                    {
+                        ll.Add(new List<string>() { flow.Title.ToString(), flow.Content.ToString(), flow.Url.ToString(), flow.Date.ToString() });
+                    }
+                }
+                ll.OrderByDescending(a => a[3]);
+                ViewBag.FlowList = ll;
+                // TODO : CHange isWriter set
+                ViewBag.IsWriter = true;
+                return View("/Views/SchoolFlow/Flow.cshtml");
             }
-            ll.OrderByDescending(a => a[3]);
-            ViewBag.FlowList = ll;
-            // TODO : CHange isWriter set
-            ViewBag.IsWriter = true;
-            return View("/Views/SchoolFlow/Flow.cshtml");
+            else
+                return View("/Views/Home/Index.cshtml");
         }
         /// <summary>
         /// Create the files on the server if not exists and register them in database
@@ -54,56 +59,73 @@ namespace StudentDATAWeb.Controllers
                     tmpname = "S" + i.ToString();
 
                 var result = db.RSSFlowsDatasList.Where(a => a.FlowName == tmpname);
-                if (result.FirstOrDefault() != new RSSFlowsDatas())
+
+                string toto = null;
+                try
                 {
-                    RSSFlowsDatas tmp = new RSSFlowsDatas();
-                    if (i < 10)
-                        tmp.FlowName = "S0" + i.ToString();
-                    else
-                        tmp.FlowName = "S" + i.ToString();
-                    tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
-                    if (!System.IO.File.Exists(tmp.Adress))
-                        System.IO.File.Create(tmp.Adress);
-                    db.RSSFlowsDatasList.Add(tmp);
-                    
-                    db.SaveChanges();
+                    if (!result.Any())
+                    {
+                        RSSFlowsDatas tmp = new RSSFlowsDatas();
+                        if (i < 10)
+                            tmp.FlowName = "S0" + i.ToString();
+                        else
+                            tmp.FlowName = "S" + i.ToString();
+                        tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
+                        if (!System.IO.File.Exists(tmp.Adress))
+                            System.IO.File.Create(tmp.Adress);
+                        db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
+                        db.SaveChanges();
+                    }
+                }
+                catch (DbEntityValidationException e)
+                {
+
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        toto += "Entity of type \"" + eve.Entry.Entity.GetType().Name + "\" in state \"" + eve.Entry.State + "\" has the following validation errors:";
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            toto += "- Property: \"" + ve.PropertyName + "\", Error: \"" + ve.ErrorMessage + "\"";
+                        }
+                    }
+                    Console.WriteLine(toto);
                 }
             }
             var result2 = db.RSSFlowsDatasList.Where(a => a.FlowName == "IL");
-            if (result2.FirstOrDefault() != new RSSFlowsDatas())
+            if (!result2.Any())
             {
                 RSSFlowsDatas tmp = new RSSFlowsDatas();
                 tmp.FlowName = "IL";
                 tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
                 if (!System.IO.File.Exists(tmp.Adress))
                     System.IO.File.Create(tmp.Adress);
-                db.RSSFlowsDatasList.Add(tmp);
+                db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                 db.SaveChanges();
             }
             var result3 = db.RSSFlowsDatasList.Where(a => a.FlowName == "SR");
-            if (result3.FirstOrDefault() != new RSSFlowsDatas())
+            if (!result3.Any())
             {
                 RSSFlowsDatas tmp = new RSSFlowsDatas();
                 tmp.FlowName = "SR";
                 tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
                 if (!System.IO.File.Exists(tmp.Adress))
                     System.IO.File.Create(tmp.Adress);
-                db.RSSFlowsDatasList.Add(tmp);
+                db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                 db.SaveChanges();
             }
             var result4 = db.RSSFlowsDatasList.Where(a => a.FlowName == "TC");
-            if (result4.FirstOrDefault() != new RSSFlowsDatas())
+            if (!result4.Any())
             {
                 RSSFlowsDatas tmp = new RSSFlowsDatas();
                 tmp.FlowName = "TC";
                 tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
                 if (!System.IO.File.Exists(tmp.Adress))
                     System.IO.File.Create(tmp.Adress);
-                db.RSSFlowsDatasList.Add(tmp);
+                db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                 db.SaveChanges();
             }
             var result5 = db.RSSFlowsDatasList.Where(a => a.FlowName == "pedago");
-            if (result5.FirstOrDefault() != new RSSFlowsDatas())
+            if (!result5.Any())
             {
                 RSSFlowsDatas tmp = new RSSFlowsDatas();
                 tmp.FlowName = "pedago";
@@ -111,7 +133,7 @@ namespace StudentDATAWeb.Controllers
                 tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
                 if (!System.IO.File.Exists(tmp.Adress))
                     System.IO.File.Create(tmp.Adress);
-                db.RSSFlowsDatasList.Add(tmp);
+                db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                 db.SaveChanges();
             }
 
@@ -203,7 +225,8 @@ namespace StudentDATAWeb.Controllers
                 adressStack.Add(elements.FirstOrDefault().Adress);
             }
             else
-                throw new InvalidOperationException("Le Parsing du code n'a pas donné de bon résultats");
+                adressStack.Add("");
+
             #endregion
             #region ByField
             if (tmpList[1] == "IL")
@@ -239,7 +262,7 @@ namespace StudentDATAWeb.Controllers
                 adressStack.Add(elements.FirstOrDefault().Adress);
             }
             else
-                throw new InvalidOperationException("Le Parsing du code n'a pas donné de bon résultats");
+                adressStack.Add("");
             #endregion
             return adressStack;
         }
@@ -291,7 +314,7 @@ namespace StudentDATAWeb.Controllers
                 }
 
             }
-            else return null;
+            else return new List<string>() { "", "" };
 
         }
         public ActionResult AddPost(FlowPostModel fpm)

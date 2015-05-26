@@ -118,9 +118,6 @@ namespace StudentDATAWeb.Models
         [Column("URLAdress", Order = 2, TypeName = "varchar")]
         [Required]
         public string Adress { get; set; }
-        [Column("Content", Order = 3, TypeName = "varchar")]
-        [Required]
-        public string Content { get; set; }
 
     }
     public class FlowPostModel
