@@ -9,6 +9,39 @@ namespace RSSFluxSD.Tests
 {
 	static class HelpTest
 	{
+		public static void HelpReadWithManage(RSSManage rssM)
+		{
+			foreach (RSS rss in rssM.GetAllRSS())
+			{
+
+				Console.WriteLine("Titre : " + rss.Tilte());
+				Console.WriteLine();
+				Console.WriteLine("Auteur : " + rss.Author());
+				Console.WriteLine();
+				Console.WriteLine("Categorie : " + rss.Categorie());
+				Console.WriteLine();
+				Console.WriteLine("Content : " + rss.Content());
+				Console.WriteLine();
+				Console.WriteLine("Url : " + rss.Url());
+				Console.WriteLine();
+				Console.WriteLine();
+				Console.WriteLine();
+				Console.WriteLine();
+				foreach (Flow flow in rss.GetAllFlow())
+				{
+					Console.WriteLine("FLOW");
+					Console.WriteLine("Titre : " + flow.Title);
+					Console.WriteLine();
+					Console.WriteLine("Content : " + flow.Content);
+					Console.WriteLine();
+					Console.WriteLine("Url : " + flow.Url);
+					Console.WriteLine();
+					Console.WriteLine("ID : " + flow.Id);
+					Console.WriteLine();
+					Console.WriteLine("Date : " + flow.Date);
+				}
+			}
+		}
 		public static void HelpRead(SyndicationFeed feed)
 		{
 			if ( feed != null)
