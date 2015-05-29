@@ -16,5 +16,10 @@ namespace RSSFluxSD
 				&& ( uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps );
 			 
 		}
+
+		static public bool TryRSSExist(List<RSS> RSSList, string url)
+		{
+			return RSSList.Exists(x => x.Uri_RSS == url);
+		}
 	}
 }
