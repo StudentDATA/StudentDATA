@@ -230,6 +230,16 @@ namespace RSSFluxSD
 			}
 		}
 
+		public void AddFlow(List<Flow> ListFlow)
+		{
+			if (!Helper.TryUri(Uri_RSS))
+			{
+				flowList.AddRange(ListFlow);
+				Feed.Items = uRSS.AddFlow(Feed, flowList);
+				AddinXml();
+			}
+		}
+
 		//Pouvoir en retirer plusieurs sans ecrire dans le xml 1 par 1
 		public void RemoveFlowSingle(int id)
 		{

@@ -14,10 +14,18 @@ namespace RSSFluxSD.Tests
 		[TestMethod]
 		public void TestReadWithManage()
 		{
+			//Faire methode pour lire une seule et unique rss
 			RSSManage rssM = new RSSManage();
-			rssM.readRSS("https://fr.news.yahoo.com/rss/world");
+			RSS rss1 = rssM.readRSS("https://fr.news.yahoo.com/rss/world");
 			rssM.readRSS("https://fr.news.yahoo.com/rss/world");
 			rssM.readRSS("http://www.developpez.com/index/rss");
+
+			Console.WriteLine(rss1.Tilte());
+			foreach ( Flow flow in rss1.GetAllFlow())
+			{
+				Console.WriteLine(flow.Title);
+				Console.WriteLine(flow.Content);
+			}
 
 			Console.WriteLine(rssM.GetAllRSS().Count);
 			foreach( RSS rss in rssM.GetAllRSS())
@@ -34,11 +42,19 @@ namespace RSSFluxSD.Tests
 		public void TestCreateAndAddXML()
 		{
 			//TESTER que le fichier n'existe pas deja dans le dossier et dans le dictionaire
-			List<String> testFlow = new List<string> { "Jaune", "C'est jaune", "Vert", "C'est Vert","G" };
+			List<string> testFlow = new List<string> { "Jaune", "C'est jaune", "Vert", "C'est Vert"};
 			RSSManage rssM = new RSSManage();
+			List<Flow> ListFlow = new List<Flow>();
+
+
+			Flow flow = new Flow("1", "2");
+
+
+
 			rssM.createRSS("test.xml");
 			rssM.createRSS("https://fr.news.yahoo.com/rss/world");
-			rssM.addFlow("test.xml", testFlow);
+			//rssM.addFlow("test.xml", testFlow);
+			rssM.addFlow("test.xml", ListFlow);
 			if ( rssM.Msg_error != null)
 			{
 				Console.WriteLine(rssM.Msg_error);

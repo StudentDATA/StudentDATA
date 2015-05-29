@@ -9,7 +9,6 @@ namespace RSSFluxSD
 	public class RSSManage
 	{
 		string msg_error = null;
-
 		public string Msg_error
 		{
 			get { return msg_error; }
@@ -18,16 +17,21 @@ namespace RSSFluxSD
 
 
 		List<RSS> RSSList = new List<RSS>();
-		public void readRSS(string url)
+		public RSS readRSS(string url)
 		{
 			//Si même url, voir s'il y a des difference dans les flows
 			if (!Helper.TryRSSExist(RSSList, url))
 			{
 				RSSList.Add(new RSS(url));
 			}
-			RSS u = RSSList.Find(x => x.Uri_RSS == url);
-			u.ReadRSS();		
-			if (u.FeedIsNull) RSSList.Remove(u);
+			RSS rss = RSSList.Find(x => x.Uri_RSS == url);
+			rss.ReadRSS();
+			if (rss.FeedIsNull)
+			{
+				RSSList.Remove(rss);
+				return null;
+			}
+			return rss;
 		}
 
 
@@ -55,6 +59,19 @@ namespace RSSFluxSD
 		/// <param name="url">link's file</param>
 		/// <param name="flow">List of flow's information : Title and Content</param>
 		public void addFlow(string url,List<string> flow)
+		{
+			//flow contient titre et contenu : id = titre+numero du flow
+			if (!Helper.TryUri(url))
+			{
+				if (Helper.TryRSSExist(RSSList, url))
+				{
+					RSS u = RSSList.Find(x => x.Uri_RSS == url);
+					u.AddFlow(flow);
+				}
+			}
+		}
+
+		public void addFlow(string url, List<Flow> flow)
 		{
 			//flow contient titre et contenu : id = titre+numero du flow
 			if (!Helper.TryUri(url))
