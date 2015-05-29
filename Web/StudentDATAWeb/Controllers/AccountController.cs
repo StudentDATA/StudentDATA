@@ -37,7 +37,6 @@ namespace StudentDATAWeb.Controllers
 		{
 			if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
 			{
-
 				return RedirectToLocal(returnUrl);
 			}
 

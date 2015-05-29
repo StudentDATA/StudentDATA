@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
+using WebMatrix.WebData;
+
 
 namespace StudentDATAWeb.Models
 {
@@ -37,6 +39,8 @@ namespace StudentDATAWeb.Models
         //TODO : [PICTURE] Not used in the first version 
         public string ProfilePicUrl { get; set; }
         public string MailAdress { get; set; }
+        public PermissionEnum Permission {get; set;}
+
 	}
 
 	public class RegisterExternalLoginModel
@@ -171,7 +175,19 @@ namespace StudentDATAWeb.Models
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Adresse mail")]
         public string MailAdress { get; set; }
+
+        [Required]
+        [Display(Name = "Compte")]
+        public PermissionEnum Permission { get; set; }
+
+        //public UserProfile GetUser(UsersContext db, string UserName)
+        //{
+        //    UserProfile user;
+        //    user = db.UserProfiles.Find(WebSecurity.GetUserId(UserName));
+        //    return user;
+        //}
     }
+
     [Table("ProfesionalPosts")]
     public class ProfessionalPosts
     {
