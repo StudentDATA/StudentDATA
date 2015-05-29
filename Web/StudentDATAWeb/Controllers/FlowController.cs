@@ -15,6 +15,7 @@ namespace StudentDATAWeb.Controllers
     {
         UserProfile profile;
         UsersContext db;
+        RSSManage rssManager;
         public ActionResult Index(UsersContext db)
         {
             if (WebSecurity.IsAuthenticated)
@@ -24,7 +25,7 @@ namespace StudentDATAWeb.Controllers
                 InitializeRSSFlowsDatas();
                 List<List<string>> ll = new List<List<string>>();
 
-                RSSManage rssManager = new RSSManage();
+                rssManager = new RSSManage();
                 foreach (string adress in GetRSSByProfile())
                 {
                     rssManager.readRSS(adress);
@@ -329,7 +330,7 @@ namespace StudentDATAWeb.Controllers
         [HttpPost]
         public ActionResult AddNewPost(FlowPostModel fpm)
         {
-            Console.Write(fpm.Title);
+            rssManager.addToXml
             return RedirectToAction("Index");
         }
 
