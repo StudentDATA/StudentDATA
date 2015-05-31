@@ -33,7 +33,7 @@ namespace RSSFluxSD
 
 		List<Flow> flowList;
 
-		public IReadOnlyList<Flow> GetAllFlow()
+		public List<Flow> GetAllFlow()
 		{
 			return flowList;
 		}
@@ -82,8 +82,8 @@ namespace RSSFluxSD
 
 		public void ReadRSS()
 		{
-			//TODO : Verifier si c'est un lien ou un fichier
-
+			
+			//Verifie si ce n'est pas un lien et si le fichier existe.
 			if (File.Exists(Uri_RSS) || Helper.TryUri(Uri_RSS))
 			{
 				string linkV;
@@ -117,8 +117,11 @@ namespace RSSFluxSD
 
 					if (Feed.Authors.Count > 0)
 					{
-						//REFAIRE
-						authorFeed = Feed.Authors.LastOrDefault().ToString();
+						authorFeed = "";
+						foreach ( SyndicationPerson author in Feed.Authors)
+						{
+							authorFeed += author.Email + " ";
+						}
 					}
 					else
 					{
@@ -156,10 +159,11 @@ namespace RSSFluxSD
 								linkV = link.Uri.OriginalString;
 							}
 						}
-						if (flowList.Find(x => x.Id == item.Id) == null)
-						{
-							flowList.Add(new Flow(item.Title.Text, ((TextSyndicationContent)item.Summary).Text, linkV, item.Id, item.PublishDate));
-						}
+						//Verifie l'id du post pour savoir evité les doublons mais à coriger.
+						//if (flowList.Find(x => x.Id == item.Id) == null)
+						//{
+							flowList.Add(new Flow(item.Title.Text, ((TextSyndicationContent)item.Summary).Text, linkV, item.Id, item.LastUpdatedTime));
+						//}
 					}
 				}
 				else
@@ -177,22 +181,23 @@ namespace RSSFluxSD
 
 		public void InitRSSSingle()
 		{
-			InitRSS();
-			AddinXml();
+			cRSS.InitRSSBase();
+			Feed = cRSS.CreateInit();
+			Save();
 		}
 
-		public void InitRSS()
+		public void InitRSS(string title, Helper.CategorieRSSEnum categorie, string content)
 		{
-			cRSS.InitRSSBase();
+
+			cRSS.CreateRSSInit(title,categorie,content);
 			Feed = cRSS.CreateInit();
 		}
 
-		//TODO : Pouvoir en ajouter plusieurs sans ecrire dans le xml 1 par 1
 		public void AddFlowSingle()
 		{
 			ReadRSS();
 			Feed.Items = uRSS.AddFlow(Feed);
-			AddinXml();
+			Save();
 		}
 
 		public void AddFlow()
@@ -200,33 +205,7 @@ namespace RSSFluxSD
 			if (!Helper.TryUri(Uri_RSS))
 			{
 				flowList.Add(new Flow("1", "2", "3", "4", DateTimeOffset.Now));
-				Feed.Items = uRSS.AddFlow(Feed,flowList);
-			}
-		}
-		/// <summary>
-		/// Add a List of flow in your rss file.
-		/// </summary>
-		/// <param name="flow">List of flow's information : Title and Content</param>
-		public void AddFlow(List<string> flow)
-		{
-			int flowCount;
-			if ((flow.Count % 2) == 0)
-			{
-				flowCount = flow.Count;
-			}
-			else
-			{
-				flowCount = flow.Count-1;
-			}
-			if (!Helper.TryUri(Uri_RSS))
-			{
-				for (int i = 0; i < flowCount; i = i + 2)
-				{
-					//Trouver une idée pour l'id : la c'est nom de fichier + titre + numero du flow
-					flowList.Add(new Flow(flow.ElementAt(i), flow.ElementAt(i + 1), "http://student-data.com", Uri_RSS + flow.ElementAt(i) + i, DateTimeOffset.Now));
-				}
-				Feed.Items = uRSS.AddFlow(Feed, flowList);
-				AddinXml();
+				Feed.Items = uRSS.AddFlow(flowList);
 			}
 		}
 
@@ -235,34 +214,46 @@ namespace RSSFluxSD
 			if (!Helper.TryUri(Uri_RSS))
 			{
 				flowList.AddRange(ListFlow);
-				Feed.Items = uRSS.AddFlow(Feed, flowList);
-				AddinXml();
+				Feed.Items = uRSS.AddFlow(flowList);
 			}
 		}
 
-		//Pouvoir en retirer plusieurs sans ecrire dans le xml 1 par 1
 		public void RemoveFlowSingle(int id)
 		{
 			ReadRSS();
 			Feed.Items = uRSS.DeleteFlow(id, Feed);
-			AddinXml();
+			Save();
 		}
 
-		public void RemoveFlow(int id)
+		public void RemoveFlow()
 		{
-			ReadRSS();
-			Feed.Items = uRSS.DeleteFlow(id, Feed);
-			AddinXml();
+			flowList.Clear();
+			Feed.Items = new List < SyndicationItem >();
 		}
 
-		//TODO : Pouvoir en modifier plusieurs sans ecrire dans le xml 1 par 1
+		public void RemoveFlow(Flow flow)
+		{
+			flowList.Remove(flow);
+			Feed.Items = uRSS.DeleteFlow(flow,Feed);
+		}
+
+		public void RemoveFlow(string title)
+		{
+			Flow flow = flowList.Find(x => x.Title == title);
+			RemoveFlow(flow);
+		}
+
+		public void UpdateFlow(int id)
+		{
+			Feed.Items = uRSS.UpdateFlow(id, Feed);
+		}
 		public void UpdateFlowSingle(int id)
 		{
 			ReadRSS();
 			Feed.Items = uRSS.UpdateFlow(id,Feed);
-			AddinXml();
+			Save();
 		}
-		public void AddinXml()
+		public void Save()
 		{
 			//Savoir si le fichier existe deja ou pas
 			if ( Feed != null )

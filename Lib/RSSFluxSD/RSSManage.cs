@@ -16,60 +16,59 @@ namespace RSSFluxSD
         }
 
 
-        List<RSS> RSSList = new List<RSS>();
-        public RSS readRSS(string url)
-        {
-            //Si même url, voir s'il y a des difference dans les flows
-            if (!Helper.TryRSSExist(RSSList, url))
-            {
-                RSSList.Add(new RSS(url));
-            }
-            RSS rss = RSSList.Find(x => x.Uri_RSS == url);
-            rss.ReadRSS();
-            //if (rss.FeedIsNull)
-            //{
-            //    RSSList.Remove(rss);
-            //    return null;
-            //}
-            return rss;
-        }
+		List<RSS> RSSList = new List<RSS>();
+		public RSS readRSS(string url)
+		{
+			//Si même url, voir s'il y a des difference dans les flows
+			if (!Helper.TryRSSExist(RSSList, url))
+			{
+				RSSList.Add(new RSS(url));
+			}
+			RSS rss = RSSList.Find(x => x.Uri_RSS == url);
+			rss.ReadRSS();
+			if (rss.FeedIsNull)
+			{
+				RSSList.Remove(rss);
+				return new RSS("");
+			}
+			return rss;
+		}
 
 
-        public void createRSS(string url)
-        {
-            if (!Helper.TryUri(url))
-            {
-                if (!Helper.TryRSSExist(RSSList, url))
-                {
-                    RSSList.Add(new RSS(url));
-                }
-                RSS u = RSSList.Find(x => x.Uri_RSS == url);
-                u.InitRSS();
-                //u.AddFlow();
-                u.AddinXml();
-            }
-            else
-            {
-                Msg_error = "Impossible de Creer un flux RSS à partir d'un lien";
-            }
-        }
-        /// <summary>
-        /// Add a List of flow in your rss file.
-        /// </summary>
-        /// <param name="url">link's file</param>
-        /// <param name="flow">List of flow's information : Title and Content</param>
-        public void addFlow(string url, List<string> flow)
-        {
-            //flow contient titre et contenu : id = titre+numero du flow
-            if (!Helper.TryUri(url))
-            {
-                if (Helper.TryRSSExist(RSSList, url))
-                {
-                    RSS u = RSSList.Find(x => x.Uri_RSS == url);
-                    u.AddFlow(flow);
-                }
+		public RSS createRSS(string url,string title, string content, Helper.CategorieRSSEnum categorie )
+		{
+			//Verifie si c'est un url
+			if (!Helper.TryUri(url))
+			{
+				//Verifie si le rss existe deja dans la liste
+				if (!Helper.TryRSSExist(RSSList, url))
+				{
+					RSSList.Add(new RSS(url));
+				}
+				RSS rss = RSSList.Find(x => x.Uri_RSS == url);
+				//Verifie si le fichier existe deja
+				if (!Helper.TryFileExist(url))
+				{
+					rss.InitRSS(title, categorie, content);
+					return rss;
+				}
+				else
+				{
+					if (Helper.TryFileEmpty(url))
+					{
+						rss.InitRSS(title, categorie, content);
+					}
+					Msg_error = "Fichier existe deja";
+					return readRSS(url);
+				}
+			}
+			else
+			{
+				Msg_error = "Impossible de Creer un flux RSS à partir d'un lien";
+				return null;
             }
         }
+
 
         public void addFlow(string url, List<Flow> flow)
         {
@@ -95,17 +94,9 @@ namespace RSSFluxSD
             {
                 if (!Helper.TryUri(rss.Uri_RSS))
                 {
-                    rss.AddinXml();
+					rss.Save();
                 };
             }
         }
-
-        //Ajouter, SUPP, archives, update  : RSS
-
-
-
-        //Ajouter , up , del
-
-        //
     }
 }

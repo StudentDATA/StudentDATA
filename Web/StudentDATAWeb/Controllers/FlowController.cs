@@ -349,7 +349,8 @@ namespace StudentDATAWeb.Controllers
             List<Flow> listFlow = new List<Flow>() { new Flow(fpm.Title, fpm.Content) };
             RSS tmpRss = rssManager.readRSS(FlowList);
             tmpRss.AddFlow(listFlow);
-            tmpRss.AddinXml();
+            tmpRss.Save();
+            RSS tmpRss2 = rssManager.readRSS(FlowList);
             //rssManager.addFlow(FlowList, listFlow);
             return RedirectToAction("Index");
         }

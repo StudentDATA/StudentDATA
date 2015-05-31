@@ -45,14 +45,8 @@ namespace RSSFluxSD
 				private set { _content = value; }
 			}
 
-			public enum CategorieEnum 
-			{
-				School, 
-				Etudiant
-			};
 			public CreateRSS()
 			{
-
 			}
 
 			public void InitRSSBase()
@@ -60,17 +54,17 @@ namespace RSSFluxSD
 				this.Titre = "IN'TECH INFO RSS";
 				this.Url = "http://student-data.itinet.fr";
 				this.Author = "Student DATA RSS";
-				this.Categorie = CategorieEnum.Etudiant.ToString();
+				this.Categorie = Helper.CategorieRSSEnum.Etudiant.ToString();
 				this.Content = "L'actualité de l'école IN'TECH INFO";
 			}
 
 
-			public CreateRSS(string titre, string titredescription, string categorie, string content)
+			public void CreateRSSInit(string titre, Helper.CategorieRSSEnum categorie, string content)
 			{
 				this.Titre = titre;
 				this.Url = "http://student-data.itinet.fr";
 				this.Author = "Student DATA RSS";
-				this.Categorie = categorie;
+				this.Categorie = categorie.ToString();
 				this.Content = content;
 			}
 
