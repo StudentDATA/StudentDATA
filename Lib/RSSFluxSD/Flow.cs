@@ -24,8 +24,7 @@ namespace RSSFluxSD
 		{
 			get 
 			{
-				byte[] bytes = Encoding.Default.GetBytes(_title);
-				return _title = Encoding.Default.GetString(bytes); 
+				return Helper.EncoderString(_title);
 			}
 			private set { _title = value; }
 		}
@@ -33,8 +32,7 @@ namespace RSSFluxSD
 		{
 			get 
 			{
-				byte[] bytes = Encoding.Default.GetBytes(_content);
-				return _content = Encoding.Default.GetString(bytes); 
+				return Helper.EncoderString(_content);
 			}
 			private set { _content = value; }
 		}
@@ -42,8 +40,7 @@ namespace RSSFluxSD
 		{
 			get 
 			{
-				byte[] bytes = Encoding.Default.GetBytes(_url);
-				return _url = Encoding.Default.GetString(bytes); 
+				return Helper.EncoderString(_url);
 			}
 			private set { _url = value; }
 		}
@@ -57,7 +54,7 @@ namespace RSSFluxSD
 			this.Title = title;
 			this.Content = content;
 			this.Url = "http://www.google.com";
-			this.Id = "1";
+			this.Id = title+"ID";
 			this.Date = DateTimeOffset.Now;
 		}
 		public Flow(string title, string content, string url, string id, DateTimeOffset date)

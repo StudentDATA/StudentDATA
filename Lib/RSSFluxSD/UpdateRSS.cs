@@ -14,6 +14,7 @@ namespace RSSFluxSD
 
 		List<SyndicationItem> items;
 
+
 		public List<SyndicationItem> AddFlow(SyndicationFeed feed)
 		{
 			SyndicationItem item = new SyndicationItem(
@@ -30,7 +31,7 @@ namespace RSSFluxSD
 			return items;
 		}
 
-		public List<SyndicationItem> AddFlow(SyndicationFeed feed,List<Flow> flowList)
+		public List<SyndicationItem> AddFlow(List<Flow> flowList)
 		{
 			List<SyndicationItem> items = new List<SyndicationItem>();
 			foreach ( Flow flow in flowList)
@@ -43,9 +44,11 @@ namespace RSSFluxSD
 					DateTime.Now));
 			}
 
-			List<SyndicationItem> itemsList = GetItemFeed(feed);
+			//List<SyndicationItem> itemsList = GetItemFeed(feed);
+			//itemsList.AddRange(items);			
 
-			itemsList.AddRange(items);
+			List<SyndicationItem> itemsList = items;
+
 
 			return itemsList;
 		}
@@ -116,6 +119,33 @@ namespace RSSFluxSD
 				return items;
 			}
 		}
+
+		public List<SyndicationItem> DeleteFlow(Flow flow,SyndicationFeed feed)
+		{
+			List<SyndicationItem> items = GetItemFeed(feed);
+			string msgError = "L'article n'existe pas";
+
+			if ( feed.Items.Count() > 0)
+			{
+				try
+				{
+					SyndicationItem item = items.Find(x => x.Title.Text == flow.Title && x.Id == flow.Id);
+					items.Remove(item);
+					return items;
+				}
+				catch
+				{
+					Console.WriteLine(msgError);
+					return items;
+				}
+			}
+			else
+			{
+				Console.WriteLine(msgError);
+				return items;
+			}
+		}
+
 
 		public List<SyndicationItem> GetItemFeed(SyndicationFeed feed)
 		{

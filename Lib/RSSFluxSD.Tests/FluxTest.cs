@@ -41,33 +41,56 @@ namespace RSSFluxSD.Tests
 		[TestMethod]
 		public void TestCreateAndAddXML()
 		{
-			//TESTER que le fichier n'existe pas deja dans le dossier et dans le dictionaire
-			List<string> testFlow = new List<string> { "Jaune", "C'est jaune", "Vert", "C'est Vert"};
 			RSSManage rssM = new RSSManage();
-			List<Flow> ListFlow = new List<Flow>();
+			
+			RSS rss1 = rssM.createRSS("test.xml","Test","C'est un test",Helper.CategorieRSSEnum.Etudiant);
+			RSS rss = rssM.createRSS("https://fr.news.yahoo.com/rss/world","Test","C'est un test",Helper.CategorieRSSEnum.Etudiant);
 
-
-			Flow flow = new Flow("1", "2");
-
-
-
-			rssM.createRSS("test.xml");
-			rssM.createRSS("https://fr.news.yahoo.com/rss/world");
-			//rssM.addFlow("test.xml", testFlow);
-			rssM.addFlow("test.xml", ListFlow);
 			if ( rssM.Msg_error != null)
 			{
 				Console.WriteLine(rssM.Msg_error);
 			}
-
+			rss1.Save();
 			HelpTest.HelpReadWithManage(rssM);
 		}
 
-		public void TestAddFlowWithManager()
-		{
 
+		[TestMethod]
+		public void TestAddUpDel()
+		{
+			RSSManage rssM = new RSSManage();
+			List<Flow> ListFlow = new List<Flow>();
+
+			for (int i = 0; i < 4; i++ )
+			{
+				ListFlow.Add(new Flow("Test"+i, "Le test "+i));
+			}
+
+			RSS rss = rssM.createRSS("testAddUpDel.xml", "TestAddUpDel", "C'est un test d'ajout, supp et modif", Helper.CategorieRSSEnum.Etudiant);
+			
+			rss.AddFlow(ListFlow);
+			//rssM.addFlow("testAddUpDel.xml", ListFlow);
+
+			//Remove : Methode 1(Sup all)
+			//rss.RemoveFlow();
+
+			//Remove : Methode 2(Supp 1 Flow)
+			//rss.RemoveFlow(rss.GetAllFlow().Find(x => x.Title == "Test2"));
+
+			//Remove : Methode 3(Supp 1 flow par titre)
+			rss.RemoveFlow("Test2");
+
+			//Update par flow
+			//rss.UpdateFlow(flow);
+
+			//Update par titre
+
+			//rss.UpdateFlow(1);
+			rss.Save();
+
+			Console.WriteLine(rss.GetAllFlow().Count);
+			HelpTest.HelpReadWithRSS(rss);
 		}
-		//addflow Supp, Update File par le manager.
 		[TestMethod]
 		public void TestReadRSS()
 		{
