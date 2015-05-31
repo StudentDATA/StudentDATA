@@ -75,7 +75,7 @@ namespace RSSFluxSD.Tests
 			//rss.RemoveFlow();
 
 			//Remove : Methode 2(Supp 1 Flow)
-			//rss.RemoveFlow(rss.GetAllFlow().Find(x => x.Title == "Test2"));
+			rss.RemoveFlow(rss.GetAllFlow().Find(x => x.Title == "Test2"));
 
 			//Remove : Methode 3(Supp 1 flow par titre)
 			rss.RemoveFlow("Test2");
@@ -85,7 +85,6 @@ namespace RSSFluxSD.Tests
 
 			//Update par titre
 
-			//rss.UpdateFlow(1);
 			rss.Save();
 
 			Console.WriteLine(rss.GetAllFlow().Count);
