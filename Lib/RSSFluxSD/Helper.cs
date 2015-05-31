@@ -51,5 +51,21 @@ namespace RSSFluxSD
 			School,
 			Etudiant
 		};
+
+		public enum FormatRSSEnum
+		{
+			RSS20,
+			Atom10
+		};
+
+		static public Helper.FormatRSSEnum FormatRSS20()
+		{
+			return Helper.FormatRSSEnum.RSS20;
+		}
+
+		static public Helper.FormatRSSEnum FormatAtom10()
+		{
+			return Helper.FormatRSSEnum.Atom10;
+		}
 	}
 }

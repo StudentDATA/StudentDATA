@@ -12,7 +12,7 @@ namespace StudentDATAWeb.Controllers
         RSS rss;
         public ActionResult Index()
         {
-            rss = new RSS("https://fr.news.yahoo.com/?format=rss");
+            rss = new RSS("https://fr.news.yahoo.com/?format=rss",Helper.FormatRSSEnum.RSS20);
             List<List<string>> ll = new List<List<string>>();
             ll.Add(new List<string>() { "hello", "hello", "url" });
             ll.Add(new List<string>() { "hello1", "hello1", "url1" });

@@ -11,6 +11,7 @@ namespace RSSFluxSD
 {
 	public class RSS
 	{
+
 		string _uri_rss;
 		string _msg_error;
 		bool _feedIsNull;
@@ -19,6 +20,13 @@ namespace RSSFluxSD
 		CreateRSS cRSS;
 		UpdateRSS uRSS;
 		SyndicationFeed _feed;
+		Helper.FormatRSSEnum formatSS;
+
+		public Helper.FormatRSSEnum FormatSS
+		{
+			get { return formatSS; }
+			set { formatSS = value; }
+		}
 
 		public SyndicationFeed Feed
 		{
@@ -69,15 +77,15 @@ namespace RSSFluxSD
 			set { _uri_rss = value; }
 		}
 
-
-		public RSS(string url)
+		public RSS(string url, Helper.FormatRSSEnum formatRss)
 		{
 			this.Uri_RSS = url;
+			this.FormatSS = formatRss;
 			flowList = new List<Flow>();
 			rRSS = new ReadRSS(this.Uri_RSS);
 			cRSS = new CreateRSS();
 			uRSS = new UpdateRSS();
-			
+
 		}
 
 		public void ReadRSS()
@@ -86,12 +94,12 @@ namespace RSSFluxSD
 			//Verifie si ce n'est pas un lien et si le fichier existe.
 			if (File.Exists(Uri_RSS) || Helper.TryUri(Uri_RSS))
 			{
-				string linkV;
-				string linkFeed;
-				string titleFeed;
-				string authorFeed;
-				string categorieFeed;
-				string descriptionFeed;
+				string linkV = "";
+				string linkFeed = "";
+				string titleFeed = "";
+				string authorFeed = "";
+				string categorieFeed = "";
+				string descriptionFeed = "";
 				Feed = rRSS.ReadWithURI();
 
 				if ( Feed != null )
@@ -101,59 +109,50 @@ namespace RSSFluxSD
 					{
 						titleFeed = Feed.Title.Text;
 					}
-					else
-					{
-						titleFeed = "";
-					}
 
 					if (Feed.Links.Count > 0)
 					{
 						linkFeed = Feed.Links.LastOrDefault().Uri.AbsoluteUri;
 					}
-					else
-					{
-						linkFeed = "";
-					}
 
 					if (Feed.Authors.Count > 0)
 					{
-						authorFeed = "";
-						foreach ( SyndicationPerson author in Feed.Authors)
+						if ( Helper.TryUri(Uri_RSS))
 						{
-							authorFeed += author.Email + " ";
+							foreach (SyndicationPerson author in Feed.Authors)
+							{
+								authorFeed += author.Name + " ";
+							}
 						}
-					}
-					else
-					{
-						authorFeed = "";
+						else
+						{
+							foreach ( SyndicationPerson author in Feed.Authors)
+							{
+								authorFeed += author.Email + " ";
+							}
+						}
+
 					}
 
 					if (Feed.Categories.Count > 0)
 					{
-						//REFAIRE
-						categorieFeed = Feed.Categories.LastOrDefault().Name;
-					}
-					else
-					{
-						categorieFeed = "";
+						foreach ( SyndicationCategory categorie in Feed.Categories)
+						{
+							categorieFeed += categorie.Name+" ";
+						}	
 					}
 
 					if (Feed.Description.Text != null)
 					{
 						descriptionFeed = Feed.Description.Text;
 					}
-					else
-					{
-						descriptionFeed = "";
-					}
+
 					cRSS.AddInitRSS(Feed.Title.Text, linkFeed, authorFeed, categorieFeed, descriptionFeed);
 
-					linkV = "";
 					foreach (SyndicationItem item in Feed.Items)
 					{
 						foreach (SyndicationLink link in item.Links)
 						{
-							linkV = "";
 							if (link.MediaType != "image/jpeg")
 							{
 								linkV = link.Uri.OriginalString;
@@ -183,7 +182,7 @@ namespace RSSFluxSD
 		{
 			cRSS.InitRSSBase();
 			Feed = cRSS.CreateInit();
-			Save();
+			Save(Helper.FormatRSS20());
 		}
 
 		public void InitRSS(string title, Helper.CategorieRSSEnum categorie, string content)
@@ -197,7 +196,7 @@ namespace RSSFluxSD
 		{
 			ReadRSS();
 			Feed.Items = uRSS.AddFlow(Feed);
-			Save();
+			Save(Helper.FormatRSS20());
 		}
 
 		public void AddFlow()
@@ -222,7 +221,7 @@ namespace RSSFluxSD
 		{
 			ReadRSS();
 			Feed.Items = uRSS.DeleteFlow(id, Feed);
-			Save();
+			Save(Helper.FormatRSS20());
 		}
 
 		public void RemoveFlow()
@@ -243,24 +242,38 @@ namespace RSSFluxSD
 			RemoveFlow(flow);
 		}
 
-		public void UpdateFlow(int id)
+		public void UpdateFlow(Flow flow)
 		{
-			Feed.Items = uRSS.UpdateFlow(id, Feed);
+			Feed.Items = uRSS.UpdateFlow(flow, Feed);
 		}
+
+		public void UpdateFlow(string title)
+		{
+			Flow flow = GetAllFlow().Find(x => x.Title == title);
+			Feed.Items = uRSS.UpdateFlow(flow, Feed);
+		}
+
 		public void UpdateFlowSingle(int id)
 		{
 			ReadRSS();
 			Feed.Items = uRSS.UpdateFlow(id,Feed);
-			Save();
+			Save(Helper.FormatRSS20());
 		}
-		public void Save()
+		public void Save(Helper.FormatRSSEnum format )
 		{
 			//Savoir si le fichier existe deja ou pas
 			if ( Feed != null )
 			{
 				using (var writer = XmlWriter.Create(this.Uri_RSS))
 				{
-					Feed.SaveAsRss20(writer);
+					if ( format == Helper.FormatRSSEnum.RSS20)
+					{
+						Feed.SaveAsRss20(writer);
+					}
+					else if ( format == Helper.FormatRSSEnum.Atom10)
+					{
+						Feed.SaveAsAtom10(writer);
+					}
 					writer.Flush();
 					writer.Close();
 				}
