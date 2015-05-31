@@ -28,10 +28,7 @@ namespace StudentDATAWeb.Controllers
                 rssManager = new RSSManage();
                 foreach (string adress in GetRSSByProfile())
                 {
-                    try{
-                        decompressor = rssManager.readRSS(adress).GetAllFlow();}
-                    catch { }
-
+                    decompressor = rssManager.readRSS(adress).GetAllFlow();
                     foreach (Flow flow in decompressor)
                     {
                         ll.Add(new List<string>() { flow.Title, flow.Content, flow.Date.ToString(), flow.Url });
@@ -140,7 +137,7 @@ namespace StudentDATAWeb.Controllers
                 //TODO : Choose more precisely the path
                 tmp.Adress = (System.Web.HttpContext.Current == null)
                             ? System.Web.Hosting.HostingEnvironment.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml")
-                            : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml"); 
+                            : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml");
                 if (!System.IO.File.Exists(tmp.Adress))
                     System.IO.File.Create(tmp.Adress);
                 db.Entry(tmp).State = System.Data.Entity.EntityState.Added;

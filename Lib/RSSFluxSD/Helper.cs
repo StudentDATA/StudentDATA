@@ -13,7 +13,7 @@ namespace RSSFluxSD
 		{
 			bool result;
 			Uri uriResult;
-			return result = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uriResult)
+			return result = Uri.TryCreate(url, UriKind.Absolute, out uriResult)
 				&& ( uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps );
 			
 		}

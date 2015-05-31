@@ -214,7 +214,7 @@ namespace RSSFluxSD
 			if (!Helper.TryUri(Uri_RSS))
 			{
 				flowList.AddRange(ListFlow);
-				Feed.Items = uRSS.AddFlow(flowList);
+                Feed.Items = uRSS.AddFlow(ListFlow);
 			}
 		}
 
