@@ -22,17 +22,26 @@ namespace RSSFluxSD
 
 		public string Title
 		{
-			get { return _title; }
+			get 
+			{
+				return Helper.EncoderString(_title);
+			}
 			private set { _title = value; }
 		}
 		public string Content
 		{
-			get { return _content; }
+			get 
+			{
+				return Helper.EncoderString(_content);
+			}
 			private set { _content = value; }
 		}
 		public string Url
 		{
-			get { return _url; }
+			get 
+			{
+				return Helper.EncoderString(_url);
+			}
 			private set { _url = value; }
 		}
 		public string Id
@@ -40,7 +49,14 @@ namespace RSSFluxSD
 			get { return _id; }
 			private set { _id = value; }
 		}
-
+		public Flow(string title, string content)
+		{
+			this.Title = title;
+			this.Content = content;
+			this.Url = "http://www.google.com";
+			this.Id = title+"ID";
+			this.Date = DateTimeOffset.Now;
+		}
 		public Flow(string title, string content, string url, string id, DateTimeOffset date)
 		{
 			this.Title = title;

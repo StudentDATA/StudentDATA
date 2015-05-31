@@ -14,52 +14,82 @@ namespace RSSFluxSD.Tests
 		[TestMethod]
 		public void TestReadWithManage()
 		{
+			//Faire methode pour lire une seule et unique rss
 			RSSManage rssM = new RSSManage();
+			RSS rss1 = rssM.readRSS("https://fr.news.yahoo.com/rss/world");
 			rssM.readRSS("https://fr.news.yahoo.com/rss/world");
-			rssM.readRSS("http://www.developpez.com/index/rssd");
-			foreach ( RSS rss in rssM.GetAllRSS())
+			rssM.readRSS("http://www.developpez.com/index/rss");
+
+			Console.WriteLine(rss1.Tilte());
+			foreach ( Flow flow in rss1.GetAllFlow())
 			{
-				
-				Console.WriteLine("Titre : " + rss.Tilte());
-				Console.WriteLine();
-				Console.WriteLine("Auteur : " + rss.Author());
-				Console.WriteLine();
-				Console.WriteLine("Categorie : " + rss.Categorie());
-				Console.WriteLine();
-				Console.WriteLine("Content : " + rss.Content());
-				Console.WriteLine();
-				Console.WriteLine("Url : " + rss.Url());
-				foreach ( Flow flow in rss.GetAllFlow())
-				{
-					Console.WriteLine("FLOW");
-					Console.WriteLine("Titre : " + flow.Title);
-					Console.WriteLine();
-					Console.WriteLine("Content : " + flow.Content);
-					Console.WriteLine();
-					Console.WriteLine("Url : " + flow.Url);
-					Console.WriteLine();
-					Console.WriteLine("ID : " + flow.Id);
-					Console.WriteLine();
-					Console.WriteLine("Date : " + flow.Date);
-				}
+				Console.WriteLine(flow.Title);
+				Console.WriteLine(flow.Content);
 			}
+
+			Console.WriteLine(rssM.GetAllRSS().Count);
+			foreach( RSS rss in rssM.GetAllRSS())
+			{
+				Console.WriteLine(rss.GetAllFlow().Count);
+			}
+			Console.WriteLine();
+
+			HelpTest.HelpReadWithManage(rssM);
 
 		}
 
 		[TestMethod]
 		public void TestCreateAndAddXML()
 		{
-			//TESTER que le fichier n'existe pas deja dans le dossier et dans le dictionaire
 			RSSManage rssM = new RSSManage();
-			rssM.createRSS("test.xml");
-			rssM.createRSS("https://fr.news.yahoo.com/rss/world");
+			
+			RSS rss1 = rssM.createRSS("test.xml","Test","C'est un test",Helper.CategorieRSSEnum.Etudiant);
+			RSS rss = rssM.createRSS("https://fr.news.yahoo.com/rss/world","Test","C'est un test",Helper.CategorieRSSEnum.Etudiant);
+
 			if ( rssM.Msg_error != null)
 			{
 				Console.WriteLine(rssM.Msg_error);
 			}
+			rss1.Save();
+			HelpTest.HelpReadWithManage(rssM);
 		}
 
-		//addflow Supp, Update File par le manager.
+
+		[TestMethod]
+		public void TestAddUpDel()
+		{
+			RSSManage rssM = new RSSManage();
+			List<Flow> ListFlow = new List<Flow>();
+
+			for (int i = 0; i < 4; i++ )
+			{
+				ListFlow.Add(new Flow("Test"+i, "Le test "+i));
+			}
+
+			RSS rss = rssM.createRSS("testAddUpDel.xml", "TestAddUpDel", "C'est un test d'ajout, supp et modif", Helper.CategorieRSSEnum.Etudiant);
+			
+			rss.AddFlow(ListFlow);
+			//rssM.addFlow("testAddUpDel.xml", ListFlow);
+
+			//Remove : Methode 1(Sup all)
+			//rss.RemoveFlow();
+
+			//Remove : Methode 2(Supp 1 Flow)
+			rss.RemoveFlow(rss.GetAllFlow().Find(x => x.Title == "Test2"));
+
+			//Remove : Methode 3(Supp 1 flow par titre)
+			rss.RemoveFlow("Test2");
+
+			//Update par flow
+			//rss.UpdateFlow(flow);
+
+			//Update par titre
+
+			rss.Save();
+
+			Console.WriteLine(rss.GetAllFlow().Count);
+			HelpTest.HelpReadWithRSS(rss);
+		}
 		[TestMethod]
 		public void TestReadRSS()
 		{
