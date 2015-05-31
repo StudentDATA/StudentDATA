@@ -9,6 +9,13 @@ namespace RSSFluxSD
 	public class RSSManage
 	{
 		string msg_error = null;
+		Helper.FormatRSSEnum _formatRSS;
+
+		public Helper.FormatRSSEnum FormatRSS
+		{
+			get { return _formatRSS; }
+			private set { _formatRSS = value; }
+		}
 		public string Msg_error
 		{
 			get { return msg_error; }
@@ -22,7 +29,7 @@ namespace RSSFluxSD
 			//Si même url, voir s'il y a des difference dans les flows
 			if (!Helper.TryRSSExist(RSSList, url))
 			{
-				RSSList.Add(new RSS(url));
+				RSSList.Add(new RSS(url, Helper.FormatRSS20()));
 			}
 			RSS rss = RSSList.Find(x => x.Uri_RSS == url);
 			rss.ReadRSS();
@@ -35,7 +42,7 @@ namespace RSSFluxSD
 		}
 
 
-		public RSS createRSS(string url,string title, string content, Helper.CategorieRSSEnum categorie )
+		public RSS createRSS(string url,string title, string content, Helper.CategorieRSSEnum categorie,Helper.FormatRSSEnum formatRSS )
 		{
 			//Verifie si c'est un url
 			if (!Helper.TryUri(url))
@@ -43,7 +50,7 @@ namespace RSSFluxSD
 				//Verifie si le rss existe deja dans la liste
 				if (!Helper.TryRSSExist(RSSList, url))
 				{
-					RSSList.Add(new RSS(url));
+					RSSList.Add(new RSS(url, Helper.FormatRSS20()));
 				}
 				RSS rss = RSSList.Find(x => x.Uri_RSS == url);
 				//Verifie si le fichier existe deja
@@ -58,6 +65,7 @@ namespace RSSFluxSD
 					{
 						rss.InitRSS(title, categorie, content);
 					}
+					//A améliorer regarder si c'est exactement le même ou un différent.
 					Msg_error = "Fichier existe deja";
 					return readRSS(url);
 				}
@@ -75,11 +83,13 @@ namespace RSSFluxSD
 			//flow contient titre et contenu : id = titre+numero du flow
 			if (!Helper.TryUri(url))
 			{
-				if (Helper.TryRSSExist(RSSList, url))
+				if (!Helper.TryRSSExist(RSSList, url))
 				{
+					RSSList.Add(new RSS(url, Helper.FormatRSS20()));
+				}
 					RSS u = RSSList.Find(x => x.Uri_RSS == url);
 					u.AddFlow(flow);
-				}
+					u.Save(FormatRSS);
 			}
 		}
 
@@ -94,7 +104,7 @@ namespace RSSFluxSD
 			{
 				if (!Helper.TryUri(rss.Uri_RSS))
 				{
-					rss.Save();
+					rss.Save(FormatRSS);
 				};
 			}
 		}
