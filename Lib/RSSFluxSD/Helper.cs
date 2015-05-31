@@ -12,9 +12,9 @@ namespace RSSFluxSD
 		{
 			bool result;
 			Uri uriResult;
-			return result = Uri.TryCreate(url, UriKind.Absolute, out uriResult)
+			return result = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uriResult)
 				&& ( uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps );
-			 
+			
 		}
 
 		static public bool TryRSSExist(List<RSS> RSSList, string url)

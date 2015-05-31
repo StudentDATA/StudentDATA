@@ -14,27 +14,27 @@ namespace StudentDATAWeb.Controllers
     public class FlowController : Controller
     {
         UserProfile profile;
-        UsersContext db;
         RSSManage rssManager;
+        UsersContext db;
         public ActionResult Index(UsersContext db)
         {
+            this.db = db;
             if (WebSecurity.IsAuthenticated)
             {
-                this.db = db;
                 profile = db.UserProfiles.Find(WebSecurity.GetUserId(User.Identity.Name));
                 InitializeRSSFlowsDatas();
                 List<List<string>> ll = new List<List<string>>();
-
+                IReadOnlyList<Flow> decompressor = new List<Flow>();
                 rssManager = new RSSManage();
                 foreach (string adress in GetRSSByProfile())
                 {
-                    rssManager.readRSS(adress);
-                }
-                foreach (RSS rss in rssManager.GetAllRSS())
-                {
-                    foreach (Flow flow in rss.GetAllFlow())
+                    try{
+                        decompressor = rssManager.readRSS(adress).GetAllFlow();}
+                    catch { }
+
+                    foreach (Flow flow in decompressor)
                     {
-                        ll.Add(new List<string>() { flow.Title.ToString(), flow.Content.ToString(), flow.Url.ToString(), flow.Date.ToString() });
+                        ll.Add(new List<string>() { flow.Title, flow.Content, flow.Date.ToString(), flow.Url });
                     }
                 }
                 ll.OrderByDescending(a => a[3]);
@@ -71,7 +71,10 @@ namespace StudentDATAWeb.Controllers
                             tmp.FlowName = "S0" + i.ToString();
                         else
                             tmp.FlowName = "S" + i.ToString();
-                        tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
+                        //tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
+                        tmp.Adress = (System.Web.HttpContext.Current == null)
+                                   ? System.Web.Hosting.HostingEnvironment.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml")
+                                   : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml");
                         if (!System.IO.File.Exists(tmp.Adress))
                             System.IO.File.Create(tmp.Adress);
                         db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
@@ -97,7 +100,9 @@ namespace StudentDATAWeb.Controllers
             {
                 RSSFlowsDatas tmp = new RSSFlowsDatas();
                 tmp.FlowName = "IL";
-                tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
+                tmp.Adress = (System.Web.HttpContext.Current == null)
+                            ? System.Web.Hosting.HostingEnvironment.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml")
+                            : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml");
                 if (!System.IO.File.Exists(tmp.Adress))
                     System.IO.File.Create(tmp.Adress);
                 db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
@@ -108,8 +113,9 @@ namespace StudentDATAWeb.Controllers
             {
                 RSSFlowsDatas tmp = new RSSFlowsDatas();
                 tmp.FlowName = "SR";
-                tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
-                if (!System.IO.File.Exists(tmp.Adress))
+                tmp.Adress = (System.Web.HttpContext.Current == null)
+                            ? System.Web.Hosting.HostingEnvironment.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml")
+                            : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml"); if (!System.IO.File.Exists(tmp.Adress))
                     System.IO.File.Create(tmp.Adress);
                 db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                 db.SaveChanges();
@@ -119,8 +125,9 @@ namespace StudentDATAWeb.Controllers
             {
                 RSSFlowsDatas tmp = new RSSFlowsDatas();
                 tmp.FlowName = "TC";
-                tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
-                if (!System.IO.File.Exists(tmp.Adress))
+                tmp.Adress = (System.Web.HttpContext.Current == null)
+                            ? System.Web.Hosting.HostingEnvironment.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml")
+                            : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml"); if (!System.IO.File.Exists(tmp.Adress))
                     System.IO.File.Create(tmp.Adress);
                 db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                 db.SaveChanges();
@@ -131,7 +138,9 @@ namespace StudentDATAWeb.Controllers
                 RSSFlowsDatas tmp = new RSSFlowsDatas();
                 tmp.FlowName = "pedago";
                 //TODO : Choose more precisely the path
-                tmp.Adress = AppDomain.CurrentDomain.BaseDirectory + @"Content\RSSXML\" + tmp.FlowName + ".xml";
+                tmp.Adress = (System.Web.HttpContext.Current == null)
+                            ? System.Web.Hosting.HostingEnvironment.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml")
+                            : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml"); 
                 if (!System.IO.File.Exists(tmp.Adress))
                     System.IO.File.Create(tmp.Adress);
                 db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
@@ -318,19 +327,30 @@ namespace StudentDATAWeb.Controllers
             else return new List<string>() { "", "" };
 
         }
-        public ActionResult AddPost(FlowPostModel fpm)
+        public ActionResult AddPost(UsersContext db)
         {
-            List<string> rsslist = new List<string>();
-            foreach (RSSFlowsDatas post in db.RSSFlowsDatasList)
-                rsslist.Add(post.FlowName);
+            List<SelectListItem> rsslist = new List<SelectListItem>();
+            if (db.RSSFlowsDatasList.Count() != 0)
+            {
+                foreach (RSSFlowsDatas flow in db.RSSFlowsDatasList)
+                {
+                    rsslist.Add(new SelectListItem() { Text = flow.FlowName, Value = flow.Adress });
+                }
+            }
             ViewBag.AllRSSList = rsslist;
             return View("/Views/SchoolFlow/AddNewFlowPost.cshtml");
         }
 
         [HttpPost]
-        public ActionResult AddNewPost(FlowPostModel fpm)
+        public ActionResult AddNewPost(FlowPostModel fpm, string FlowList)
         {
-            rssManager.addToXml
+            rssManager = new RSSManage();
+            //Flow tmpFlow = new Flow(fpm.Title, fpm.Content);
+            List<Flow> listFlow = new List<Flow>() { new Flow(fpm.Title, fpm.Content) };
+            RSS tmpRss = rssManager.readRSS(FlowList);
+            tmpRss.AddFlow(listFlow);
+            tmpRss.AddinXml();
+            //rssManager.addFlow(FlowList, listFlow);
             return RedirectToAction("Index");
         }
 

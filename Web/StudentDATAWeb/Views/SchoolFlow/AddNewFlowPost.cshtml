@@ -20,6 +20,12 @@
                 @Html.LabelFor(m => m.Url)
                 @Html.TextBoxFor(m => m.Url)
             </li>
+            <li>
+                <label>Selectionnez le flux du post :</label>
+                @Html.DropDownList("FlowList", (IEnumerable<SelectListItem>)ViewBag.AllRSSList, null, new { id = "FlowList" })
+
+               
+            </li>
 
         </ol>
         <input type="submit" />

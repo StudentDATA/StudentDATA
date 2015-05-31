@@ -17,11 +17,11 @@ namespace StudentDATAWeb.Controllers
 
         public ProfileController()
         {
-            ViewBag.UserName = null;
-            ViewBag.UserSemester = null;
-            ViewBag.UserField = null;
-            ViewBag.UserActivity = null;
-            ViewBag.MailAdress = null;
+            //ViewBag.UserName = null;
+            //ViewBag.UserSemester = null;
+            //ViewBag.UserField = null;
+            //ViewBag.UserActivity = null;
+            //ViewBag.MailAdress = null;
         }
 
         public ActionResult ViewProfile(UsersContext db)

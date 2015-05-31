@@ -16,18 +16,22 @@
             </li>
             <li>
                 @Html.LabelFor(m => m.FirstName)
-                @Html.TextBoxFor(m => m.FirstName, new { placeholder = ViewBag.FirstName , name="FirstName"})
+                @Html.TextBoxFor(m => m.FirstName, new { placeholder = ViewBag.FirstName, name = "FirstName" })
             </li>
             <li>
                 @Html.LabelFor(m => m.LastName)
                 @Html.TextBoxFor(m => m.LastName, new { placeholder = ViewBag.LastName })
             </li>
-            @Html.LabelFor(m => m.Semester)
-            @Html.DropDownList("SemesterList", (IEnumerable<SelectListItem>)ViewBag.SemesterList,(string)ViewBag.UserSemester, new { id = "SemesterList" });
             <li>
+                @Html.LabelFor(m => m.Semester)
+                @Html.DropDownList("SemesterList", (IEnumerable<SelectListItem>)ViewBag.SemesterList, (string)ViewBag.UserSemester, new { id = "SemesterList" });
+            </li>
+            <li>
+                @Html.LabelFor(m => m.StudyField)
+                @Html.DropDownList("FieldList", (IEnumerable<SelectListItem>)ViewBag.FieldList, (string)ViewBag.UserField, new { id = "FieldList" })
             </li>
             @Html.LabelFor(m => m.StudyField)
-            @Html.DropDownList("FieldList", (IEnumerable<SelectListItem>)ViewBag.FieldList,(string)ViewBag.UserField, new { id = "FieldList" })
+            @Html.DropDownList("FieldList", (IEnumerable<SelectListItem>)ViewBag.FieldList, (string)ViewBag.UserField, new { id = "FieldList" })
             <li>
                 @Html.LabelFor(m => m.ActualActivity)
                 @Html.TextBoxFor(m => m.ActualActivity, new { placeholder = ViewBag.UserActivity })

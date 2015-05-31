@@ -119,6 +119,7 @@ namespace StudentDATAWeb.Models
         [Required]
         public string Adress { get; set; }
 
+
     }
     public class FlowPostModel
     {
@@ -134,6 +135,10 @@ namespace StudentDATAWeb.Models
         [DataType(DataType.Url)]
         [Display(Name = "Url de l'article")]
         public string Url { get; set; }
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Nom du flux :")]
+        public string FlowUrl { get; set; }
 
 
     }
