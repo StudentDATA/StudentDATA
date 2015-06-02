@@ -18,6 +18,17 @@ namespace StudentDATAWeb.Controllers
         UsersContext db;
         public ActionResult Index(UsersContext db)
         {
+<<<<<<< HEAD
+            rss = new RSS("https://fr.news.yahoo.com/?format=rss",Helper.FormatRSSEnum.RSS20);
+            List<List<string>> ll = new List<List<string>>();
+            ll.Add(new List<string>() { "hello", "hello", "url" });
+            ll.Add(new List<string>() { "hello1", "hello1", "url1" });
+            ll.Add(new List<string>() { "hello2", "hello2", "url2" });
+            ll.Add(new List<string>() { "hello2", "hello2", "url2" });
+            ViewBag.FlowList = ll;
+            ViewBag.IsWriter = true;
+            return View("/Views/SchoolFlow/Flow.cshtml");
+=======
             this.db = db;
             if (WebSecurity.IsAuthenticated)
             {
@@ -42,6 +53,7 @@ namespace StudentDATAWeb.Controllers
             }
             else
                 return View("/Views/Home/Index.cshtml");
+>>>>>>> RSSIntegration
         }
         /// <summary>
         /// Create the files on the server if not exists and register them in database

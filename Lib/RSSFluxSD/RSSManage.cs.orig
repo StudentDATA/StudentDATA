@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace RSSFluxSD
 {
-    public class RSSManage
-    {
-        string msg_error = null;
+<<<<<<< HEAD
+	public class RSSManage
+	{
+		string msg_error = null;
 		Helper.FormatRSSEnum _formatRSS;
 
 		public Helper.FormatRSSEnum FormatRSS
@@ -16,11 +17,21 @@ namespace RSSFluxSD
 			get { return _formatRSS; }
 			private set { _formatRSS = value; }
 		}
+		public string Msg_error
+		{
+			get { return msg_error; }
+			private set { msg_error = value; }
+		}
+=======
+    public class RSSManage
+    {
+        string msg_error = null;
         public string Msg_error
         {
             get { return msg_error; }
             private set { msg_error = value; }
         }
+>>>>>>> RSSIntegration
 
 
 		List<RSS> RSSList = new List<RSS>();
@@ -78,35 +89,64 @@ namespace RSSFluxSD
         }
 
 
+<<<<<<< HEAD
+		public void addFlow(string url, List<Flow> flow)
+		{
+			//flow contient titre et contenu : id = titre+numero du flow
+			if (!Helper.TryUri(url))
+			{
+				if (!Helper.TryRSSExist(RSSList, url))
+				{
+					RSSList.Add(new RSS(url, Helper.FormatRSS20()));
+				}
+					RSS u = RSSList.Find(x => x.Uri_RSS == url);
+					u.AddFlow(flow);
+					u.Save(FormatRSS);
+			}
+		}
+=======
         public void addFlow(string url, List<Flow> flow)
         {
             //flow contient titre et contenu : id = titre+numero du flow
             if (!Helper.TryUri(url))
             {
-				if (!Helper.TryRSSExist(RSSList, url))
+                if (Helper.TryRSSExist(RSSList, url))
                 {
-					RSSList.Add(new RSS(url, Helper.FormatRSS20()));
-				}
                     RSS u = RSSList.Find(x => x.Uri_RSS == url);
                     u.AddFlow(flow);
-					u.Save(FormatRSS);
+                }
             }
         }
+>>>>>>> RSSIntegration
 
         public IReadOnlyList<RSS> GetAllRSS()
         {
             return RSSList;
         }
 
+<<<<<<< HEAD
+		public void addToXml()
+		{
+			foreach (RSS rss in RSSList)
+			{
+				if (!Helper.TryUri(rss.Uri_RSS))
+				{
+					rss.Save(FormatRSS);
+				};
+			}
+		}
+	}
+=======
         public void addToXml()
         {
             foreach (RSS rss in RSSList)
             {
                 if (!Helper.TryUri(rss.Uri_RSS))
                 {
-					rss.Save(FormatRSS);
+					rss.Save();
                 };
             }
         }
     }
+>>>>>>> RSSIntegration
 }

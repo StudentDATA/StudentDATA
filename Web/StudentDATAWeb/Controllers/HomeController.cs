@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentDATAWeb.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -31,5 +32,6 @@ namespace StudentDATAWeb.Controllers
 
 			return View();
 		}
+ 
 	}
 }

@@ -1,8 +1,9 @@
-﻿@{
+﻿@model StudentDATAWeb.Models.FlowPostModel
+@{
     ViewBag.Title = "Flow";
 }
 
-<h2>Flow</h2>
+<h2 class="col-md-offset-5">Flow</h2>
 @if(ViewBag.IsWriter)
 {
     @Html.ActionLink("Ajouter", "AddPost", "Flow", routeValues: null, htmlAttributes: new { id = "AddPostLink" })
@@ -10,7 +11,7 @@
 @foreach(var post in ViewBag.FlowList)
 {
     <div>
-        <label><a href="@post[2]">@post[0]</a></label>
-        <p>@post[1]</p>
+        <label class ="col-md-offset-5"><a href="@post[2]">@post[0]</a></label>
+        <p class="col-md-offset-5">@post[1]</p>
     </div>
 }
