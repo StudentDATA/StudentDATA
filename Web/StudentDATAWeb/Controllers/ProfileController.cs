@@ -41,6 +41,7 @@ namespace StudentDATAWeb.Controllers
                 ViewBag.MailAdress = user.MailAdress;
                 //Add here the Url for photo
                 ViewBag.Modifying = false;
+                ViewBag.UserPermission = user.Permission;
             }
             return View("/Views/Account/Profile.cshtml");
         }
@@ -126,6 +127,7 @@ namespace StudentDATAWeb.Controllers
             ViewBag.UserPseudo = user.UserName;
             ViewBag.FirstName = user.FirstName;
             ViewBag.LastName = user.LastName;
+            ViewBag.UserPermission = user.Permission;
             tmpField = CodeCutter(user.Code)[1];
             tmpSemester = CodeCutter(user.Code)[0];
             if (tmpField != null && tmpSemester != null)
@@ -160,13 +162,20 @@ namespace StudentDATAWeb.Controllers
             semester.Add(new SelectListItem { Text = "09", Value = "09" });
             semester.Add(new SelectListItem { Text = "10", Value = "10" });
 
+            List<SelectListItem> permission = new List<SelectListItem>();
+            permission.Add(new SelectListItem { Text = "Student", Value = "0" });
+            permission.Add(new SelectListItem { Text = "WriterStudent", Value = "1" });
+            permission.Add(new SelectListItem { Text = "Admin", Value = "2" });
+
+
             ViewBag.FieldList = studyField;
             ViewBag.SemesterList = semester;
+            ViewBag.PermissionList = permission;
 
             return View("/Views/Account/Profile.cshtml");
         }
         [HttpPost]
-        public ActionResult ChangeProfile(ProfileModel pm, UsersContext db, string FieldList, string SemesterList)
+        public ActionResult ChangeProfile(ProfileModel pm, UsersContext db, string FieldList, string SemesterList, string PermissionList)
         {
             try
             {
@@ -180,6 +189,21 @@ namespace StudentDATAWeb.Controllers
                     user.MailAdress = pm.MailAdress;
                 if (pm.ActualActivity != null)
                     user.ActualActivity = pm.ActualActivity;
+                if (PermissionList != "")
+                {
+                    if(PermissionList == "0")
+                    {
+                        user.Permission = PermissionEnum.Student;
+                    }
+                    if (PermissionList == "1")
+                    {
+                        user.Permission = PermissionEnum.WriterStudent;
+                    }
+                    if (PermissionList == "2")
+                    {
+                        user.Permission = PermissionEnum.Admin;
+                    }
+                }
                 if (SemesterList != "" && FieldList != "")
                     user.Code = CodeCreator(new List<string>() { SemesterList.ToString(), FieldList.ToString() });
                 else if (SemesterList == "" && FieldList != "")

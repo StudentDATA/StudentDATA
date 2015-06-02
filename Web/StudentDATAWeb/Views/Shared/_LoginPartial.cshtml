@@ -1,14 +1,16 @@
 ﻿@if (Request.IsAuthenticated)
 {
     <text>
-   @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username col-md-2 col-md-offset-4 btn btn-default", title = "Gérer" })
-   @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "col-md-2 btn btn-default" }))
-   { @Html.AntiForgeryToken()
-    <a href="javascript:document.getElementById('logoutForm').submit()">Se déconnecter</a>
-}
-@Html.ActionLink("Profil", "ViewProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileViewLink" })
+        @Html.ActionLink("Flux", "Index", "Flow", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default" })
+        @Html.ActionLink("Modifier mot de passe", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username col-md-2 col-md-offset-2 btn btn-default", title = "Modifier mot de passe" })
+        @Html.ActionLink("Gestion Profil", "ViewProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileViewLink", @class = " col-md-2 btn btn-default", title = "Gestion profil" })
 
-</text>
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "col-md-2 btn btn-default" }))
+        { @Html.AntiForgeryToken()
+            <a href="javascript:document.getElementById('logoutForm').submit()">Se déconnecter</a>
+        }
+
+    </text>
 }
 else
 {

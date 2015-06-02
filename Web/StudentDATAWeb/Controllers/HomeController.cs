@@ -15,6 +15,7 @@ namespace StudentDATAWeb.Controllers
 			ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
             if (WebSecurity.IsAuthenticated)
                 return RedirectToAction("Index", "Flow");
+            
             else
                 return View();
 		}

@@ -2,41 +2,57 @@
     ViewBag.Title = "_ProfileViewPartial";
 }
 
-@Html.ActionLink("Modifier", "ChangeFormProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileModifLink" })
-<label>
-    Pseudo : 
-</label>
-<p>
-    @ViewBag.UserPseudo
-</p>
-<label>
-    Nom et prénom :
-</label>
-<p>
-    @ViewBag.UserName
-</p>
-<label>
-    Semestre :
-</label>
-<p>
-    @ViewBag.UserSemester
-</p>
-<label>
-    Filière :
-</label>
-<p>
-    @ViewBag.UserField
-</p>
-<label>
-    Job ou Projet actuel:
-</label>
-<p>
-    @ViewBag.UserActivity
-</p>
-<label>
-    Adresse Mail : 
-</label>
-<p>
-    @ViewBag.MailAdress
-</p>
+<div>
+    <strong class="col-md-offset-5">
+        Pseudo :
+    </strong>
+    <p class="col-md-offset-5">
+        @ViewBag.UserPseudo
+    </p>
+    <strong class="col-md-offset-5">
+        Nom et prénom :
+    </strong>
+    <p class="col-md-offset-5">
+        @ViewBag.UserName
+    </p>
+    <strong class="col-md-offset-5">
+        Semestre :
+    </strong>
+    <p class="col-md-offset-5">
+        @ViewBag.UserSemester
+    </p>
+    <strong class="col-md-offset-5">
+        Filière :
+    </strong>
+    <p class="col-md-offset-5">
+        @ViewBag.UserField
+    </p>
+    <strong class="col-md-offset-5">
+        Job ou Projet actuel:
+    </strong>
+    <p class="col-md-offset-5">
+        @ViewBag.UserActivity
+    </p>
+    <strong class="col-md-offset-5">
+        Adresse Mail :
+    </strong>
+    <p class="col-md-offset-5">
+        @ViewBag.MailAdress
+    </p>
 
+    <strong class="col-md-offset-5">
+        Permissions :
+    </strong>
+    <p class="col-md-offset-5">
+        @ViewBag.UserPermission
+    </p>
+</div>
+@Html.ActionLink("Modifier", "ChangeFormProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileModifLink", @class = "col-md-offset-5 btn btn-primary" })
+<div>
+    @if (ViewBag.UserPermission == StudentDATAWeb.Models.PermissionEnum.Admin)
+    {
+        @Html.ActionLink("Administration", "ManageAccount", "Admin", routeValues: null, htmlAttributes: new { @class = "col-md-offset-5 btn btn-default", title = "Gestion profil" })
+    }
+</div>
+
+ 

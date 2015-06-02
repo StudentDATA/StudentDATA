@@ -343,8 +343,11 @@
     <Content Include="Views\Account\_ProfileViewPartial.cshtml" />
     <Content Include="Views\Account\_ModifyProfilePartial.cshtml" />
     <Content Include="Views\SchoolFlow\Flow.cshtml" />
-    <Content Include="Views\ManageAccount\ManageAllUser.cshtml" />
+<<<<<<< HEAD
     <Content Include="Views\SchoolFlow\AddNewFlowPost.cshtml" />
+=======
+    <Content Include="Views\ManageAccount\ManageAllUser.cshtml" />
+>>>>>>> AccountManagement
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

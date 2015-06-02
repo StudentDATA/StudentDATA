@@ -11,7 +11,11 @@
 @foreach(var post in ViewBag.FlowList)
 {
     <div>
+<<<<<<< HEAD
+        <label class ="col-md-offset-5"><a href="@post[2]">@post[0]</a></label>
+=======
         <label class="col-md-offset-5"><a href="@post[2]">@post[0]</a></label>
+>>>>>>> AccountManagement
         <p class="col-md-offset-5">@post[1]</p>
     </div>
 }
