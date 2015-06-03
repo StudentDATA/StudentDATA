@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -53,9 +54,15 @@ namespace RSSFluxSD
 		{
 			this.Title = title;
 			this.Content = content;
-			this.Url = "http://www.google.com";
-			this.Id = title+"ID";
+			this.Url = "http://www.google.com/";
 			this.Date = DateTimeOffset.Now;
+			string md5ID = this.Title + this.Content + this.Date;
+			this.Id = "";
+			using (MD5 md5Hash = MD5.Create())
+			{
+				this.Id = Helper.mD5Hash(md5Hash, md5ID);
+			}
+			
 		}
 		public Flow(string title, string content, string url, string id, DateTimeOffset date)
 		{
@@ -68,7 +75,7 @@ namespace RSSFluxSD
 			}
 			else
 			{
-				this.Url = "http://www.google.com";
+				this.Url = "http://www.google.com/";
 			}
 			this.Id = id;
 			this.Date = date;
