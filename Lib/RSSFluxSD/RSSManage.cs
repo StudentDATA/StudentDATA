@@ -36,13 +36,13 @@ namespace RSSFluxSD
 			if (rss.FeedIsNull)
 			{
 				RSSList.Remove(rss);
-				return new RSS("");
+				return null;
 			}
 			return rss;
 		}
 
 
-		public RSS createRSS(string url,string title, string content, Helper.CategorieRSSEnum categorie,Helper.FormatRSSEnum formatRSS )
+		public RSS createRSS(string url,string title, string content, Helper.CategorieRSSEnum categorie)
 		{
 			//Verifie si c'est un url
 			if (!Helper.TryUri(url))

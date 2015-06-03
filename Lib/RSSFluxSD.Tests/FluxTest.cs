@@ -45,8 +45,8 @@ namespace RSSFluxSD.Tests
 		{
 			RSSManage rssM = new RSSManage();
  
-			RSS rss1 = rssM.createRSS("test.xml", "Test", "C'est un test", Helper.CategorieRSSEnum.Etudiant, Helper.FormatRSS20());
-			RSS rss = rssM.createRSS("https://fr.news.yahoo.com/rss/world", "Test", "C'est un test", Helper.CategorieRSSEnum.Etudiant, Helper.FormatRSS20());
+			RSS rss1 = rssM.createRSS("test.xml", "Test", "C'est un test", Helper.CategorieRSSEnum.Etudiant);
+			RSS rss = rssM.createRSS("https://fr.news.yahoo.com/rss/world", "Test", "C'est un test", Helper.CategorieRSSEnum.Etudiant);
 
 			if ( rssM.Msg_error != null)
 			{
@@ -70,7 +70,7 @@ namespace RSSFluxSD.Tests
 			}
 
 			//string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName, "testAddUpDel.xml");
-			RSS rss = rssM.createRSS("testAdd.xml", "TestAddUpDel", "C'est un test d'ajout",Helper.CategorieRSSEnum.Etudiant,Helper.FormatAtom10());
+			RSS rss = rssM.createRSS("testAdd.xml", "TestAddUpDel", "C'est un test d'ajout",Helper.CategorieRSSEnum.Etudiant);
 			
 
 			rss.AddFlow(ListFlow);
@@ -88,7 +88,7 @@ namespace RSSFluxSD.Tests
 		public void testDelWithManage()
 		{
 			RSSManage rssM = new RSSManage();
-			RSS rss = rssM.createRSS("testDel.xml", "TestDel", "C'est un test suppréssion des articles", Helper.CategorieRSSEnum.Etudiant, Helper.FormatRSS20());
+			RSS rss = rssM.createRSS("testDel.xml", "TestDel", "C'est un test suppréssion des articles", Helper.CategorieRSSEnum.Etudiant);
 			List<Flow> ListFlow = new List<Flow>();
 
 			for (int i = 0; i < 4; i++)
@@ -115,7 +115,7 @@ namespace RSSFluxSD.Tests
 		public void TestUpdateWithMange()
 		{
 			RSSManage rssM = new RSSManage();
-			RSS rss = rssM.createRSS("testUp.xml", "TestUp", "C'est un test modification des articles", Helper.CategorieRSSEnum.Etudiant, Helper.FormatRSSEnum.RSS20);
+			RSS rss = rssM.createRSS("testUp.xml", "TestUp", "C'est un test modification des articles", Helper.CategorieRSSEnum.Etudiant);
 			List<Flow> ListFlow = new List<Flow>();
 
 			for (int i = 0; i < 4; i++)

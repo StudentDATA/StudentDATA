@@ -1,6 +1,7 @@
 ﻿using StudentDATAWeb.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -155,7 +156,7 @@ namespace StudentDATAWeb.Controllers
                     }
                 }
                
-                db.Entry(currentuser).State = System.Data.EntityState.Modified;
+                db.Entry(currentuser).State = EntityState.Modified;
                 db.SaveChanges();
                 ViewBag.Modifying = false;
                 if (user.Permission == PermissionEnum.Admin)
