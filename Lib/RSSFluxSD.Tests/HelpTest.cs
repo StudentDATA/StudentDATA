@@ -24,18 +24,18 @@ namespace RSSFluxSD.Tests
 			Console.WriteLine();
 			Console.WriteLine();
 			Console.WriteLine();
-			foreach (Flow flow in rss.GetAllFlow())
+			foreach (Article article in rss.GetAllArticle())
 			{
-				Console.WriteLine("FLOW");
-				Console.WriteLine("Titre : " + flow.Title);
+				Console.WriteLine("ARTICLE");
+				Console.WriteLine("Titre : " + article.Title);
 				Console.WriteLine();
-				Console.WriteLine("Content : " + flow.Content);
+				Console.WriteLine("Content : " + article.Content);
 				Console.WriteLine();
-				Console.WriteLine("Url : " + flow.Url);
+				Console.WriteLine("Url : " + article.Url);
 				Console.WriteLine();
-				Console.WriteLine("ID : " + flow.Id);
+				Console.WriteLine("ID : " + article.Id);
 				Console.WriteLine();
-				Console.WriteLine("Date : " + flow.Date);
+				Console.WriteLine("Date : " + article.Date);
 			}
 		}
 
@@ -57,18 +57,18 @@ namespace RSSFluxSD.Tests
 				Console.WriteLine();
 				Console.WriteLine();
 				Console.WriteLine();
-				foreach (Flow flow in rss.GetAllFlow())
+				foreach (Article article in rss.GetAllArticle())
 				{
-					Console.WriteLine("FLOW");
-					Console.WriteLine("Titre : " + flow.Title);
+					Console.WriteLine("ARTICLE");
+					Console.WriteLine("Titre : " + article.Title);
 					Console.WriteLine();
-					Console.WriteLine("Content : " + flow.Content);
+					Console.WriteLine("Content : " + article.Content);
 					Console.WriteLine();
-					Console.WriteLine("Url : " + flow.Url);
+					Console.WriteLine("Url : " + article.Url);
 					Console.WriteLine();
-					Console.WriteLine("ID : " + flow.Id);
+					Console.WriteLine("ID : " + article.Id);
 					Console.WriteLine();
-					Console.WriteLine("Date : " + flow.Date);
+					Console.WriteLine("Date : " + article.Date);
 				}
 			}
 		}
