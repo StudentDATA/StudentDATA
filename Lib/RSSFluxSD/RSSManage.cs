@@ -30,7 +30,7 @@ namespace RSSFluxSD
 			if (rss.FeedIsNull)
 			{
 				RSSList.Remove(rss);
-				return new RSS("");
+				return new RSS(true);
 			}
 			return rss;
 		}
@@ -67,7 +67,7 @@ namespace RSSFluxSD
 			else
 			{
 				Msg_error = "Impossible de Creer un flux RSS à partir d'un lien";
-				return new RSS("");
+				return new RSS(true);
             }
         }
 

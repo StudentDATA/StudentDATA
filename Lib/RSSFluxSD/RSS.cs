@@ -15,6 +15,7 @@ namespace RSSFluxSD
 		string _uri_rss;
 		string _msg_error;
 		bool _feedIsNull;
+		bool _isUri;
 
 		ReadRSS rRSS;
 		CreateRSS cRSS;
@@ -27,6 +28,13 @@ namespace RSSFluxSD
 			get { return _feed; }
 			private set { _feed = value; }
 		}
+
+		public bool IsUri
+		{
+			get { return _isUri; }
+			private set { _isUri = value; }
+		}
+
 		public bool FeedIsNull
 		{
 			get { return _feedIsNull; }
@@ -74,18 +82,27 @@ namespace RSSFluxSD
 		public RSS(string url)
 		{
 			this.Uri_RSS = url;
+			this.IsUri = Helper.TryUri(url);
 			articleList = new List<Article>();
 			rRSS = new ReadRSS(this.Uri_RSS);
 			cRSS = new CreateRSS();
 			uRSS = new UpdateRSS();
+		}
 
+		public RSS(bool feedisnull)
+		{
+			this.Uri_RSS = "";
+			FeedIsNull = feedisnull;
+			articleList = new List<Article>();
+			rRSS = new ReadRSS(this.Uri_RSS);
+			cRSS = new CreateRSS();
+			uRSS = new UpdateRSS();
 		}
 
 		public void ReadRSS()
 		{
 			
-			//Verifie si ce n'est pas un lien et si le fichier existe.
-			if (File.Exists(Uri_RSS) || Helper.TryUri(Uri_RSS))
+			if (File.Exists(Uri_RSS) || IsUri)
 			{
 				string linkV = "";
 				string linkFeed = "";
@@ -110,7 +127,7 @@ namespace RSSFluxSD
 
 					if (Feed.Authors.Count > 0)
 					{
-						if ( Helper.TryUri(Uri_RSS))
+						if (IsUri)
 						{
 							foreach (SyndicationPerson author in Feed.Authors)
 							{
@@ -197,7 +214,7 @@ namespace RSSFluxSD
 
 		public void AddArticle()
 		{
-			if (!Helper.TryUri(Uri_RSS))
+			if (!IsUri && !FeedIsNull)
 			{
 				articleList.Add(new Article("1", "2", "3", "4", DateTimeOffset.Now));
 				Feed.Items = uRSS.AddArticle(articleList);
@@ -206,7 +223,7 @@ namespace RSSFluxSD
 
 		public void AddArticle(List<Article> ListArticle)
 		{
-			if (!Helper.TryUri(Uri_RSS) || FeedIsNull)
+			if (!IsUri && !FeedIsNull)
 			{
 				articleList.AddRange(ListArticle);
 				Feed.Items = uRSS.AddArticle(articleList);
@@ -222,26 +239,35 @@ namespace RSSFluxSD
 
 		public void RemoveArticle()
 		{
-			articleList.Clear();
-			Feed.Items = new List < SyndicationItem >();
+			if (!IsUri && !FeedIsNull)
+			{
+				articleList.Clear();
+				Feed.Items = new List < SyndicationItem >();
+			}
 		}
 
 		public void RemoveArticle(Article article)
 		{
-			articleList.Remove(article);
-			Feed.Items = uRSS.DeleteArticle(article, Feed);
+			if (!IsUri && !FeedIsNull)
+			{
+				articleList.Remove(article);
+				Feed.Items = uRSS.DeleteArticle(article, Feed);
+			}
 		}
 
 		public void RemoveArticle(string id)
 		{
-			Article article = articleList.Find(x => x.Id == id);
-			RemoveArticle(article);
+			if (!IsUri && !FeedIsNull)
+			{
+				Article article = articleList.Find(x => x.Id == id);
+				RemoveArticle(article);
+			}
 		}
 
 
 		public void UpdateArticle(string id,string title,string content)
 		{
-			if (!Helper.TryUri(Uri_RSS) || FeedIsNull)
+			if (!IsUri && !FeedIsNull)
 			{
 				Predicate<Article> preArticle = x => x.Id == id;
 				int idList = articleList.FindIndex(preArticle);
@@ -254,7 +280,7 @@ namespace RSSFluxSD
 
 		public void UpdateArticle(string id, string text, bool title)
 		{
-			if (!Helper.TryUri(Uri_RSS) || FeedIsNull)
+			if (!IsUri && !FeedIsNull)
 			{
 				Predicate<Article> preArticle = x => x.Id == id;
 				int idList = articleList.FindIndex(preArticle);
@@ -281,7 +307,7 @@ namespace RSSFluxSD
 		public void Save(Helper.FormatRSSEnum format )
 		{
 			//Savoir si le fichier existe deja ou pas
-			if ( Feed != null )
+			if (!IsUri && !FeedIsNull)
 			{
 				XmlWriterSettings set = new XmlWriterSettings();
 				set.NamespaceHandling = NamespaceHandling.OmitDuplicates;

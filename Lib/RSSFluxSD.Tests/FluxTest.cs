@@ -124,7 +124,7 @@ namespace RSSFluxSD.Tests
 			}
 			Assert.AreEqual(Helper.TryFileExist(path), true);
 			Assert.AreEqual(Helper.TryFileEmpty(path), false);
-			//rss.RemoveRSS();
+			rss.RemoveRSS();
 		}
 
 		[TestMethod]
@@ -251,6 +251,8 @@ namespace RSSFluxSD.Tests
 
 			Console.WriteLine(rss.GetAllArticle().Count);
 			HelpTest.HelpReadWithRSS(rss);
+
+			rss.RemoveRSS();
 		}
 
 		[TestMethod]

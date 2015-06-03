@@ -25,11 +25,11 @@ namespace StudentDATAWeb.Controllers
                 rssManager = new RSSManage();
                 InitializeRSSFlowsDatas();
                 List<List<string>> ll = new List<List<string>>();
-                IReadOnlyList<Flow> decompressor = new List<Flow>();
+				IReadOnlyList<Article> decompressor = new List<Article>();
                 foreach (string adress in GetRSSByProfile())
                 {
-                    decompressor = rssManager.readRSS(adress).GetAllFlow();
-                    foreach (Flow flow in decompressor)
+					decompressor = rssManager.readRSS(adress).GetAllArticle();
+					foreach (Article flow in decompressor)
                     {
                         ll.Add(new List<string>() { flow.Title, flow.Content, flow.Date.ToString(), flow.Url });
                     }
@@ -365,9 +365,9 @@ namespace StudentDATAWeb.Controllers
         {
             rssManager = new RSSManage();
             //Flow tmpFlow = new Flow(fpm.Title, fpm.Content);
-            List<Flow> listFlow = new List<Flow>() { new Flow(fpm.Title, fpm.Content) };
+			List<Article> listFlow = new List<Article>() { new Article(fpm.Title, fpm.Content) };
             RSS tmpRss = rssManager.readRSS(FlowList);
-            tmpRss.AddFlow(listFlow);
+			tmpRss.AddArticle(listFlow);
             tmpRss.Save(Helper.FormatRSSEnum.RSS20);
             RSS tmpRss2 = rssManager.readRSS(FlowList);
             //rssManager.addFlow(FlowList, listFlow);
