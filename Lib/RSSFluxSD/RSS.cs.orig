@@ -208,8 +208,13 @@ namespace RSSFluxSD
 		{
 			if (!Helper.TryUri(Uri_RSS) || FeedIsNull)
 			{
+<<<<<<< HEAD
+				flowList.AddRange(ListFlow);
+                Feed.Items = uRSS.AddFlow(flowList);
+=======
 				articleList.AddRange(ListArticle);
 				Feed.Items = uRSS.AddArticle(articleList);
+>>>>>>> ImproveRSS
 			}
 		}
 

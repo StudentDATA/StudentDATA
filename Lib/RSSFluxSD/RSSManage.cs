@@ -9,13 +9,7 @@ namespace RSSFluxSD
     public class RSSManage
     {
         string msg_error = null;
-		Helper.FormatRSSEnum _formatRSS;
 
-		public Helper.FormatRSSEnum FormatRSS
-		{
-			get { return _formatRSS; }
-			private set { _formatRSS = value; }
-		}
         public string Msg_error
         {
             get { return msg_error; }
@@ -29,14 +23,14 @@ namespace RSSFluxSD
 			//Si même url, voir s'il y a des difference dans les flows
 			if (!Helper.TryRSSExist(RSSList, url))
 			{
-				RSSList.Add(new RSS(url, Helper.FormatRSS20()));
+				RSSList.Add(new RSS(url));
 			}
 			RSS rss = RSSList.Find(x => x.Uri_RSS == url);
 			rss.ReadRSS();
 			if (rss.FeedIsNull)
 			{
 				RSSList.Remove(rss);
-				return null;
+				return new RSS("");
 			}
 			return rss;
 		}
@@ -50,7 +44,7 @@ namespace RSSFluxSD
 				//Verifie si le rss existe deja dans la liste
 				if (!Helper.TryRSSExist(RSSList, url))
 				{
-					RSSList.Add(new RSS(url, Helper.FormatRSS20()));
+					RSSList.Add(new RSS(url));
 				}
 				RSS rss = RSSList.Find(x => x.Uri_RSS == url);
 				//Verifie si le fichier existe deja
@@ -73,23 +67,23 @@ namespace RSSFluxSD
 			else
 			{
 				Msg_error = "Impossible de Creer un flux RSS à partir d'un lien";
-				return null;
+				return new RSS("");
             }
         }
 
 
-        public void addFlow(string url, List<Flow> flow)
+		private void addArticle(string url, List<Article> article)
         {
-            //flow contient titre et contenu : id = titre+numero du flow
+			//article contient titre et contenu : id = titre+numero du article
             if (!Helper.TryUri(url))
             {
 				if (!Helper.TryRSSExist(RSSList, url))
                 {
-					RSSList.Add(new RSS(url, Helper.FormatRSS20()));
+					RSSList.Add(new RSS(url));
 				}
                     RSS u = RSSList.Find(x => x.Uri_RSS == url);
-                    u.AddFlow(flow);
-					u.Save(FormatRSS);
+					u.AddArticle(article);
+					u.Save(Helper.FormatRSSEnum.RSS20);
             }
         }
 
@@ -104,7 +98,7 @@ namespace RSSFluxSD
             {
                 if (!Helper.TryUri(rss.Uri_RSS))
                 {
-					rss.Save(FormatRSS);
+					rss.Save(Helper.FormatRSSEnum.RSS20);
                 };
             }
         }

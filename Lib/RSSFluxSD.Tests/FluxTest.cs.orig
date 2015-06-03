@@ -52,9 +52,15 @@ namespace RSSFluxSD.Tests
 		public void TestCreateAndAddXML()
 		{
 			RSSManage rssM = new RSSManage();
+<<<<<<< HEAD
+ 
+			RSS rss1 = rssM.createRSS("test.xml", "Test", "C'est un test", Helper.CategorieRSSEnum.Etudiant);
+			RSS rss = rssM.createRSS("https://fr.news.yahoo.com/rss/world", "Test", "C'est un test", Helper.CategorieRSSEnum.Etudiant);
+=======
 			string path = "test.xml";
 			RSS rss = rssM.createRSS(path, "Test", "C'est un test", Helper.CategorieRSSEnum.Etudiant);
 			RSS rss1 = rssM.createRSS("https://fr.news.yahoo.com/rss/world", "Test", "C'est un test", Helper.CategorieRSSEnum.Etudiant);
+>>>>>>> ImproveRSS
 
 			if ( rssM.Msg_error != null)
 			{
@@ -88,7 +94,11 @@ namespace RSSFluxSD.Tests
 			}
 			string path = "testAdd.xml";
 			//string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName, "testAddUpDel.xml");
+<<<<<<< HEAD
+			RSS rss = rssM.createRSS("testAdd.xml", "TestAddUpDel", "C'est un test d'ajout",Helper.CategorieRSSEnum.Etudiant);
+=======
 			RSS rss = rssM.createRSS(path, "TestAddUpDel", "C'est un test d'ajout",Helper.CategorieRSSEnum.Etudiant);
+>>>>>>> ImproveRSS
 			
 
 			rss.AddArticle(ListArticle);
@@ -132,7 +142,11 @@ namespace RSSFluxSD.Tests
 		{
 			RSSManage rssM = new RSSManage();
 			RSS rss = rssM.createRSS("testDel.xml", "TestDel", "C'est un test suppréssion des articles", Helper.CategorieRSSEnum.Etudiant);
+<<<<<<< HEAD
+			List<Flow> ListFlow = new List<Flow>();
+=======
 			List<Article> ListArticle = new List<Article>();
+>>>>>>> ImproveRSS
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -199,7 +213,11 @@ namespace RSSFluxSD.Tests
 		{
 			RSSManage rssM = new RSSManage();
 			RSS rss = rssM.createRSS("testUp.xml", "TestUp", "C'est un test modification des articles", Helper.CategorieRSSEnum.Etudiant);
+<<<<<<< HEAD
+			List<Flow> ListFlow = new List<Flow>();
+=======
 			List<Article> ListArticle = new List<Article>();
+>>>>>>> ImproveRSS
 
 			for (int i = 0; i < 4; i++)
 			{
