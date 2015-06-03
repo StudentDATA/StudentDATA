@@ -111,7 +111,7 @@ namespace RSSFluxSD.Tests
 				}
 				Assert.AreEqual(article.Title, "Test" + i2);
 
-				string md5ID = article.Title + article.Content + article.Date;
+				string md5ID = article.GetHashCode().ToString();
 				string idVar = "";
 				using (MD5 md5Hash = MD5.Create())
 				{
@@ -162,7 +162,7 @@ namespace RSSFluxSD.Tests
 			foreach( Article article in rss.GetAllArticle())
 			{
 				Assert.AreEqual(article.Title, "Test" + i2);
-				string md5ID = article.Title + article.Content + article.Date;
+				string md5ID = article.GetHashCode().ToString();
 				string idVar = "";
 				using (MD5 md5Hash = MD5.Create())
 				{
@@ -180,7 +180,7 @@ namespace RSSFluxSD.Tests
 			foreach ( Article article in rss.GetAllArticle())
 			{
 				Assert.AreEqual(article.Title, "Test2");
-				string md5ID = article.Title + article.Content + article.Date;
+				string md5ID = article.GetHashCode().ToString();
 				string idVar = "";
 				using (MD5 md5Hash = MD5.Create())
 				{
@@ -222,9 +222,9 @@ namespace RSSFluxSD.Tests
 			Article article1 = rss.GetAllArticle().Find(x => x.Title == "TitleChanged");
 			Article article2 = rss.GetAllArticle().Find(x => x.Content == "ContentChanged");
 
-			string md5ID = article.Title + article.Content + article.Date;
-			string md5ID1 = article1.Title + article1.Content + article1.Date;
-			string md5ID2 = article2.Title + article2.Content + article2.Date;
+			string md5ID = article.GetHashCode().ToString();
+			string md5ID1 = article1.GetHashCode().ToString();
+			string md5ID2 = article2.GetHashCode().ToString();
 
 			string idVar = "";
 			string idVar1 = "";

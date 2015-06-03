@@ -27,7 +27,7 @@ namespace RSSFluxSD
 			{
 				return Helper.EncoderString(_title);
 			}
-			private set { _title = value; }
+			internal set { _title = value; }
 		}
 		public string Content
 		{
@@ -35,7 +35,7 @@ namespace RSSFluxSD
 			{
 				return Helper.EncoderString(_content);
 			}
-			private set { _content = value; }
+			internal set { _content = value; }
 		}
 		public string Url
 		{
@@ -56,12 +56,7 @@ namespace RSSFluxSD
 			this.Content = content;
 			this.Url = "http://www.google.com/";
 			this.Date = DateTimeOffset.Now;
-			string md5ID = this.Title + this.Content + this.Date;
-			this.Id = "";
-			using (MD5 md5Hash = MD5.Create())
-			{
-				this.Id = Helper.mD5Hash(md5Hash, md5ID);
-			}
+			updateID();
 			
 		}
 		public Article(string title, string content, string url, string id, DateTimeOffset date)
@@ -79,6 +74,16 @@ namespace RSSFluxSD
 			}
 			this.Id = id;
 			this.Date = date;
+		}
+
+		public void updateID()
+		{
+			string md5ID = this.GetHashCode().ToString();
+			this.Id = "";
+			using (MD5 md5Hash = MD5.Create())
+			{
+				this.Id = Helper.mD5Hash(md5Hash, md5ID);
+			}
 		}
 	}
 }

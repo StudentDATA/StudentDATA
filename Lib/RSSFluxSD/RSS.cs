@@ -269,11 +269,15 @@ namespace RSSFluxSD
 		{
 			if (!IsUri && !FeedIsNull)
 			{
+				//Mettre les proprieté en internal et changer les donnée à l'intérieur BY TOTO
 				Predicate<Article> preArticle = x => x.Id == id;
-				int idList = articleList.FindIndex(preArticle);
+				//int idList = articleList.FindIndex(preArticle);
 				Article articlevar = articleList.Find(preArticle);
-				RemoveArticle(articlevar);
-				articleList.Insert(idList, new Article(title, content));
+				articlevar.Content = content;
+				articlevar.Title = title;
+				articlevar.updateID();
+				//RemoveArticle(articlevar);
+				//articleList.Insert(idList, new Article(title, content));
 				Feed.Items = uRSS.AddArticle(articleList);
 			}
 		}
