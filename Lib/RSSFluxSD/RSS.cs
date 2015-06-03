@@ -33,11 +33,11 @@ namespace RSSFluxSD
 			private set { _feedIsNull = value; }
 		}
 
-		List<Flow> flowList;
+		List<Article> articleList;
 
-		public List<Flow> GetAllFlow()
+		public List<Article> GetAllArticle()
 		{
-			return flowList;
+			return articleList;
 		}
 
 		public string Tilte()
@@ -74,7 +74,7 @@ namespace RSSFluxSD
 		public RSS(string url)
 		{
 			this.Uri_RSS = url;
-			flowList = new List<Flow>();
+			articleList = new List<Article>();
 			rRSS = new ReadRSS(this.Uri_RSS);
 			cRSS = new CreateRSS();
 			uRSS = new UpdateRSS();
@@ -154,9 +154,9 @@ namespace RSSFluxSD
 							}
 						}
 						//Verifie l'id du post pour savoir evité les doublons mais à coriger.
-						//if (flowList.Find(x => x.Id == item.Id) == null)
+						//if (articleList.Find(x => x.Id == item.Id) == null)
 						//{
-							flowList.Add(new Flow(item.Title.Text, ((TextSyndicationContent)item.Summary).Text, linkV, item.Id, item.LastUpdatedTime));
+							articleList.Add(new Article(item.Title.Text, ((TextSyndicationContent)item.Summary).Text, linkV, item.Id, item.LastUpdatedTime));
 						//}
 					}
 				}
@@ -188,94 +188,94 @@ namespace RSSFluxSD
 			Feed = cRSS.CreateInit();
 		}
 
-		public void AddFlowSingle()
+		public void AddArticleSingle()
 		{
 			ReadRSS();
-			Feed.Items = uRSS.AddFlow(Feed);
+			Feed.Items = uRSS.AddArticle(Feed);
 			Save(Helper.FormatRSS20());
 		}
 
-		public void AddFlow()
+		public void AddArticle()
 		{
 			if (!Helper.TryUri(Uri_RSS))
 			{
-				flowList.Add(new Flow("1", "2", "3", "4", DateTimeOffset.Now));
-				Feed.Items = uRSS.AddFlow(flowList);
+				articleList.Add(new Article("1", "2", "3", "4", DateTimeOffset.Now));
+				Feed.Items = uRSS.AddArticle(articleList);
 			}
 		}
 
-		public void AddFlow(List<Flow> ListFlow)
+		public void AddArticle(List<Article> ListArticle)
 		{
 			if (!Helper.TryUri(Uri_RSS) || FeedIsNull)
 			{
-				flowList.AddRange(ListFlow);
-				Feed.Items = uRSS.AddFlow(flowList);
+				articleList.AddRange(ListArticle);
+				Feed.Items = uRSS.AddArticle(articleList);
 			}
 		}
 
-		public void RemoveFlowSingle(int id)
+		public void RemoveArticleSingle(int id)
 		{
 			ReadRSS();
-			Feed.Items = uRSS.DeleteFlow(id, Feed);
+			Feed.Items = uRSS.DeleteArticle(id, Feed);
 			Save(Helper.FormatRSS20());
 		}
 
-		public void RemoveFlow()
+		public void RemoveArticle()
 		{
-			flowList.Clear();
+			articleList.Clear();
 			Feed.Items = new List < SyndicationItem >();
 		}
 
-		public void RemoveFlow(Flow flow)
+		public void RemoveArticle(Article article)
 		{
-			flowList.Remove(flow);
-			Feed.Items = uRSS.DeleteFlow(flow,Feed);
+			articleList.Remove(article);
+			Feed.Items = uRSS.DeleteArticle(article, Feed);
 		}
 
-		public void RemoveFlow(string id)
+		public void RemoveArticle(string id)
 		{
-			Flow flow = flowList.Find(x => x.Id == id);
-			RemoveFlow(flow);
+			Article article = articleList.Find(x => x.Id == id);
+			RemoveArticle(article);
 		}
 
 
-		public void UpdateFlow(string id,string title,string content)
+		public void UpdateArticle(string id,string title,string content)
 		{
 			if (!Helper.TryUri(Uri_RSS) || FeedIsNull)
 			{
-				Predicate<Flow> preFlow = x => x.Id == id;
-				int idList = flowList.FindIndex(preFlow);
-				Flow flowvar = flowList.Find(preFlow);
-				RemoveFlow(flowvar);
-				flowList.Insert(idList, new Flow(title, content));
-				Feed.Items = uRSS.AddFlow(flowList);
+				Predicate<Article> preArticle = x => x.Id == id;
+				int idList = articleList.FindIndex(preArticle);
+				Article articlevar = articleList.Find(preArticle);
+				RemoveArticle(articlevar);
+				articleList.Insert(idList, new Article(title, content));
+				Feed.Items = uRSS.AddArticle(articleList);
 			}
 		}
 
-		public void UpdateFlow(string id,string text, bool title)
+		public void UpdateArticle(string id, string text, bool title)
 		{
 			if (!Helper.TryUri(Uri_RSS) || FeedIsNull)
 			{
-				Predicate<Flow> preFlow = x => x.Id == id;
-				int idList = flowList.FindIndex(preFlow);
-				Flow flowvar = flowList.Find(preFlow);
-				RemoveFlow(flowvar);
+				Predicate<Article> preArticle = x => x.Id == id;
+				int idList = articleList.FindIndex(preArticle);
+				Article articlevar = articleList.Find(preArticle);
+				RemoveArticle(articlevar);
 				if( title)
 				{
-					flowList.Insert(idList, new Flow(text, flowvar.Content));
+					articleList.Insert(idList, new Article(text, articlevar.Content));
 				}
 				else
 				{
-					flowList.Insert(idList, new Flow(flowvar.Title, text));
+					articleList.Insert(idList, new Article(articlevar.Title, text));
 				}
-				Feed.Items = uRSS.AddFlow(flowList);
+				Feed.Items = uRSS.AddArticle(articleList);
 			}
 		}
 
-		public void UpdateFlowSingle(int id)
+		public void UpdateArticleSingle(int id)
 		{
 			ReadRSS();
-			Feed.Items = uRSS.UpdateFlow(id,Feed);
+			Feed.Items = uRSS.UpdateArticle(id,Feed);
 			Save(Helper.FormatRSS20());
 		}
 		public void Save(Helper.FormatRSSEnum format )

@@ -27,20 +27,20 @@ namespace RSSFluxSD.Tests
 			RSS rss = rssM.readRSS("testAdd.xml");
 
 			Console.WriteLine(rss.Tilte());
-			foreach ( Flow flow in rss.GetAllFlow())
+			foreach ( Article article in rss.GetAllArticle())
 			{
-				Console.WriteLine(flow.Title);
-				Console.WriteLine(flow.Content);
+				Console.WriteLine(article.Title);
+				Console.WriteLine(article.Content);
 			}
 
-			List<Flow> ListFlow = new List<Flow>();
-			ListFlow.Add(new Flow("Test7", "Le test 7"));
-			rss.AddFlow(ListFlow);
+			List<Article> ListArticle = new List<Article>();
+			ListArticle.Add(new Article("Test7", "Le test 7"));
+			rss.AddArticle(ListArticle);
 			Console.WriteLine(rssM.GetAllRSS().Count);
 			//Assert.AreEqual(rssM.GetAllRSS().Count, 2);
 			foreach( RSS rsst in rssM.GetAllRSS())
 			{
-				Console.WriteLine(rsst.GetAllFlow().Count);
+				Console.WriteLine(rsst.GetAllArticle().Count);
 			}
 			Console.WriteLine();
 
@@ -80,46 +80,46 @@ namespace RSSFluxSD.Tests
 		public void TestAddWithManage()
 		{
 			RSSManage rssM = new RSSManage();
-			List<Flow> ListFlow = new List<Flow>();
+			List<Article> ListArticle = new List<Article>();
 
 			for (int i = 0; i < 4; i++ )
 			{
-				ListFlow.Add(new Flow("Test"+i, "Le test "+i));
+				ListArticle.Add(new Article("Test"+i, "Le test "+i));
 			}
 			string path = "testAdd.xml";
 			//string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName, "testAddUpDel.xml");
 			RSS rss = rssM.createRSS(path, "TestAddUpDel", "C'est un test d'ajout",Helper.CategorieRSSEnum.Etudiant);
 			
 
-			rss.AddFlow(ListFlow);
+			rss.AddArticle(ListArticle);
 			
 			//A finir
-			//rssM.addFlow("testAddUpDel.xml", ListFlow);
+			//rssM.addArticle("testAddUpDel.xml", ListArticle);
 
 			rss.Save(Helper.FormatRSS20());
 
-			Console.WriteLine(rss.GetAllFlow().Count);
+			Console.WriteLine(rss.GetAllArticle().Count);
 			HelpTest.HelpReadWithRSS(rss);
 
-			//Assert.AreEqual(rss.GetAllFlow().Count, 4);
+			//Assert.AreEqual(rss.GetAllArticle().Count, 4);
 			int i2 = 0;
-			foreach (Flow flow in rss.GetAllFlow())
+			foreach (Article article in rss.GetAllArticle())
 			{
 				if ( i2 == 4)
 				{
 					i2 = 0;
 				}
-				Assert.AreEqual(flow.Title, "Test" + i2);
+				Assert.AreEqual(article.Title, "Test" + i2);
 
-				string md5ID = flow.Title + flow.Content + flow.Date;
+				string md5ID = article.Title + article.Content + article.Date;
 				string idVar = "";
 				using (MD5 md5Hash = MD5.Create())
 				{
 					idVar = Helper.mD5Hash(md5Hash, md5ID);
 				}
-				Assert.AreEqual(flow.Id, idVar);
-				Assert.AreEqual(flow.Content, "Le test "+i2);
-				Assert.AreEqual(flow.Url, "http://www.google.com/");
+				Assert.AreEqual(article.Id, idVar);
+				Assert.AreEqual(article.Content, "Le test "+i2);
+				Assert.AreEqual(article.Url, "http://www.google.com/");
 				i2++;
 			}
 			Assert.AreEqual(Helper.TryFileExist(path), true);
@@ -132,63 +132,63 @@ namespace RSSFluxSD.Tests
 		{
 			RSSManage rssM = new RSSManage();
 			RSS rss = rssM.createRSS("testDel.xml", "TestDel", "C'est un test suppréssion des articles", Helper.CategorieRSSEnum.Etudiant);
-			List<Flow> ListFlow = new List<Flow>();
+			List<Article> ListArticle = new List<Article>();
 
 			for (int i = 0; i < 4; i++)
 			{
-				ListFlow.Add(new Flow("Test" + i, "Le test " + i));
+				ListArticle.Add(new Article("Test" + i, "Le test " + i));
 			}
 
-			rss.AddFlow(ListFlow);
+			rss.AddArticle(ListArticle);
 
-			rss.RemoveFlow();
+			rss.RemoveArticle();
 
-			Assert.AreEqual(rss.GetAllFlow().Count, 0);
+			Assert.AreEqual(rss.GetAllArticle().Count, 0);
 
-			rss.AddFlow(ListFlow);
+			rss.AddArticle(ListArticle);
 
-			Assert.AreEqual(rss.GetAllFlow().Count, 4);
+			Assert.AreEqual(rss.GetAllArticle().Count, 4);
 
-			Flow flowvar = rss.GetAllFlow().Find(x => x.Title == "Test0");
-			rss.RemoveFlow(rss.GetAllFlow().Find(x => x.Title == "Test1"));
-			rss.RemoveFlow(flowvar.Id);
+			Article articlevar = rss.GetAllArticle().Find(x => x.Title == "Test0");
+			rss.RemoveArticle(rss.GetAllArticle().Find(x => x.Title == "Test1"));
+			rss.RemoveArticle(articlevar.Id);
 
 			rss.Save(Helper.FormatRSS20());
 
-			Console.WriteLine(rss.GetAllFlow().Count);
+			Console.WriteLine(rss.GetAllArticle().Count);
 			HelpTest.HelpReadWithRSS(rss);
 
 			int i2 = 2;
-			foreach( Flow flow in rss.GetAllFlow())
+			foreach( Article article in rss.GetAllArticle())
 			{
-				Assert.AreEqual(flow.Title, "Test" + i2);
-				string md5ID = flow.Title + flow.Content + flow.Date;
+				Assert.AreEqual(article.Title, "Test" + i2);
+				string md5ID = article.Title + article.Content + article.Date;
 				string idVar = "";
 				using (MD5 md5Hash = MD5.Create())
 				{
 					idVar = Helper.mD5Hash(md5Hash, md5ID);
 				}
-				Assert.AreEqual(flow.Id, idVar);
-				Assert.AreEqual(flow.Content, "Le test " + i2);
-				Assert.AreEqual(flow.Url, "http://www.google.com/");
+				Assert.AreEqual(article.Id, idVar);
+				Assert.AreEqual(article.Content, "Le test " + i2);
+				Assert.AreEqual(article.Url, "http://www.google.com/");
 				i2++;
 			}
 
-			Flow flowvar2 = rss.GetAllFlow().Find(x => x.Title == "Test3");
-			rss.RemoveFlow(flowvar2.Id);
+			Article articlevar2 = rss.GetAllArticle().Find(x => x.Title == "Test3");
+			rss.RemoveArticle(articlevar2.Id);
 
-			foreach ( Flow flow in rss.GetAllFlow())
+			foreach ( Article article in rss.GetAllArticle())
 			{
-				Assert.AreEqual(flow.Title, "Test2");
-				string md5ID = flow.Title + flow.Content + flow.Date;
+				Assert.AreEqual(article.Title, "Test2");
+				string md5ID = article.Title + article.Content + article.Date;
 				string idVar = "";
 				using (MD5 md5Hash = MD5.Create())
 				{
 					idVar = Helper.mD5Hash(md5Hash, md5ID);
 				}
-				Assert.AreEqual(flow.Id, idVar);
-				Assert.AreEqual(flow.Content, "Le test 2");
-				Assert.AreEqual(flow.Url, "http://www.google.com/");
+				Assert.AreEqual(article.Id, idVar);
+				Assert.AreEqual(article.Content, "Le test 2");
+				Assert.AreEqual(article.Url, "http://www.google.com/");
 			}
 
 			rss.RemoveRSS();
@@ -199,34 +199,57 @@ namespace RSSFluxSD.Tests
 		{
 			RSSManage rssM = new RSSManage();
 			RSS rss = rssM.createRSS("testUp.xml", "TestUp", "C'est un test modification des articles", Helper.CategorieRSSEnum.Etudiant);
-			List<Flow> ListFlow = new List<Flow>();
+			List<Article> ListArticle = new List<Article>();
 
 			for (int i = 0; i < 4; i++)
 			{
-				ListFlow.Add(new Flow("Test" + i, "Le test " + i));
+				ListArticle.Add(new Article("Test" + i, "Le test " + i));
 			}
 
-			rss.AddFlow(ListFlow);
+			rss.AddArticle(ListArticle);
 
-			Flow flowtest = rss.GetAllFlow().Find(x => x.Title == "Test0");
+			Article articletest = rss.GetAllArticle().Find(x => x.Title == "Test0");
+			Article articletest1 = rss.GetAllArticle().Find(x => x.Title == "Test1");
+			Article articletest2 = rss.GetAllArticle().Find(x => x.Title == "Test2");
 
-			rss.UpdateFlow(flowtest.Id,"TestTest","tutit");
+			rss.UpdateArticle(articletest.Id,"TestTest","tutit");
+			rss.UpdateArticle(articletest1.Id, "TitleChanged", true);
+			rss.UpdateArticle(articletest2.Id, "ContentChanged", false);
 
 			rss.Save(Helper.FormatRSS20());
 
-			Flow flow = rss.GetAllFlow().Find(x => x.Title == "TestTest");
-			string md5ID = flow.Title + flow.Content + flow.Date;
+			Article article = rss.GetAllArticle().Find(x => x.Title == "TestTest");
+			Article article1 = rss.GetAllArticle().Find(x => x.Title == "TitleChanged");
+			Article article2 = rss.GetAllArticle().Find(x => x.Content == "ContentChanged");
+
+			string md5ID = article.Title + article.Content + article.Date;
+			string md5ID1 = article1.Title + article1.Content + article1.Date;
+			string md5ID2 = article2.Title + article2.Content + article2.Date;
+
 			string idVar = "";
+			string idVar1 = "";
+			string idVar2 = "";
+
 			using (MD5 md5Hash = MD5.Create())
 			{
 				idVar = Helper.mD5Hash(md5Hash, md5ID);
+				idVar1 = Helper.mD5Hash(md5Hash, md5ID1);
+				idVar2 = Helper.mD5Hash(md5Hash, md5ID2);
 			}
 
-			Assert.AreEqual(flow.Title, "TestTest");
-			Assert.AreEqual(flow.Content, "tutit");
-			Assert.AreEqual(flow.Id, idVar);
+			Assert.AreEqual(article.Title, "TestTest");
+			Assert.AreEqual(article.Content, "tutit");
+			Assert.AreEqual(article.Id, idVar);
 
-			Console.WriteLine(rss.GetAllFlow().Count);
+			Assert.AreEqual(article1.Title, "TitleChanged");
+			Assert.AreEqual(article1.Content, "Le test 1");
+			Assert.AreEqual(article1.Id, idVar1);
+
+			Assert.AreEqual(article2.Title, "Test2");
+			Assert.AreEqual(article2.Content, "ContentChanged");
+			Assert.AreEqual(article2.Id, idVar2);
+
+			Console.WriteLine(rss.GetAllArticle().Count);
 			HelpTest.HelpReadWithRSS(rss);
 		}
 
@@ -276,12 +299,12 @@ namespace RSSFluxSD.Tests
 		}
 
 		[TestMethod]
-		public void TestAddFlow()
+		public void TestAddArticle()
 		{
 			string uri = "test.xml";
 			RSS rss = new RSS(uri);
 			rss.InitRSSSingle();
-			rss.AddFlowSingle();
+			rss.AddArticleSingle();
 			rss.ReadRSS();
 			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
@@ -289,31 +312,31 @@ namespace RSSFluxSD.Tests
 		}
 
 		[TestMethod]
-		public void TestDeleteFlow()
+		public void TestDeleteArticle()
 		{
 			string uri = "test.xml";
 			int id = 0;
 			RSS rss = new RSS(uri);
 			rss.InitRSSSingle();
-			rss.RemoveFlowSingle(8);
-			rss.RemoveFlowSingle(id);
-			rss.RemoveFlowSingle(id);
+			rss.RemoveArticleSingle(8);
+			rss.RemoveArticleSingle(id);
+			rss.RemoveArticleSingle(id);
 			rss.ReadRSS();
 			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
 		}
 
 		[TestMethod]
-		public void TestUpdateFlow()
+		public void TestUpdateArticle()
 		{
 			string uri = "test.xml";
 			int id = 0;
 			RSS rss = new RSS(uri);
 			rss.InitRSSSingle();
-			rss.UpdateFlowSingle(8);
-			rss.UpdateFlowSingle(id);
-			rss.RemoveFlowSingle(id);
-			rss.UpdateFlowSingle(id);
+			rss.UpdateArticleSingle(8);
+			rss.UpdateArticleSingle(id);
+			rss.RemoveArticleSingle(id);
+			rss.UpdateArticleSingle(id);
 			rss.ReadRSS();
 			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();
@@ -326,9 +349,9 @@ namespace RSSFluxSD.Tests
 			int id = 0;
 			RSS rss = new RSS(uri);
 			rss.InitRSSSingle();
-			rss.AddFlowSingle();
-			rss.RemoveFlowSingle(id);
-			rss.UpdateFlowSingle(id);
+			rss.AddArticleSingle();
+			rss.RemoveArticleSingle(id);
+			rss.UpdateArticleSingle(id);
 			rss.ReadRSS();
 			HelpTest.HelpRead(rss.Feed);
 			rss.RemoveRSS();

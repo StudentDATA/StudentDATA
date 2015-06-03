@@ -72,9 +72,9 @@ namespace RSSFluxSD
 		}
 
 
-		public void addFlow(string url, List<Flow> flow)
+		private void addArticle(string url, List<Article> article)
 		{
-			//flow contient titre et contenu : id = titre+numero du flow
+			//article contient titre et contenu : id = titre+numero du article
 			if (!Helper.TryUri(url))
 			{
 				if (!Helper.TryRSSExist(RSSList, url))
@@ -82,7 +82,7 @@ namespace RSSFluxSD
 					RSSList.Add(new RSS(url));
 				}
 					RSS u = RSSList.Find(x => x.Uri_RSS == url);
-					u.AddFlow(flow);
+					u.AddArticle(article);
 					u.Save(Helper.FormatRSSEnum.RSS20);
 			}
 		}

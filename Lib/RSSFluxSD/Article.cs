@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RSSFluxSD
 {
-	public class Flow
+	public class Article
 	{
 		string _title;
 		string _id;
@@ -50,7 +50,7 @@ namespace RSSFluxSD
 			get { return _id; }
 			private set { _id = value; }
 		}
-		public Flow(string title, string content)
+		public Article(string title, string content)
 		{
 			this.Title = title;
 			this.Content = content;
@@ -64,7 +64,7 @@ namespace RSSFluxSD
 			}
 			
 		}
-		public Flow(string title, string content, string url, string id, DateTimeOffset date)
+		public Article(string title, string content, string url, string id, DateTimeOffset date)
 		{
 			this.Title = title;
 			this.Content = content;

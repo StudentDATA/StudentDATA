@@ -15,7 +15,7 @@ namespace RSSFluxSD
 		List<SyndicationItem> items;
 
 
-		public List<SyndicationItem> AddFlow(SyndicationFeed feed)
+		public List<SyndicationItem> AddArticle(SyndicationFeed feed)
 		{
 			SyndicationItem item = new SyndicationItem(
 				"Item One5",
@@ -31,17 +31,17 @@ namespace RSSFluxSD
 			return items;
 		}
 
-		public List<SyndicationItem> AddFlow(List<Flow> flowList)
+		public List<SyndicationItem> AddArticle(List<Article> articleList)
 		{
 			List<SyndicationItem> items = new List<SyndicationItem>();
-			foreach ( Flow flow in flowList)
+			foreach ( Article article in articleList)
 			{
 				items.Add(new SyndicationItem(
-					flow.Title,
-					flow.Content,
-					new Uri(flow.Url),
-					flow.Id,
-					flow.Date));
+					article.Title,
+					article.Content,
+					new Uri(article.Url),
+					article.Id,
+					article.Date));
 			}
 
 			//List<SyndicationItem> itemsList = GetItemFeed(feed);
@@ -54,15 +54,15 @@ namespace RSSFluxSD
 		}
 
 
-		public List<SyndicationItem> AddFlow(Flow flow)
+		public List<SyndicationItem> AddArticle(Article article)
 		{
 			List<SyndicationItem> items = new List<SyndicationItem>();
 			items.Add(new SyndicationItem(
-				flow.Title,
-				flow.Content,
-				new Uri(flow.Url),
-				flow.Id,
-				flow.Date));
+				article.Title,
+				article.Content,
+				new Uri(article.Url),
+				article.Id,
+				article.Date));
 
 			//List<SyndicationItem> itemsList = GetItemFeed(feed);
 			//itemsList.AddRange(items);			
@@ -74,7 +74,7 @@ namespace RSSFluxSD
 		}
 
 
-		public List<SyndicationItem> UpdateFlow(int id, SyndicationFeed feed)
+		public List<SyndicationItem> UpdateArticle(int id, SyndicationFeed feed)
 		{
 			string msgError = "L'article n'existe pas";
 			List<SyndicationItem> items = GetItemFeed(feed);
@@ -82,9 +82,9 @@ namespace RSSFluxSD
 			{
 				try
 				{	
-					items = DeleteFlow(id, feed);
+					items = DeleteArticle(id, feed);
 					feed.Items = items;
-					items.InsertRange(id, AddFlow(new Flow ("Titre", "Content", "http://url.com", "IdFlow1",DateTimeOffset.Now)));				
+					items.InsertRange(id, AddArticle(new Article ("Titre", "Content", "http://url.com", "IdArticle1",DateTimeOffset.Now)));				
 					return items;
 				}
 				catch
@@ -101,7 +101,7 @@ namespace RSSFluxSD
 		}
 
 
-		public List<SyndicationItem> DeleteFlow(int id, SyndicationFeed feed)
+		public List<SyndicationItem> DeleteArticle(int id, SyndicationFeed feed)
 		{
 			List<SyndicationItem> items = GetItemFeed(feed);
 			string msgError = "L'article n'existe pas";
@@ -126,7 +126,7 @@ namespace RSSFluxSD
 			}
 		}
 
-		public List<SyndicationItem> DeleteFlow(Flow flow,SyndicationFeed feed)
+		public List<SyndicationItem> DeleteArticle(Article article,SyndicationFeed feed)
 		{
 			List<SyndicationItem> items = GetItemFeed(feed);
 			string msgError = "L'article n'existe pas";
@@ -135,7 +135,7 @@ namespace RSSFluxSD
 			{
 				try
 				{
-					SyndicationItem item = items.Find(x => x.Title.Text == flow.Title && x.Id == flow.Id);
+					SyndicationItem item = items.Find(x => x.Title.Text == article.Title && x.Id == article.Id);
 					items.Remove(item);
 					return items;
 				}
