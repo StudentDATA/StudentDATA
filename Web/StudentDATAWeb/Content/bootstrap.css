@@ -28,6 +28,11 @@ section,
 summary {
   display: block;
 }
+#login{
+    margin-left : 25%;
+    margin-right : auto;
+    position : relative;
+}
 audio,
 canvas,
 progress,
@@ -3006,6 +3011,7 @@ select[multiple].form-group-lg .form-control {
   background-image: none;
   border: 1px solid transparent;
   border-radius: 4px;
+  min-width : 200px;
 }
 .btn:focus,
 .btn:active:focus,

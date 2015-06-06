@@ -52,6 +52,7 @@
   background-repeat: repeat-x;
   border-color: #dbdbdb;
   border-color: #ccc;
+  width : 10%;
 }
 .btn-default:hover,
 .btn-default:focus {

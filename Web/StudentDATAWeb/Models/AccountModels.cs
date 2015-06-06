@@ -39,7 +39,7 @@ namespace StudentDATAWeb.Models
         //TODO : [PICTURE] Not used in the first version 
         public string ProfilePicUrl { get; set; }
         public string MailAdress { get; set; }
-        public PermissionEnum Permission {get; set;}
+        public PermissionEnum Permission { get; set; }
 
     }
 
@@ -101,6 +101,18 @@ namespace StudentDATAWeb.Models
         [Display(Name = "Confirmer le mot de passe :")]
         [Compare("Password", ErrorMessage = "Le mot de passe et le mot de passe de confirmation ne correspondent pas.")]
         public string ConfirmPassword { get; set; }
+        [Required]
+        public PermissionEnum Role
+        {
+            get
+            {
+                return PermissionEnum.Student;
+            }
+            set
+            {
+            }
+        }
+
     }
 
     public class ExternalLogin
