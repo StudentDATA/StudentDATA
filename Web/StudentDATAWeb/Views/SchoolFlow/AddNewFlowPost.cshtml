@@ -3,31 +3,23 @@
     ViewBag.Title = "AddNewFlowPost";
 }
 
-<h2 class="col-md-offset-5">Ajoutez un nouveau post</h2>
+<h2>Ajoutez un nouveau post</h2>
 @using (@Html.BeginForm("AddNewPost", "Flow"))
 {
     <fieldset>
-        <ol>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.Title)
-                @Html.TextBoxFor(m => m.Title)
-            </li>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.Content)
-                @Html.TextAreaFor(m => m.Content)
-            </li>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.Url)
-                @Html.TextBoxFor(m => m.Url)
-            </li>
-            <li class="col-md-offset-5">
-                <label>Selectionnez le flux du post :</label>
-                @Html.DropDownList("FlowList", (IEnumerable<SelectListItem>)ViewBag.AllRSSList, null, new { id = "FlowList" })
 
+        @Html.LabelFor(m => m.Title)<br />
+        @Html.TextBoxFor(m => m.Title)<br />
 
-            </li>
+        @Html.LabelFor(m => m.Content)<br />
+        @Html.TextAreaFor(m => m.Content)<br />
 
-        </ol>
-        <input class="col-md-offset-5" type="submit" />
+        @Html.LabelFor(m => m.Url)<br />
+        @Html.TextBoxFor(m => m.Url)<br />
+
+        <label>Selectionnez le flux du post :</label><br />
+        @Html.DropDownList("FlowList", (IEnumerable<SelectListItem>)ViewBag.AllRSSList, null, new { id = "FlowList", style ="margin-bottom : 10px" })<br />
+
+        <input class="btn btn-primary" type="submit" />
     </fieldset>
 }

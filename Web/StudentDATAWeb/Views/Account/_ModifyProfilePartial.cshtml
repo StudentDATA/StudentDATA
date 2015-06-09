@@ -3,53 +3,53 @@
     ViewBag.Title = "_ModifyProfilePartial";
 }
 
-<h2 class="col-md-offset-5">Modifier le profil</h2>
+<h2>Modifier le profil</h2>
 @using (Html.BeginForm("ChangeProfile", "Profile"))
 {
     @Html.ValidationSummary()
     <fieldset>
 
-        <ol>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.UserName)
+        <ul>
+            <li>
+                @Html.LabelFor(m => m.UserName)<br />
                 <p>@ViewBag.UserPseudo</p>
             </li>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.FirstName)
+            <li>
+                @Html.LabelFor(m => m.FirstName)<br />
                 @Html.TextBoxFor(m => m.FirstName, new { placeholder = ViewBag.FirstName, name = "FirstName" })
             </li>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.LastName)
+            <li>
+                @Html.LabelFor(m => m.LastName)<br />
                 @Html.TextBoxFor(m => m.LastName, new { placeholder = ViewBag.LastName })
             </li>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.Semester)
+            <li>
+                @Html.LabelFor(m => m.Semester)<br />
                 @Html.DropDownList("SemesterList", (IEnumerable<SelectListItem>)ViewBag.SemesterList, (string)ViewBag.UserSemester, new { id = "SemesterList" });
             </li>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.StudyField)
+            <li>
+                @Html.LabelFor(m => m.StudyField)<br />
                 @Html.DropDownList("FieldList", (IEnumerable<SelectListItem>)ViewBag.FieldList, (string)ViewBag.UserField, new { id = "FieldList" })
             </li>
 
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.ActualActivity)
+            <li>
+                @Html.LabelFor(m => m.ActualActivity)<br />
                 @Html.TextBoxFor(m => m.ActualActivity, new { placeholder = ViewBag.UserActivity })
             </li>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.MailAdress)
+            <li>
+                @Html.LabelFor(m => m.MailAdress)<br />
                 @Html.TextBoxFor(m => m.MailAdress, new { placeholder = ViewBag.MailAdress })
             </li>
-        </ol>
+        </ul>
     </fieldset>
-            if (ViewBag.UserPermission == StudentDATAWeb.Models.PermissionEnum.Admin)
-            {
-                <p class="col-md-offset-5">
-                8. @Html.LabelFor(m => m.Permission)
-                @Html.DropDownList("PermissionList", (IEnumerable<SelectListItem>)ViewBag.PermissionList, "Admin", new { id="PermissionList" })
-                </p>
-            }
-     
-        <input class="col-md-offset-5 btn btn-primary"  type="submit" value="Enregistrer" />
-    
+    if (ViewBag.UserPermission == StudentDATAWeb.Models.PermissionEnum.Admin)
+    {
+        <p>
+            8. @Html.LabelFor(m => m.Permission)
+            @Html.DropDownList("PermissionList", (IEnumerable<SelectListItem>)ViewBag.PermissionList, "Admin", new { id = "PermissionList" })
+        </p>
+    }
+
+    <input class="btn btn-primary" type="submit" value="Enregistrer" />
+
 
 }
