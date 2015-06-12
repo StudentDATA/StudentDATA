@@ -20,9 +20,9 @@ namespace RSSFluxSD.Tests
 			//Faire methode pour lire une seule et unique rss
 			RSSManage rssM = new RSSManage();
 			//Verfier si on a pas internet;
-			//RSS rss1 = rssM.readRSS("https://fr.news.yahoo.com/rss/world");
-			//rssM.readRSS("https://fr.news.yahoo.com/rss/world");
-			//rssM.readRSS("http://www.developpez.com/index/rss");
+			RSS rss1 = rssM.readRSS("https://fr.news.yahoo.com/rss/world");
+			rssM.readRSS("https://fr.news.yahoo.com/rss/world");
+			rssM.readRSS("http://www.developpez.com/index/rss");
 
 			RSS rss = rssM.readRSS("testAdd.xml");
 
