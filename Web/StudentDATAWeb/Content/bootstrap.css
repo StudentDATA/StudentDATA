@@ -1,4 +1,4 @@
-/*!
+    /*!
  * Bootstrap v3.3.4 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -14,8 +14,9 @@ html {
 body {
     margin: 0;
     list-style-type: none;
+    background : -webkit-linear-gradient(#7f370f 40%,#035867);
+    background-repeat: no-repeat;
 }
-
 article,
 aside,
 details,
@@ -38,29 +39,70 @@ summary {
 }
 
 #loginconnected {
-        position: relative;
-    
+    position: relative;
 }
-#banner
-{
-    background-image : url(/Content/themes/banner.png);
-    line-height : 60%;
-    max-height : 800px;
-    min-height : 100px;
-    background-repeat : no-repeat;
-    padding-top : 17px;
-    padding-left : 10%;
-    margin-left : auto;
-    margin-right : auto;
-    position : relative;
-    max-width : 1000px;
-    min-width : 100px;
-    width : auto;
+.unlogged-banner{
+    padding-left : 15%; 
 }
+.logged-banner{
+    padding-left: 10%;
+}
+#banner {
+    background-image: url(/Content/themes/banner.png);
+    line-height: 60%;
+    max-height: 800px;
+    min-height: 100px;
+    background-repeat: no-repeat;
+    padding-top: 17px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    max-width: 1000px;
+    min-width: 100px;
+    width: auto;
+}
+
 #loginForm {
     text-align: center;
     margin-left: 30%;
     max-width: 40%;
+}
+
+#page-number-container {
+    display: table;
+    height: 26px;
+    width: 200px;
+    margin-left : 48%;
+    position : relative ;
+}
+
+.page-number {
+    height: 40px;
+    width: 40px;
+    background-color: #fff;
+    border: solid #337ab7 3px;
+    border-radius: 4px;
+    vertical-align: middle;
+    color : black;
+    margin : auto;
+    display : table-cell;
+}
+
+.page-button {
+    height: 40px;
+    width: 40px;
+    background-color: #fff;
+    border: solid #337ab7 3px;
+    border-radius: 4px;
+    margin : auto;
+    vertical-align: middle;
+    display : table-cell;
+}
+
+.page-button-div {
+    height: 25px;
+    width: 25px;
+    float: none;
 }
 
 section {
@@ -105,6 +147,7 @@ abbr[title] {
 b,
 strong {
     font-weight: bold;
+    color: #CED8F6;
 }
 
 dfn {
@@ -1450,8 +1493,8 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
-    color: #333;
-    background-color: #fff;
+    color: white;
+    background-color: #035867;
 }
 
 input,
@@ -1461,10 +1504,11 @@ textarea {
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
+    color : black;
 }
 
 a {
-    color: #337ab7;
+    color: #CED8F6;
     text-decoration: none;
 }
 
@@ -3210,6 +3254,7 @@ label {
     max-width: 100%;
     margin-bottom: 5px;
     font-weight: bold;
+    color: #CED8F6;
 }
 
 input[type="search"] {
@@ -3842,7 +3887,7 @@ select[multiple].form-group-lg .form-control {
     color: #fff;
     background-color: #000;
     border-color: #ccc;
-    opacity : 0.9;
+    opacity: 0.9;
 }
 
     .btn-default:hover,

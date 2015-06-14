@@ -23,64 +23,38 @@ namespace StudentDATAWeb.Controllers
         {
             return View();
         }
-
         public ActionResult ManageAccount(UsersContext db)
         {
             userlist = db.UserProfiles;
-            //foreach (UserProfile user in userlist)
-            //{
+            List<UserProfile> tmpProfiles = new List<UserProfile>();
+            int i = 0;
+            while (tmpProfiles.Count < 10 && userlist.ToList().LastOrDefault() != userlist.Find(i))
+            {
+                if (userlist.Find(i) != null)
+                {
+                    tmpProfiles.Add(userlist.Find(i));
+                }
+                i++;
+            }
 
-            //    List<string> tmpCodeList = CodeCutter(user.Code);
-            //    ViewBag.UserPseudo = user.UserName;
-            //    ViewBag.UserName = user.FirstName + " " + user.LastName;
-            //    if (tmpCodeList != null)
-            //    {
-            //        ViewBag.UserSemester = tmpCodeList[0];
-            //        ViewBag.UserField = tmpCodeList[1];
-            //    }
-            //    ViewBag.UserActivity = user.ActualActivity;
-            //    ViewBag.MailAdress = user.MailAdress;
-            //    //Add here the Url for photo
-            //    ViewBag.Modifying = false;
-            //    ViewBag.UserPermission = user.Permission;
-            //    i++;
-            //}
-            //    ViewBag.UserlistLength = i;
-
-                List<SelectListItem> studyFieldManage = new List<SelectListItem>();
-                studyFieldManage.Add(new SelectListItem { Text = "IL", Value = "IL" });
-                studyFieldManage.Add(new SelectListItem { Text = "SR", Value = "SR" });
-                studyFieldManage.Add(new SelectListItem { Text = "Tronc Commun", Value = "Common" });
-
-                List<SelectListItem> semesterManage = new List<SelectListItem>();
-                semesterManage.Add(new SelectListItem { Text = "01", Value = "01" });
-                semesterManage.Add(new SelectListItem { Text = "02", Value = "02" });
-                semesterManage.Add(new SelectListItem { Text = "03", Value = "03" });
-                semesterManage.Add(new SelectListItem { Text = "04", Value = "04" });
-                semesterManage.Add(new SelectListItem { Text = "05", Value = "05" });
-                semesterManage.Add(new SelectListItem { Text = "06", Value = "06" });
-                semesterManage.Add(new SelectListItem { Text = "07", Value = "07" });
-                semesterManage.Add(new SelectListItem { Text = "08", Value = "08" });
-                semesterManage.Add(new SelectListItem { Text = "09", Value = "09" });
-                semesterManage.Add(new SelectListItem { Text = "10", Value = "10" });
-
-                List<SelectListItem> permissionManage = new List<SelectListItem>();
-                permissionManage.Add(new SelectListItem { Text = "Student", Value = "0" });
-                permissionManage.Add(new SelectListItem { Text = "WriterStudent", Value = "1" });
-                permissionManage.Add(new SelectListItem { Text = "Admin", Value = "2" });
+            List<SelectListItem> permissionManage = new List<SelectListItem>();
+            permissionManage.Add(new SelectListItem { Text = "Student", Value = "0" });
+            permissionManage.Add(new SelectListItem { Text = "WriterStudent", Value = "1" });
+            permissionManage.Add(new SelectListItem { Text = "Admin", Value = "2" });
 
 
-                ViewBag.FieldList = studyFieldManage;
-                ViewBag.SemesterList = semesterManage;
-                ViewBag.PermissionList = permissionManage;
-                ViewBag.UserList = userlist;
-                
+            ViewBag.PermissionList = permissionManage;
+            ViewBag.UserList = tmpProfiles;
+            if (userlist.Count() % 10 > 0)
+                ViewBag.PageQuant = Math.Truncate((double)userlist.Count() / 10) + 1;
+            else
+                ViewBag.PageQuant = Math.Truncate((double)userlist.Count() / 10);
+            ViewBag.ActualPage = 1;
             return View("/Views/ManageAccount/ManageAllUser.cshtml");
         }
-          
-        
 
-        //TODO : Integrte parser for the semester code 
+
+
         /// <summary>
         /// The code cutter gets the code registered in the database and pick the semester and the studyfield up
         /// [0] = semester, [1] = StudyField
@@ -122,6 +96,51 @@ namespace StudentDATAWeb.Controllers
 
 
         }
+        [HttpPost]
+        public ActionResult ManageAccountRed(UsersContext db, FormCollection collection)
+        {
+            int index;
+            if (collection.Count == 0)
+            {
+                index = 0;
+            }
+            else
+            {
+                index = Convert.ToInt32(collection["Index"]);
+            }
+            userlist = db.UserProfiles;
+            List<UserProfile> tmpProfiles = new List<UserProfile>();
+            int i = 10 * (index - 1);
+            while (tmpProfiles.Count < 10
+                && tmpProfiles.Count < userlist.Count() - (10 * (index - 1))
+                && userlist.ToList().LastOrDefault() != userlist.Find(i))
+            {
+                if (i > 0)
+                {
+
+                    tmpProfiles.Add(userlist.ToList().Find(u => u != null));
+
+                }
+
+                i++;
+            }
+
+            List<SelectListItem> permissionManage = new List<SelectListItem>();
+            permissionManage.Add(new SelectListItem { Text = "Student", Value = "0" });
+            permissionManage.Add(new SelectListItem { Text = "WriterStudent", Value = "1" });
+            permissionManage.Add(new SelectListItem { Text = "Admin", Value = "2" });
+
+
+            ViewBag.PermissionList = permissionManage;
+            ViewBag.UserList = tmpProfiles;
+            if (userlist.Count() % 10 > 0)
+                ViewBag.PageQuant = Math.Truncate((double)userlist.Count() / 10) + 1;
+            else
+                ViewBag.PageQuant = Math.Truncate((double)userlist.Count() / 10);
+            ViewBag.ActualPage = 1;
+            ViewBag.ActualPage = index;
+            return View("/Views/ManageAccount/ManageAllUser.cshtml");
+        }
 
         [HttpPost]
         public ActionResult ManageProfile(ProfileModel pm, UsersContext db, string PermissionList, FormCollection collection)
@@ -155,7 +174,7 @@ namespace StudentDATAWeb.Controllers
                         currentuser.Permission = PermissionEnum.Admin;
                     }
                 }
-               
+
                 db.Entry(currentuser).State = EntityState.Modified;
                 db.SaveChanges();
                 ViewBag.Modifying = false;
@@ -170,7 +189,7 @@ namespace StudentDATAWeb.Controllers
                 ViewBag.Error = e.ToString();
                 return View();
             }
-           
+
         }
 
 

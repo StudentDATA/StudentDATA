@@ -39,17 +39,18 @@
                 @Html.LabelFor(m => m.MailAdress)<br />
                 @Html.TextBoxFor(m => m.MailAdress, new { placeholder = ViewBag.MailAdress })
             </li>
+
+
+            @if (ViewBag.UserPermission == StudentDATAWeb.Models.PermissionEnum.Admin)
+            {
+                <li>
+                    @Html.LabelFor(m => m.Permission)<br />
+                    @Html.DropDownList("PermissionList", (IEnumerable<SelectListItem>)ViewBag.PermissionList, "Admin", new { id = "PermissionList" })
+                </li>
+            }
         </ul>
     </fieldset>
-    if (ViewBag.UserPermission == StudentDATAWeb.Models.PermissionEnum.Admin)
-    {
-        <p>
-            8. @Html.LabelFor(m => m.Permission)
-            @Html.DropDownList("PermissionList", (IEnumerable<SelectListItem>)ViewBag.PermissionList, "Admin", new { id = "PermissionList" })
-        </p>
-    }
-
-    <input class="btn btn-primary" type="submit" value="Enregistrer" />
+    <input class="btn btn-primary" type="submit" style="margin-left: 40px" value="Enregistrer" />
 
 
 }

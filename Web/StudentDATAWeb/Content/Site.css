@@ -518,6 +518,11 @@ input[type="checkbox"].input-validation-error {
     color: #e80c4d;
     font-weight: bold;
     font-size: 1.1em;
+    
+}
+
+.validation-summary-errors ul li {
+    color : red;
 }
 
 .validation-summary-valid {

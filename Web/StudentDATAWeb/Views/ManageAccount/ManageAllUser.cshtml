@@ -20,9 +20,26 @@
             <strong>Semestre et filière : </strong>
             @user.Code<br />
             @Html.LabelFor(m => m.Permission)
-            @Html.DropDownList("PermissionList", (IEnumerable<SelectListItem>)ViewBag.PermissionList, user.Permission.ToString(), new { id = "PermissionLists" })<br/>
+            @Html.DropDownList("PermissionList", (IEnumerable<SelectListItem>)ViewBag.PermissionList, user.Permission.ToString(), new { id = "PermissionLists" })<br />
         </fieldset>
-        <input class="btn btn-primary" type="submit" value="Modifier" /><br/>
+        <input class="btn btn-primary" type="submit" value="Modifier" /><br />
         <input type="hidden" name="UserName" value="@user.UserName" />
     }
 }
+
+    @using (Html.BeginForm("ManageAccountRed", "Admin",FormMethod.Post, new { id = "page-number-container" }))
+    {
+        for (int i = 1; i <= ViewBag.PageQuant; i++)
+        {
+            if (i != ViewBag.ActualPage)
+            {
+                <div class="page-button-div" id=" actual-page">
+                    <input type="submit" class="page-button" name="Index" value="@i.ToString()" />
+                </div>
+            }
+            else
+            {
+                <div class="page-number" id=" actual-page">@i.ToString()</div>
+            }
+        }
+    }
