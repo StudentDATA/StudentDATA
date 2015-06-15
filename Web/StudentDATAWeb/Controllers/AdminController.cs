@@ -15,7 +15,7 @@ namespace StudentDATAWeb.Controllers
         private UserProfile user;
 
         private System.Data.Entity.DbSet<UserProfile> userlist;
-        int i = 0;
+        //int i = 0;
         //
         // GET: /Admin/
 

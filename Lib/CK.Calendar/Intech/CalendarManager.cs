@@ -66,28 +66,18 @@ namespace CK.Calendar.Intech
             get { return _planning; }
         }
 
-		void Log_To_File(string msg)
-		{
-			DateTimeOffset _date = DateTimeOffset.Now;
-			string _nameFile = _date.Day.ToString() + "_" + _date.Month.ToString() + "_" + _date.Year.ToString() + " Calendar.log";
-			msg = Environment.NewLine + _date.ToString() + Environment.NewLine + msg;
-			File.AppendAllText(Path.Combine(Path.Combine(_dbPath, "Logs"), _nameFile), msg);
-		}
 
 		public void Load(IActivityMonitor m,string semester = "ALL", bool forceReload = false)
 		{
-			Action<string> _logAction = Log_To_File;
-			ActivityMonitorTextWriterClient _log = new ActivityMonitorTextWriterClient(_logAction);
-			m.Output.RegisterClients(_log);
 
 			if (semester == "S01") _sClass = StudentClass.S01;
 			else if (semester == "S02") _sClass = StudentClass.S02;
 			else if (semester == "S02") _sClass = StudentClass.S02;
 			else if (semester == "S03") _sClass = StudentClass.S03;
-			else if (semester.Contains("S04")) _sClass = StudentClass.S04;
-			else if (semester.Contains("S05")) _sClass = StudentClass.S05;
-			else if (semester.Contains("S07") || semester.Contains("S08")) _sClass = StudentClass.S07;
-			else if (semester.Contains("S09") || semester.Contains("S10")) _sClass = StudentClass.S09;
+			else if (semester == "S04") _sClass = StudentClass.S04;
+			else if (semester == "S05") _sClass = StudentClass.S05;
+			else if (semester == "S07" || semester == "S08") _sClass = StudentClass.S07;
+			else if (semester == "S09" || semester == "S10") _sClass = StudentClass.S09;
 			else _sClass = StudentClass.SemesterMask;
 
 			if (forceReload || !File.Exists(FilePlanningPath))
@@ -96,8 +86,6 @@ namespace CK.Calendar.Intech
 				using (var s = File.OpenWrite(FilePlanningPath))
 				{
 					_planning.Save(s);
-
-					m.Output.UnregisterClient(_log);
 				}
 			}
 			else
@@ -105,7 +93,6 @@ namespace CK.Calendar.Intech
 				using (var s = File.OpenRead(FilePlanningPath))
 				{
 					_planning = Planning.Load(s);
-					m.Output.UnregisterClient(_log);
 				}
 			}
 		}
