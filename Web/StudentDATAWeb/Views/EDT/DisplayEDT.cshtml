@@ -7,26 +7,27 @@
 
 @foreach (var e in ViewBag.Planning)
 {
-    DateTime currentDay = ViewBag.currentday;
+    DateTime currentDay = DateTime.Now.Date ;
     DateTime begin = e.Beg;
    // int result = DateTime.Compare(begin, currentDay);
 
     if (currentDay.Date == begin.Date)
     {
-        <div class="col-md-offset-3">
-            <label>@e.Title</label>
-            <label>@e.Location</label>
-            <label>@e.TeachersToString</label>
-            <label>@e.Code</label>
-            <label>@e.BegToString</label>
-            <label>@e.EndToString</label>
+        <div>
+            <label>@e.Title</label><br />
+            <label>@e.Location</label><br />
+            <label>@e.TeachersToString</label><br />
+            <label>@e.Code</label><br />
+            <label>@e.BegToString</label><br />
+            <label>@e.EndToString</label><br />
             <label>-------------------------</label>
         </div>
     }
     
 }
-@Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 col-md-offset-5 btn btn-default" })
-@Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 col-md-offset-5 btn btn-default" })
-
+<div class="edt-button-container">
+@Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2  btn btn-default" })
+@Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default" })
+    </div>
 
 

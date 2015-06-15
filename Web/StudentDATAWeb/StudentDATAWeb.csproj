@@ -42,11 +42,14 @@
   <ItemGroup>
     <Reference Include="CK.Calendar, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\CK.Calendar\bin\Debug\CK.Calendar.dll</HintPath>
+      <HintPath>..\..\Lib\CK.Calendar\obj\Debug\CK.Calendar.dll</HintPath>
     </Reference>
     <Reference Include="CK.Core, Version=4.2.0.0, Culture=neutral, PublicKeyToken=edfa2f62fc978217, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\CK.Core.4.2.0\lib\net45\CK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DDay.iCal">
+      <HintPath>..\..\packages\DDay.iCal.1.0.2.575\lib\DDay.iCal.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

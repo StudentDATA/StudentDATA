@@ -3,7 +3,7 @@
     <div id="banner" class="logged-banner">
             @Html.ActionLink("Flux", "Index", "Flow", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default" })
         @Html.ActionLink("Emploi du temps", "GetDate", "EDT", routeValues: null, htmlAttributes: new { title = "Mon emploi du temps", @class="col-md-2 btn btn-default"})
-        @Html.ActionLink("Modifier mot de passe", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username col-md-2  btn btn-default", title = "Modifier mot de passe" })
+        @Html.ActionLink("Mot de passe", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username col-md-2  btn btn-default", title = "Modifier mot de passe" })
         @Html.ActionLink("Gestion Profil", "ViewProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileViewLink", @class = " col-md-2 btn btn-default", title = "Gestion profil" })
 
             @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"}))

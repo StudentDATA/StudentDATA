@@ -47,7 +47,7 @@
   background-repeat: repeat-x;
   border-color: #dbdbdb;
   border-color: #ccc;
-  width : 10%;
+  width : 200px;
   webkit-transition : background-color 0.5s;
   transition : background-color 0.5s;
 }
@@ -76,6 +76,7 @@
   webkit-transition : background-color 0.5s;
   transition : background-color 0.5s;
   margin : 2px;
+  width : 200px;
 }
 .btn-primary:hover,
 .btn-primary:focus {
