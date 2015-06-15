@@ -70,6 +70,7 @@ namespace CK.Calendar.Tests
 		[TestCase("S03")]
 		[TestCase("S04")]
 		[TestCase("S05")]
+		[TestCase("S05-IL")]
 		[TestCase("S07")]
 		[TestCase("S09")]
 		[Explicit]
@@ -111,7 +112,7 @@ namespace CK.Calendar.Tests
         {
             CalendarManager m = new CalendarManager( TestHelper.CacheFolder );
             m.Load( TestHelper.ConsoleMonitor );
-            var all = m.Planning.Events.Where( SpiFilter ).OrderBy( e => e.Beg );
+			var all = m.Planning.Events.Where(SpiFilter).OrderBy(e => e.Beg);
 
             Console.WriteLine( "+++++++++++++++++++++++++++++++++++++++++" );
             foreach( var e in all )
@@ -122,15 +123,15 @@ namespace CK.Calendar.Tests
             Console.WriteLine( "+++++++++++++++++++++++++++++++++++++++++" );
         }
 
-
+		[TestCase("S05")]
+		[TestCase("S04-IL")]
+		[TestCase("S03-SR")]
 		[Test]
-		public void display_semester_calendar()
+		public void display_semester_calendar(string test)
 		{
 			CalendarManager m = new CalendarManager(TestHelper.CacheFolder);
-			m.Load(TestHelper.ConsoleMonitor,"S05");
-			var all = m.Planning.EventsIL;
-
-			//var all = m.Planning.EventsByTeacher("SPINELLI","SPINELLI");
+			m.Load(TestHelper.ConsoleMonitor, test);
+			var all = m.Planning.Events;
 
 			Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
 			foreach (var e in all)
@@ -148,6 +149,9 @@ namespace CK.Calendar.Tests
 			CalendarManager m = new CalendarManager(TestHelper.CacheFolder);
 
 			//lit/creer le calendrier des S05
+
+			//Dans le string peut etre un nom de prof et ressort le planning du prof
+
 			m.Load(TestHelper.ConsoleMonitor, "S05");
 
 			//prend le planning des IL

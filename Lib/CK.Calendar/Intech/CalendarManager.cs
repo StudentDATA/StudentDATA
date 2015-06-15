@@ -6,11 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using CK.Core;
 using DDay.iCal;
+using System.Text.RegularExpressions;
 
 namespace CK.Calendar.Intech
 {
     public class CalendarManager
     {
+
+		static readonly Regex _rSemester = new Regex(@"S(?<1>10|0[1-9])", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+		static readonly Regex _rFiliere = new Regex(@"(SR)|(IL)", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+		static readonly Regex _rTeachers = new Regex(@"^[a-zA-Z]+$", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+
+
         static readonly string[] _teacherNames = new string[] { 
             "ALEXIADE", 
             "BLOCH", 
@@ -19,6 +26,7 @@ namespace CK.Calendar.Intech
             "BROUSTE", 
             "COCKS", 
             "DORIGNAC", 
+			"DANESI",
             "FARCY",
             "FIALEK",
             "FRANCESHI",
@@ -30,11 +38,14 @@ namespace CK.Calendar.Intech
             "HUET",
             "JOUBERT",
             "JOUVENT",
+			"Adjevi KOUDOSSOU",
             "KOUDOSSOU", 
             "LALITTE", 
+			"MARSAUD",
             "PUCHAUX",
 			"RAQUILLET",
             "SOULEZ",
+			"SANCHEZ",
             "SPINELLI", 
             "SPY",
             "TALAVERA", 
@@ -46,6 +57,8 @@ namespace CK.Calendar.Intech
         readonly string _dbPath;
         Planning _planning;
 		StudentClass _sClass;
+		string _teacherFind = String.Empty;
+		string _filiereFind = String.Empty;
 
         public CalendarManager( string dbPath )
         {
@@ -66,38 +79,62 @@ namespace CK.Calendar.Intech
             get { return _planning; }
         }
 
-		void Log_To_File(string msg)
-		{
-			DateTimeOffset _date = DateTimeOffset.Now;
-			string _nameFile = _date.Day.ToString() + "_" + _date.Month.ToString() + "_" + _date.Year.ToString() + " Calendar.log";
-			msg = Environment.NewLine + _date.ToString() + Environment.NewLine + msg;
-			File.AppendAllText(Path.Combine(Path.Combine(_dbPath, "Logs"), _nameFile), msg);
-		}
-
 		public void Load(IActivityMonitor m,string semester = "ALL", bool forceReload = false)
 		{
-			Action<string> _logAction = Log_To_File;
-			ActivityMonitorTextWriterClient _log = new ActivityMonitorTextWriterClient(_logAction);
-			m.Output.RegisterClients(_log);
+			Match match = Helper.ExtractSameMatch(ref semester, _rSemester);
+			if ( match != null )
+			{
+				var resultMatch = match.Groups[0].Value;
+				if (resultMatch == "S01") _sClass = StudentClass.S01;
+				else if (resultMatch == "S02") _sClass = StudentClass.S02;
+				else if (resultMatch == "S02") _sClass = StudentClass.S02;
+				else if (resultMatch == "S03") _sClass = StudentClass.S03;
+				else if (resultMatch == "S04") _sClass = StudentClass.S04;
+				else if (resultMatch == "S05") _sClass = StudentClass.S05;
+				else if (resultMatch == "S07" || resultMatch == "S08") _sClass = StudentClass.S07;
+				else if (resultMatch == "S09" || resultMatch == "S10") _sClass = StudentClass.S09;
+				else _sClass = StudentClass.SemesterMask;
+				m.Trace().Send( "Semester find : " + resultMatch);
 
-			if (semester == "S01") _sClass = StudentClass.S01;
-			else if (semester == "S02") _sClass = StudentClass.S02;
-			else if (semester == "S02") _sClass = StudentClass.S02;
-			else if (semester == "S03") _sClass = StudentClass.S03;
-			else if (semester.Contains("S04")) _sClass = StudentClass.S04;
-			else if (semester.Contains("S05")) _sClass = StudentClass.S05;
-			else if (semester.Contains("S07") || semester.Contains("S08")) _sClass = StudentClass.S07;
-			else if (semester.Contains("S09") || semester.Contains("S10")) _sClass = StudentClass.S09;
-			else _sClass = StudentClass.SemesterMask;
-
+				match = Helper.ExtractSameMatch(ref semester, _rFiliere);
+				if (match != null)
+				{
+					_filiereFind = match.Groups[0].Value;
+					m.Trace().Send("Filiere find : " + _filiereFind);
+				}
+				else m.Error().Send("No Filiere Find");
+				
+			}
+			else
+			{
+				match = Helper.ExtractSameMatch(ref semester, _rTeachers);
+				if ( match != null)
+				{
+					var resultMatch = match.Groups[0].Value;
+					_sClass = StudentClass.SemesterMask;
+					foreach (var t in _teacherNames)
+					{
+						if ( resultMatch == t)
+						{
+							_teacherFind = resultMatch;
+						}
+					}
+					if ( _teacherFind == String.Empty)
+					{
+						m.Error().Send("No teacher Find");
+					}
+				}
+				else m.Error().Send("No groups Find");
+			}
+			
 			if (forceReload || !File.Exists(FilePlanningPath))
 			{
 				_planning = GetHyperPlanning(m, _sClass);
 				using (var s = File.OpenWrite(FilePlanningPath))
 				{
 					_planning.Save(s);
-
-					m.Output.UnregisterClient(_log);
+					teacherFind();
+					filiereFind();
 				}
 			}
 			else
@@ -105,8 +142,27 @@ namespace CK.Calendar.Intech
 				using (var s = File.OpenRead(FilePlanningPath))
 				{
 					_planning = Planning.Load(s);
-					m.Output.UnregisterClient(_log);
+					teacherFind();
+					filiereFind();
 				}
+			}
+		}
+
+		void teacherFind()
+		{
+			if (_teacherFind != String.Empty)
+			{
+				_planning.Teacher = _teacherFind;
+				_teacherFind = String.Empty;
+			}
+		}
+
+		void filiereFind()
+		{
+			if (_filiereFind != String.Empty)
+			{
+				_planning.Filiere = _filiereFind;
+				_filiereFind = String.Empty;
 			}
 		}
 
@@ -172,6 +228,7 @@ namespace CK.Calendar.Intech
             }
 
         }
+
 
     }
 }

@@ -11,10 +11,25 @@ namespace CK.Calendar.Intech
     public class Planning
     {
         readonly List<SchoolEvent> _events;
+		string _teacher;
+		string _filiere;
+
+		public string Teacher
+		{
+			get { return _teacher; }
+			internal set { _teacher = value; }
+		}
+		public string Filiere
+		{
+			get { return _filiere; }
+			internal set { _filiere = value; }
+		}
 
         internal Planning( List<SchoolEvent> events )
         {
             _events = events;
+			_teacher = String.Empty;
+			_filiere = String.Empty;
         }
 
         public void Save( Stream s )
@@ -32,7 +47,32 @@ namespace CK.Calendar.Intech
 
         public IEnumerable<SchoolEvent> Events
         {
-			get { return _events; }
+			get 
+			{
+				if (_teacher != String.Empty)
+				{
+					return _events.Where(TeachersFilter).OrderBy(x => x.Beg);
+				}
+				else if ( _filiere != String.Empty)
+				{
+					if( _filiere == "IL")
+					{
+						_filiere = String.Empty;
+						return _events.Where(ILFilter).OrderBy(x => x.Beg);
+					}
+					else if (_filiere == "SR")
+					{
+						_filiere = String.Empty;
+						return _events.Where(SRFilter).OrderBy(x => x.Beg);
+					}
+					else
+					{
+						_filiere = String.Empty;
+						return _events;
+					}
+				}
+				else return _events; 
+			}
         }
 
 		public IEnumerable<SchoolEvent> EventsByDate
@@ -72,6 +112,53 @@ namespace CK.Calendar.Intech
 			{
 				return true;
 			}
+		}
+
+		bool TeachersFilter(SchoolEvent e)
+		{
+			if (_teacher == "SPINELLI" || _teacher == "RAQUILLET")
+			{
+				return e.Teachers.Contains(_teacher)
+						|| (e.Classes.Any(c => (c & StudentClass.S03IL) == StudentClass.S03IL) && (e.Title.Contains("Projet informatique") || (e.Code == "IT-PIN-3-2") ||  e.Code== "IT-PIN-3-1"))
+						|| (e.Classes.Any(c => (c & StudentClass.S04IL) == StudentClass.S04IL) && (e.Title.Contains("Projet informatique") || (e.Code == "IT-PIN-4-2") || e.Code == "IT-PIN-4-1"))
+						|| (e.Classes.Any(c => (c & StudentClass.S05IL) == StudentClass.S05IL) && (e.Title.Contains("Projet informatique") || (e.Code == "IT-PIN-5-2") || e.Code == "IT-PIN-5-1"));
+			}
+			else if (_teacher == "KOUDOSSOU")
+			{
+				return e.Teachers.Contains(_teacher)
+						|| (e.Classes.Any(c => (c & StudentClass.S03SR) == StudentClass.S03SR) && (e.Title.Contains("Projet informatique") || (e.Code == "IT-PIN-3-2") || e.Code == "IT-PIN-3-1"))
+						|| (e.Classes.Any(c => (c & StudentClass.S04SR) == StudentClass.S04SR) && (e.Title.Contains("Projet informatique") || (e.Code == "IT-PIN-4-2") || e.Code == "IT-PIN-4-1"))
+						|| (e.Classes.Any(c => (c & StudentClass.S05SR) == StudentClass.S05SR) && (e.Title.Contains("Projet informatique") || (e.Code == "IT-PIN-5-2") || e.Code == "IT-PIN-5-1"));
+			}
+			else if (_teacher == "DORIGNAC")
+			{
+				return e.Teachers.Contains(_teacher)
+						|| (e.Classes.Any(c => (c & StudentClass.S02) == StudentClass.S02) && (e.Title.Contains("PFH") || e.Code == "IT-PFH-2-2"))
+						|| (e.Classes.Any(c => (c & StudentClass.S03) == StudentClass.S03) && (e.Title.Contains("PFH") || e.Code == "IT-PFH-3-2"))
+						|| (e.Classes.Any(c => (c & StudentClass.S04) == StudentClass.S04) && (e.Title.Contains("PFH") || e.Code == "IT-PFH-4-2"));
+			}
+			else if (_teacher == "GOT")
+			{
+				return e.Teachers.Contains(_teacher)
+						|| (e.Classes.Any(c => (c & StudentClass.S05) == StudentClass.S05) && (e.Title.Contains("PFH") || (e.Code == "IT-PFH-5-2" || e.Code == "IT-PFH-5-1")));
+			}
+			else if (_teacher == "SANCHEZ" || _teacher == "DANESI")
+			{
+				return e.Teachers.Contains(_teacher)
+						|| (e.Classes.Any(c => (c & StudentClass.S01) == StudentClass.S01) && (e.Title.Contains("PFH") || (e.Code == "IT-PFH-1-2" || e.Code == "IT-PFH-1-1")));
+			}
+			else if (_teacher == "THIRE")
+			{
+				return e.Teachers.Contains(_teacher)
+						|| (e.Classes.Any
+							(c => (c & StudentClass.S01) == StudentClass.S01) 
+							&& ( (e.Title.Contains("Programmation") || e.Title.Contains("Projet informatique")) 
+							|| (e.Code == "IT-PRG-1-2" || e.Code == "IT-PRG-1-1") || (e.Code == "IT-PIN-1-2" || e.Code == "IT-PIN-1-1")));
+			}
+			return e.Teachers.Contains(_teacher);
+
+
+			//Faire pareil pour TOUS les prof IL et SR
 		}
     }
 }
