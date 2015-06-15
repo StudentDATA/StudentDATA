@@ -3,41 +3,43 @@
     ViewBag.Title = "ManageAllUser";
 }
 
-<h2 class="col-md-offset-5">ManageAllUser</h2>
+<h2>ManageAllUser</h2>
 @foreach (StudentDATAWeb.Models.UserProfile user in ViewBag.UserList)
 {
 
     using (Html.BeginForm("ManageProfile", "Admin"))
     {
-    <fieldset>
-        <ol>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.UserName)
-                @user.UserName
-            </li>
-            <li class="col-md-offset-5">
-                <strong>Nom et Prénom : </strong>
-                @user.FirstName @user.LastName
-            </li>
-            <li class="col-md-offset-5">
-                <strong>Semestre et filière : </strong>
-                @user.Code
-            </li>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.ActualActivity)
-                @user.ActualActivity
-            </li>
-            <li class="col-md-offset-5">
-                @Html.LabelFor(m => m.MailAdress)
-                @user.MailAdress
-            </li>
-            <li class="col-md-offset-5">
-                 @Html.LabelFor(m => m.Permission)
-                 @Html.DropDownList("PermissionList", (IEnumerable<SelectListItem>)ViewBag.PermissionList, user.Permission.ToString(), new { id = "PermissionLists" })
-            </li>
-        </ol>
-    </fieldset>
-     <input class="col-md-offset-6 btn btn-primary"  type="submit" value="Modifier" />
-     <input type="hidden" name="UserName" value="@user.UserName"/>
+        <fieldset>
+
+
+            @Html.LabelFor(m => m.UserName)
+            @user.UserName<br />
+
+            <strong>Nom et Prénom : </strong>
+            @user.FirstName @user.LastName<br />
+            <strong>Semestre et filière : </strong>
+            @user.Code<br />
+            @Html.LabelFor(m => m.Permission)
+            @Html.DropDownList("PermissionList", (IEnumerable<SelectListItem>)ViewBag.PermissionList, user.Permission.ToString(), new { id = "PermissionLists" })<br />
+        </fieldset>
+        <input class="btn btn-primary" type="submit" value="Modifier" /><br />
+        <input type="hidden" name="UserName" value="@user.UserName" />
     }
 }
+
+    @using (Html.BeginForm("ManageAccountRed", "Admin",FormMethod.Post, new { id = "page-number-container" }))
+    {
+        for (int i = 1; i <= ViewBag.PageQuant; i++)
+        {
+            if (i != ViewBag.ActualPage)
+            {
+                <div class="page-button-div" id=" actual-page">
+                    <input type="submit" class="page-button" name="Index" value="@i.ToString()" />
+                </div>
+            }
+            else
+            {
+                <div class="page-number" id=" actual-page">@i.ToString()</div>
+            }
+        }
+    }

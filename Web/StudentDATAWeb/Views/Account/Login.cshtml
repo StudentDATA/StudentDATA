@@ -2,7 +2,7 @@
 
 @{ ViewBag.Title = "Se connecter"; }
 
-    <hgroup class="title col-md-offset-5">
+    <hgroup class="title">
     <h1>@ViewBag.Title</h1>
 </hgroup>
 
@@ -15,20 +15,20 @@
 
             <fieldset>
                 <div class="row">
-                    @Html.LabelFor(m => m.UserName, new { @class = "col-md-offset-5" })
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "col-md-offset-5" })
-                    @Html.ValidationMessageFor(m => m.UserName)
+                    @Html.LabelFor(m => m.UserName)<br>
+                    @Html.TextBoxFor(m => m.UserName)<br>
+                    @Html.ValidationMessageFor(m => m.UserName)<br>
 
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-offset-5" })
-                    @Html.PasswordFor(m => m.Password, new { @class = "col-md-offset-5" })
-                    @Html.ValidationMessageFor(m => m.Password)
+                    @Html.LabelFor(m => m.Password)<br>
+                    @Html.PasswordFor(m => m.Password)<br>
+                    @Html.ValidationMessageFor(m => m.Password)<br>
 
                     @*@Html.LabelFor(m => m.RememberMe, new { @class = "checkbox col-md-offset-5" })
                     @Html.CheckBoxFor(m => m.RememberMe, new { @class = "col-md-offset-5" })*@
                 </div>
         
                 <div class="row">
-                    <input class="col-md-offset-5 btn btn-primary" type="submit" value="Se connecter" />
+                    <input class=" btn btn-primary" type="submit" value="Se connecter" />
                 </div>
             </fieldset>
         }

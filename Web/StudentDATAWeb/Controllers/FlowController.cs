@@ -25,19 +25,23 @@ namespace StudentDATAWeb.Controllers
                 rssManager = new RSSManage();
                 InitializeRSSFlowsDatas();
                 List<List<string>> ll = new List<List<string>>();
-				IReadOnlyList<Article> decompressor = new List<Article>();
+                IReadOnlyList<Article> decompressor = new List<Article>();
                 foreach (string adress in GetRSSByProfile())
                 {
-					decompressor = rssManager.readRSS(adress).GetAllArticle();
-					foreach (Article flow in decompressor)
+                    decompressor = rssManager.readRSS(adress).GetAllArticle();
+                    foreach (Article flow in decompressor)
                     {
-                        ll.Add(new List<string>() { flow.Title, flow.Content, flow.Date.ToString(), flow.Url });
+                        if (ll.Count < 20)
+                            ll.Add(new List<string>() { flow.Title, flow.Content, flow.Date.ToString(), flow.Url });
                     }
                 }
                 ll.OrderByDescending(a => a[3]);
                 ViewBag.FlowList = ll;
                 // TODO : CHange isWriter set
-                ViewBag.IsWriter = true;
+                if (profile.Permission == PermissionEnum.WriterStudent || profile.Permission == PermissionEnum.Admin)
+                    ViewBag.IsWriter = true;
+                else
+                    ViewBag.IsWriter = false;
                 return View("/Views/SchoolFlow/Flow.cshtml");
             }
             else
@@ -74,10 +78,10 @@ namespace StudentDATAWeb.Controllers
                                    : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml");
                         if (!System.IO.File.Exists(tmp.Adress))
                         {
-                           // System.IO.File.Create(tmp.Adress);
+                            // System.IO.File.Create(tmp.Adress);
                             rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
                         }
-                        
+
                         db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                         db.SaveChanges();
                     }
@@ -109,7 +113,7 @@ namespace StudentDATAWeb.Controllers
                     rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
 
                 }
-                  //  System.IO.File.Create(tmp.Adress);
+                //  System.IO.File.Create(tmp.Adress);
                 db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                 db.SaveChanges();
             }
@@ -126,7 +130,7 @@ namespace StudentDATAWeb.Controllers
                     rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
 
                 }
-                   // System.IO.File.Create(tmp.Adress);
+                // System.IO.File.Create(tmp.Adress);
                 db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                 db.SaveChanges();
             }
@@ -137,13 +141,13 @@ namespace StudentDATAWeb.Controllers
                 tmp.FlowName = "TC";
                 tmp.Adress = (System.Web.HttpContext.Current == null)
                             ? System.Web.Hosting.HostingEnvironment.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml")
-                            : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml"); 
+                            : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml");
                 if (!System.IO.File.Exists(tmp.Adress))
                 {
                     rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
 
                 }
-                   // System.IO.File.Create(tmp.Adress);
+                // System.IO.File.Create(tmp.Adress);
                 db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                 db.SaveChanges();
             }
@@ -159,9 +163,9 @@ namespace StudentDATAWeb.Controllers
                 if (!System.IO.File.Exists(tmp.Adress))
                 {
                     rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
-                   
+
                 }
-               //     System.IO.File.Create(tmp.Adress);
+                //     System.IO.File.Create(tmp.Adress);
                 db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
                 db.SaveChanges();
             }
@@ -365,9 +369,9 @@ namespace StudentDATAWeb.Controllers
         {
             rssManager = new RSSManage();
             //Flow tmpFlow = new Flow(fpm.Title, fpm.Content);
-			List<Article> listFlow = new List<Article>() { new Article(fpm.Title, fpm.Content) };
+            List<Article> listFlow = new List<Article>() { new Article(fpm.Title, fpm.Content) };
             RSS tmpRss = rssManager.readRSS(FlowList);
-			tmpRss.AddArticle(listFlow);
+            tmpRss.AddArticle(listFlow);
             tmpRss.Save(Helper.FormatRSSEnum.RSS20);
             RSS tmpRss2 = rssManager.readRSS(FlowList);
             //rssManager.addFlow(FlowList, listFlow);

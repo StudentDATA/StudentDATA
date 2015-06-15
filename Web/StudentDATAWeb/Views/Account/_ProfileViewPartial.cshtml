@@ -3,55 +3,57 @@
 }
 
 <div>
-    <strong class="col-md-offset-5">
+    <strong>
         Pseudo :
     </strong>
-    <p class="col-md-offset-5">
+    <p >
         @ViewBag.UserPseudo
     </p>
-    <strong class="col-md-offset-5">
+    <strong >
         Nom et prénom :
     </strong>
-    <p class="col-md-offset-5">
+    <p >
         @ViewBag.UserName
     </p>
-    <strong class="col-md-offset-5">
+    <strong >
         Semestre :
     </strong>
-    <p class="col-md-offset-5">
+    <p >
         @ViewBag.UserSemester
     </p>
-    <strong class="col-md-offset-5">
+    <strong >
         Filière :
     </strong>
-    <p class="col-md-offset-5">
+    <p >
         @ViewBag.UserField
     </p>
-    <strong class="col-md-offset-5">
+    <strong >
         Job ou Projet actuel:
     </strong>
-    <p class="col-md-offset-5">
+    <p >
         @ViewBag.UserActivity
     </p>
-    <strong class="col-md-offset-5">
+    <strong >
         Adresse Mail :
     </strong>
-    <p class="col-md-offset-5">
+    <p >
         @ViewBag.MailAdress
     </p>
 
-    <strong class="col-md-offset-5">
+    <strong >
         Permissions :
     </strong>
-    <p class="col-md-offset-5">
+    <p >
         @ViewBag.UserPermission
     </p>
 </div>
-@Html.ActionLink("Modifier", "ChangeFormProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileModifLink", @class = "col-md-offset-5 btn btn-primary" })
+@Html.ActionLink("Modifier", "ChangeFormProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileModifLink", @class = "btn btn-primary" })<br />
+@Html.ActionLink("Modifier mot de passe", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-primary", title = "Modifier mot de passe" })
 <div>
     @if (ViewBag.UserPermission == StudentDATAWeb.Models.PermissionEnum.Admin)
     {
-        @Html.ActionLink("Administration", "ManageAccount", "Admin", routeValues: null, htmlAttributes: new { @class = "col-md-offset-5 btn btn-default", title = "Gestion profil" })
+        @Html.ActionLink("Administration", "ManageAccount", "Admin", routeValues: null, htmlAttributes: new { @class = " btn btn-primary", title = "Gestion profil" })
+        
     }
 </div>
 

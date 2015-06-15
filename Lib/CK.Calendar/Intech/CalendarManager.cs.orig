@@ -69,7 +69,12 @@ namespace CK.Calendar.Intech
 
 		public void Load(IActivityMonitor m,string semester = "ALL", bool forceReload = false)
 		{
+<<<<<<< HEAD
+=======
 			Action<string> _logAction = Log_To_File;    
+			ActivityMonitorTextWriterClient _log = new ActivityMonitorTextWriterClient(_logAction);
+			m.Output.RegisterClients(_log);
+>>>>>>> dev
 
 			if (semester == "S01") _sClass = StudentClass.S01;
 			else if (semester == "S02") _sClass = StudentClass.S02;

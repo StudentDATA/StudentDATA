@@ -1,23 +1,31 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
-    <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - Mon application ASP.NET MVC</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/bundles/BootstrapCss") 
-        @*@Styles.Render("~/Content/css")*@
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Mon application ASP.NET MVC</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/bundles/BootstrapCss")
+    @*@Styles.Render("~/Content/css")*@
+    @Scripts.Render("~/bundles/modernizr")
+</head>
 
 <body>
     <header>
         <a href="~/"><img src="~/Images/LogoSD.png" alt="test" class="img-rounded center-block"></a>
         <div class="row">
-            <section id="login">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <section id="loginconnected">
                 @Html.Partial("_LoginPartial")
-            </section>
+            </section>}
+            else
+            {
+                <section id="login">
+                    @Html.Partial("_LoginPartial")
+                </section>
+            }
         </div>
     </header>
 
@@ -30,8 +38,8 @@
 
     <footer>
         <div class="row">
-                <div class="col-md-offset-5">
-                    <p>&copy; @DateTime.Now.Year - Mon application ASP.NET MVC</p>
+            <div style="text-align : center; margin-left : 20px;">
+                <p>&copy; @DateTime.Now.Year - Mon application ASP.NET MVC</p>
             </div>
         </div>
 
