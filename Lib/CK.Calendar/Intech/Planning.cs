@@ -49,29 +49,30 @@ namespace CK.Calendar.Intech
         {
 			get 
 			{
+				Func<SchoolEvent, bool> _filter = null;
+
 				if (_teacher != String.Empty)
 				{
-					return _events.Where(TeachersFilter).OrderBy(x => x.Beg);
+					_filter = TeachersFilter;
 				}
 				else if ( _filiere != String.Empty)
 				{
 					if( _filiere == "IL")
 					{
 						_filiere = String.Empty;
-						return _events.Where(ILFilter).OrderBy(x => x.Beg);
+						_filter = ILFilter;
 					}
 					else if (_filiere == "SR")
 					{
 						_filiere = String.Empty;
-						return _events.Where(SRFilter).OrderBy(x => x.Beg);
-					}
-					else
-					{
-						_filiere = String.Empty;
-						return _events;
+						_filter = SRFilter;
 					}
 				}
-				else return _events; 
+				if ( _filter != null)
+				{
+					return _events.Where(_filter).OrderBy(x => x.Beg);
+				}
+				else return _events.OrderBy(x => x.Beg); 
 			}
         }
 

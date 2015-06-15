@@ -78,7 +78,7 @@ namespace CK.Calendar.Intech
                     string subjectCode = null;
                     string subjectTitle = null;
                     string location = e.Location;
-					//verifier pour les S07/S08 ET S09/S010 
+					//verifier pour les S07/S08 ET S09/S010 : ENCORE
 					Match match = Helper.ExtractSameMatch(ref all, _rClass);
                     if( match != null )
                     {
