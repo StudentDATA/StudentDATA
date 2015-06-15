@@ -76,7 +76,7 @@ namespace CK.Calendar.Intech
 
 		public void Load(IActivityMonitor m,string semester = "ALL", bool forceReload = false)
 		{
-			Action<string> _logAction = Log_To_File;
+			Action<string> _logAction = Log_To_File;    
 			ActivityMonitorTextWriterClient _log = new ActivityMonitorTextWriterClient(_logAction);
 			m.Output.RegisterClients(_log);
 

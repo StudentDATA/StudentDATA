@@ -1,4 +1,4 @@
-    /*!
+/*!
  * Bootstrap v3.3.4 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -14,9 +14,10 @@ html {
 body {
     margin: 0;
     list-style-type: none;
-    background : -webkit-linear-gradient(#7f370f 40%,#035867);
+    background: -webkit-linear-gradient(#7f370f 40%,#035867);
     background-repeat: no-repeat;
 }
+
 article,
 aside,
 details,
@@ -41,12 +42,15 @@ summary {
 #loginconnected {
     position: relative;
 }
-.unlogged-banner{
-    padding-left : 15%; 
+
+.unlogged-banner {
+    padding-left: 15%;
 }
-.logged-banner{
+
+.logged-banner {
     padding-left: 10%;
 }
+
 #banner {
     background-image: url(/Content/themes/banner.png);
     line-height: 60%;
@@ -72,8 +76,8 @@ summary {
     display: table;
     height: 26px;
     width: 200px;
-    margin-left : 48%;
-    position : relative ;
+    margin-left: 48%;
+    position: relative;
 }
 
 .page-number {
@@ -83,9 +87,9 @@ summary {
     border: solid #337ab7 3px;
     border-radius: 4px;
     vertical-align: middle;
-    color : black;
-    margin : auto;
-    display : table-cell;
+    color: black;
+    margin: auto;
+    display: table-cell;
 }
 
 .page-button {
@@ -94,9 +98,9 @@ summary {
     background-color: #fff;
     border: solid #337ab7 3px;
     border-radius: 4px;
-    margin : auto;
+    margin: auto;
     vertical-align: middle;
-    display : table-cell;
+    display: table-cell;
 }
 
 .page-button-div {
@@ -105,14 +109,44 @@ summary {
     float: none;
 }
 
-section {
-    text-align: center;
-}
-
 .title {
     text-align: center;
 }
 
+section {
+    text-align: center;
+}
+
+input[type="text"] {
+    opacity: 0.7;
+    background-color: black;
+    color: white;
+    font-weight : bold;
+    border-radius : 4px;
+}
+input[type="password"] {
+    opacity: 0.7;
+    background-color: black;
+    color: white;
+    font-weight : bold;
+    border-radius : 4px;
+} 
+select {
+    -webkit-appearance : none;
+    -moz-appearance : none; 
+    opacity: 0.7;
+    background-color: grey;
+    color: white;
+    border-radius : 4px;
+}
+
+select :focus{
+    -webkit-appearance : none;
+    -moz-appearance : none; 
+    opacity: 0.7;
+    background-color: black;
+    color: white;
+}
 audio,
 canvas,
 progress,
@@ -1504,7 +1538,7 @@ textarea {
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
-    color : black;
+    color: black;
 }
 
 a {
