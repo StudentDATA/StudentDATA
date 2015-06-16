@@ -33,10 +33,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CK.Core">
-      <HintPath>..\packages\CK.Core.4.0.0\lib\net45\CK.Core.dll</HintPath>
+      <HintPath>..\..\packages\CK.Core.4.2.0\lib\net45\CK.Core.dll</HintPath>
     </Reference>
     <Reference Include="DDay.iCal">
-      <HintPath>..\packages\DDay.iCal.1.0.2.575\lib\DDay.iCal.dll</HintPath>
+      <HintPath>..\..\packages\DDay.iCal.1.0.2.575\lib\DDay.iCal.dll</HintPath>
     </Reference>
     <Reference Include="nunit.core">
       <HintPath>..\..\packages\NUnitTestAdapter.2.0.0\lib\nunit.core.dll</HintPath>
@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Intech\CalendarManager.cs" />
+    <Compile Include="Intech\Helper.cs" />
     <Compile Include="Intech\SchoolEvent.cs" />
     <Compile Include="Intech\SchoolEventExtension.cs" />
     <Compile Include="Intech\StudentClass.cs" />

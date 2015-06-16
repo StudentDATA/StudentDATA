@@ -81,6 +81,22 @@ namespace CK.Calendar.Intech
 
 		public void Load(IActivityMonitor m,string semester = "ALL", bool forceReload = false)
 		{
+<<<<<<< HEAD
+			Action<string> _logAction = Log_To_File;    
+			ActivityMonitorTextWriterClient _log = new ActivityMonitorTextWriterClient(_logAction);
+			m.Output.RegisterClients(_log);
+
+			if (semester == "S01") _sClass = StudentClass.S01;
+			else if (semester == "S02") _sClass = StudentClass.S02;
+			else if (semester == "S02") _sClass = StudentClass.S02;
+			else if (semester == "S03") _sClass = StudentClass.S03;
+			else if (semester.Contains("S04")) _sClass = StudentClass.S04;
+			else if (semester.Contains("S05")) _sClass = StudentClass.S05;
+			else if (semester.Contains("S07") || semester.Contains("S08")) _sClass = StudentClass.S07;
+			else if (semester.Contains("S09") || semester.Contains("S10")) _sClass = StudentClass.S09;
+			else _sClass = StudentClass.SemesterMask;
+
+=======
 			Match match = Helper.ExtractSameMatch(ref semester, _rSemester);
 			if ( match != null )
 			{
@@ -128,6 +144,7 @@ namespace CK.Calendar.Intech
 				else m.Error().Send("No groups Find");
 			}
 			
+>>>>>>> CalendarDev
 			if (forceReload || !File.Exists(FilePlanningPath))
 			{
 				_planning = GetHyperPlanning(m, _sClass);
