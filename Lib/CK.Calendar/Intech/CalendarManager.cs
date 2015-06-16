@@ -13,7 +13,7 @@ namespace CK.Calendar.Intech
     public class CalendarManager
     {
 
-		static readonly Regex _rSemester = new Regex(@"S(?<1>10|0[1-9])", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+		static readonly Regex _rSemester = new Regex(@"^S(?<1>10|0[1-9])", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 		static readonly Regex _rFiliere = new Regex(@"(SR)|(IL)", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 		static readonly Regex _rTeachers = new Regex(@"^[a-zA-Z]+$", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
@@ -85,6 +85,8 @@ namespace CK.Calendar.Intech
 			if ( match != null )
 			{
 				var resultMatch = match.Groups[0].Value;
+				var resultMatch2 = match.Groups[1].Value;
+				var resultMatch3 = match.Groups[2].Value;
 				if (resultMatch == "S01") _sClass = StudentClass.S01;
 				else if (resultMatch == "S02") _sClass = StudentClass.S02;
 				else if (resultMatch == "S02") _sClass = StudentClass.S02;
@@ -103,7 +105,6 @@ namespace CK.Calendar.Intech
 					m.Trace().Send("Filiere find : " + _filiereFind);
 				}
 				else m.Error().Send("No Filiere Find");
-				
 			}
 			else
 			{
