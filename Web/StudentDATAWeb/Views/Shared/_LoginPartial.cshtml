@@ -1,17 +1,20 @@
 ﻿@if (Request.IsAuthenticated)
 {
-    <text>
-   @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username col-md-2 col-md-offset-4 btn btn-default", title = "Gérer" })
-   @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "col-md-2 btn btn-default" }))
-   { @Html.AntiForgeryToken()
-    <a href="javascript:document.getElementById('logoutForm').submit()">Se déconnecter</a>
-}
-@Html.ActionLink("Profil", "ViewProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileViewLink" })
+    <div id="banner" class="logged-banner">
+            @Html.ActionLink("Flux", "Index", "Flow", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default" })
+            @Html.ActionLink("Gérer Profil", "ViewProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileViewLink", @class = " col-md-2 btn btn-default", title = "Gestion profil" })
 
-</text>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"}))
+            { @Html.AntiForgeryToken()
+    <a href="javascript:document.getElementById('logoutForm').submit()" class="col-md-2 btn btn-default">Se déconnecter</a>
+            }
+
+    </div>
 }
 else
 {
-    @Html.ActionLink("S'inscrire", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "col-md-2 col-md-offset-3 btn btn-primary" })
-    @Html.ActionLink("Se connecter", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = " col-md-2 col-md-offset-2 btn btn-primary" })
+    <div id="banner" class="unlogged-banner">
+        @Html.ActionLink("S'inscrire", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "col-md-2  btn btn-default" })
+        @Html.ActionLink("Se connecter", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = " col-md-2 btn btn-default" })
+    </div>
 }

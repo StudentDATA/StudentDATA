@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StudentDATAWeb.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,6 +15,7 @@ namespace StudentDATAWeb.Controllers
 			ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
             if (WebSecurity.IsAuthenticated)
                 return RedirectToAction("Index", "Flow");
+            
             else
                 return View();
 		}
@@ -31,5 +33,6 @@ namespace StudentDATAWeb.Controllers
 
 			return View();
 		}
+ 
 	}
 }

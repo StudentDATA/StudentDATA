@@ -1,26 +1,25 @@
-﻿@{
+﻿@model StudentDATAWeb.Models.FlowPostModel
+@{
     ViewBag.Title = "AddNewFlowPost";
 }
 
 <h2>Ajoutez un nouveau post</h2>
-@using(@Html.BeginForm("AddNewPost", "Flow"))
+@using (@Html.BeginForm("AddNewPost", "Flow"))
 {
-<fieldset>
-    <ol>
-        <li>
-            <label>Titre du post : </label>
-            @Html.TextBox("PostTitle", null, htmlAttributes: new { name = "title" })
-        </li>
-        <li>
-            <label>Contenu :  </label>
-            @Html.TextArea("PostContent", htmlAttributes: new { name = "content" })
-        </li>
-        <li>
-            <label>Url à suivre :  </label>
-            @Html.TextBox("URL", null, htmlAttributes: new { name = "url" })
-        </li>
+    <fieldset>
 
-    </ol>
-    <input type="submit" />
-</fieldset>
+        @Html.LabelFor(m => m.Title)<br />
+        @Html.TextBoxFor(m => m.Title)<br />
+
+        @Html.LabelFor(m => m.Content)<br />
+        @Html.TextAreaFor(m => m.Content)<br />
+
+        @Html.LabelFor(m => m.Url)<br />
+        @Html.TextBoxFor(m => m.Url)<br />
+
+        <label>Selectionnez le flux du post :</label><br />
+        @Html.DropDownList("FlowList", (IEnumerable<SelectListItem>)ViewBag.AllRSSList, null, new { id = "FlowList", style ="margin-bottom : 10px" })<br />
+
+        <input class="btn btn-primary" type="submit" />
+    </fieldset>
 }

@@ -37,7 +37,6 @@ namespace StudentDATAWeb.Controllers
 		{
 			if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
 			{
-
 				return RedirectToLocal(returnUrl);
 			}
 
@@ -80,7 +79,7 @@ namespace StudentDATAWeb.Controllers
 				// Tentative d'inscription de l'utilisateur
 				try
 				{
-					WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { Permission = model.Role });
 					WebSecurity.Login(model.UserName, model.Password);
 					return RedirectToAction("Index", "Home");
 				}

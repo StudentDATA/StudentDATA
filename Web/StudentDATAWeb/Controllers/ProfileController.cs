@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using StudentDATAWeb.Models;
 using WebMatrix.WebData;
+using System.Data.Entity;
 
 
 namespace StudentDATAWeb.Controllers
@@ -16,11 +17,11 @@ namespace StudentDATAWeb.Controllers
 
         public ProfileController()
         {
-            ViewBag.UserName = null;
-            ViewBag.UserSemester = null;
-            ViewBag.UserField = null;
-            ViewBag.UserActivity = null;
-            ViewBag.MailAdress = null;
+            //ViewBag.UserName = null;
+            //ViewBag.UserSemester = null;
+            //ViewBag.UserField = null;
+            //ViewBag.UserActivity = null;
+            //ViewBag.MailAdress = null;
         }
 
         public ActionResult ViewProfile(UsersContext db)
@@ -40,6 +41,7 @@ namespace StudentDATAWeb.Controllers
                 ViewBag.MailAdress = user.MailAdress;
                 //Add here the Url for photo
                 ViewBag.Modifying = false;
+                ViewBag.UserPermission = user.Permission;
             }
             return View("/Views/Account/Profile.cshtml");
         }
@@ -58,51 +60,85 @@ namespace StudentDATAWeb.Controllers
                 bool isCommon = true;
 
                 string tmpString = code.Substring(1, 2);
+                try
+                {
+                    int tmpInteger = Convert.ToInt32(tmpString);
+                    if (tmpInteger < 10)
 
-                int tmpInteger = Convert.ToInt32(tmpString);
-                if (tmpInteger < 10)
+                        if (tmpInteger < 10 && tmpInteger >= 3)
+                        {
+                            tmpList.Add("0" + tmpInteger.ToString());
+                            isCommon = false;
+                        }
+                        else if (tmpInteger < 3)
+                        {
+                            tmpList.Add("0" + tmpInteger.ToString());
+                            isCommon = true;
+                        }
+                        else if (tmpInteger == 0)
+                        {
+                            tmpList.Add("00");
+                            isCommon = false;
+                        }
 
-                    if (tmpInteger < 10 && tmpInteger >= 3)
-                    {
-                        tmpList.Add("0" + tmpInteger.ToString());
-                        isCommon = false;
-                    }
-                    else if (tmpInteger < 3)
-                    {
-                        tmpList.Add("0" + tmpInteger.ToString());
-                        isCommon = true;
-                    }
-                if (code.Contains("IL") && !isCommon)
-                    tmpList.Add("IL");
-                else if (code.Contains("SR") && !isCommon)
-                    tmpList.Add("SR");
-                else
-                    tmpList.Add("Tronc Commun");
-                return tmpList;
+
+                    if (code.Contains("IL") && !isCommon)
+                        tmpList.Add("IL");
+                    else if (code.Contains("SR") && !isCommon)
+                        tmpList.Add("SR");
+                    else if (code.Contains("TC") && !isCommon)
+                        tmpList.Add("Tronc Commun");
+                    else
+                        tmpList.Add("pedago");
+                    return tmpList;
+                }
+                catch (Exception e)
+                {
+                    tmpList.Add(e.ToString());
+                    tmpList.Add(null);
+                    return tmpList;
+                }
+
             }
-            else
-                return null;
+            else return new List<string>(){"",""};
 
-            
         }
 
         public string CodeCreator(List<string> ls)
         {
-            if (ls[1] == "Common")
-                ls[1] = "";
-            return "S" + ls[0].ToString() + ls[1].ToString();
+            if (ls != null)
+            {
+                if (ls[1] == "Common")
+                    ls[1] = "TC";
+                else if (ls[1] == "pedago")
+                    ls[1] = "PO";
+
+                return "S" + ls[0].ToString() + ls[1].ToString();
+            }
+            else
+                return null;
         }
         public ActionResult ChangeFormProfile(UsersContext db)
         {
+            string tmpField;
+            string tmpSemester;
             user = db.UserProfiles.Find(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.Modifying = true;
             ViewBag.UserPseudo = user.UserName;
             ViewBag.FirstName = user.FirstName;
             ViewBag.LastName = user.LastName;
-            if (user.Code != null)
+            ViewBag.UserPermission = user.Permission;
+            tmpField = CodeCutter(user.Code)[1];
+            tmpSemester = CodeCutter(user.Code)[0];
+            if (tmpField != null && tmpSemester != null)
             {
-                ViewBag.UserSemester = CodeCutter(user.Code)[0];
-                ViewBag.UserField = CodeCutter(user.Code)[1];
+                ViewBag.UserSemester = tmpSemester;
+                ViewBag.UserField = tmpField;
+            }
+            else
+            {
+                ViewBag.UserSemester = null;
+                ViewBag.UserField = null;
             }
             ViewBag.UserActivity = user.ActualActivity;
             ViewBag.MailAdress = user.MailAdress;
@@ -111,8 +147,10 @@ namespace StudentDATAWeb.Controllers
             studyField.Add(new SelectListItem { Text = "IL", Value = "IL" });
             studyField.Add(new SelectListItem { Text = "SR", Value = "SR" });
             studyField.Add(new SelectListItem { Text = "Tronc Commun", Value = "Common" });
+            studyField.Add(new SelectListItem { Text = "Equipe pédagogique", Value = "pedago" });
 
             List<SelectListItem> semester = new List<SelectListItem>();
+            semester.Add(new SelectListItem { Text = "Aucun", Value = "00" });
             semester.Add(new SelectListItem { Text = "01", Value = "01" });
             semester.Add(new SelectListItem { Text = "02", Value = "02" });
             semester.Add(new SelectListItem { Text = "03", Value = "03" });
@@ -124,13 +162,20 @@ namespace StudentDATAWeb.Controllers
             semester.Add(new SelectListItem { Text = "09", Value = "09" });
             semester.Add(new SelectListItem { Text = "10", Value = "10" });
 
+            List<SelectListItem> permission = new List<SelectListItem>();
+            permission.Add(new SelectListItem { Text = "Student", Value = "0" });
+            permission.Add(new SelectListItem { Text = "WriterStudent", Value = "1" });
+            permission.Add(new SelectListItem { Text = "Admin", Value = "2" });
+
+
             ViewBag.FieldList = studyField;
             ViewBag.SemesterList = semester;
+            ViewBag.PermissionList = permission;
 
             return View("/Views/Account/Profile.cshtml");
         }
         [HttpPost]
-        public ActionResult ChangeProfile(ProfileModel pm, UsersContext db, string FieldList, string SemesterList)
+        public ActionResult ChangeProfile(ProfileModel pm, UsersContext db, string FieldList, string SemesterList, string PermissionList)
         {
             try
             {
@@ -144,6 +189,21 @@ namespace StudentDATAWeb.Controllers
                     user.MailAdress = pm.MailAdress;
                 if (pm.ActualActivity != null)
                     user.ActualActivity = pm.ActualActivity;
+                if (PermissionList != "")
+                {
+                    if(PermissionList == "0")
+                    {
+                        user.Permission = PermissionEnum.Student;
+                    }
+                    if (PermissionList == "1")
+                    {
+                        user.Permission = PermissionEnum.WriterStudent;
+                    }
+                    if (PermissionList == "2")
+                    {
+                        user.Permission = PermissionEnum.Admin;
+                    }
+                }
                 if (SemesterList != "" && FieldList != "")
                     user.Code = CodeCreator(new List<string>() { SemesterList.ToString(), FieldList.ToString() });
                 else if (SemesterList == "" && FieldList != "")
@@ -152,9 +212,9 @@ namespace StudentDATAWeb.Controllers
                     user.Code = CodeCreator(new List<string>() { SemesterList, CodeCutter(user.Code)[1] });
                 else
                     user.Code = CodeCreator(CodeCutter(user.Code));
-                    
 
-                db.Entry(user).State = System.Data.EntityState.Modified;
+             
+                db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
                 ViewBag.Modifying = false;
                 return RedirectToAction("ViewProfile", pm);
