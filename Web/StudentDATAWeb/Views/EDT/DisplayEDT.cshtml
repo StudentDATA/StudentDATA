@@ -3,17 +3,20 @@
 }
 
 <h2 class="center-block">DisplayEDT</h2>
-
+@{
+    string day="";
+}
 
 @foreach (var e in ViewBag.Planning)
 {
-    DateTime currentDay = DateTime.Now.Date ;
+    DateTime currentDay = ViewBag.currentday;
     DateTime begin = e.Beg;
    // int result = DateTime.Compare(begin, currentDay);
 
     if (currentDay.Date == begin.Date)
     {
-        <div>
+        day = e.BegToString;
+        <div class="col-md-offset-5">
             <label>@e.Title</label><br />
             <label>@e.Location</label><br />
             <label>@e.TeachersToString</label><br />
@@ -25,9 +28,20 @@
     }
     
 }
-<div class="edt-button-container">
+    @using (Html.BeginForm("PreviousDayPlanning", "EDT"))
+{
+    <input class="btn btn-primary col-md-offset-5" type="submit" value="Jour précédent" /><br />
+        <input type="hidden" name="CurrentDayHidden" value="@day" />
+    }
+    @using (Html.BeginForm("NextDayPlanning", "EDT"))
+{
+    <input class="btn btn-primary col-md-offset-5" type="submit" value="Jour suivant" /><br />
+    <input type="hidden" name="CurrentDayHidden" value="@day" />
+    }
+
+@*<div class="edt-button-container">
 @Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2  btn btn-default" })
 @Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default" })
-    </div>
+    </div>*@
 
 

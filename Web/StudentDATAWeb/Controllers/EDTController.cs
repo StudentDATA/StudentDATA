@@ -86,17 +86,35 @@ namespace StudentDATAWeb.Controllers
             return RedirectToAction("ViewPlanning");
         }
 
-        public ActionResult NextDayPlanning()
+        public ActionResult NextDayPlanning(FormCollection collection)
         {
-            currentDay = currentDay.AddDays(1);
-            TempData["Day"] = currentDay;
+            string currentDayHidden = collection["CurrentDayHidden"];
+            DateTime currentDayHiddenConvert = Convert.ToDateTime(currentDayHidden);
+            if (currentDayHiddenConvert.DayOfWeek == DayOfWeek.Friday)
+            {
+                currentDayHiddenConvert = currentDayHiddenConvert.AddDays(3);
+            }
+            else
+            {
+                currentDayHiddenConvert = currentDayHiddenConvert.AddDays(1);
+            }
+            TempData["Day"] = currentDayHiddenConvert;
             return RedirectToAction("ViewPlanning");
         }
 
-        public ActionResult PreviousDayPlanning()
+        public ActionResult PreviousDayPlanning(FormCollection collection)
         {
-            currentDay = currentDay.AddDays(-1);
-            TempData["Day"] = currentDay;
+            string currentDayHidden = collection["CurrentDayHidden"];
+            DateTime currentDayHiddenConvert = Convert.ToDateTime(currentDayHidden);
+            if(currentDayHiddenConvert.DayOfWeek == DayOfWeek.Monday)
+            {
+                currentDayHiddenConvert = currentDayHiddenConvert.AddDays(-3);
+            }
+            else
+            {
+                currentDayHiddenConvert = currentDayHiddenConvert.AddDays(-1);
+            }
+            TempData["Day"] = currentDayHiddenConvert;
             return RedirectToAction("ViewPlanning");
         }
 
