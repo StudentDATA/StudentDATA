@@ -2,15 +2,15 @@
     ViewBag.Title = "DisplayEDT";
 }
 
-<h2 class="center-block">DisplayEDT</h2>
+<h2 class="center-block">Votre emploi du temps</h2>
 
 
 @foreach (var e in ViewBag.Planning)
 {
-    DateTime currentDay = DateTime.Now.Date ;
+    DateTime currentDay = DateTime.Now.Date;
     DateTime begin = e.Beg;
-    
-   // int result = DateTime.Compare(begin, currentDay);
+
+    // int result = DateTime.Compare(begin, currentDay);
 
     if (currentDay.Date == begin.Date)
     {
@@ -24,11 +24,14 @@
             <label>-------------------------</label>
         </div>
     }
-    
+
 }
 <div class="edt-button-container">
-@Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2  btn btn-default" })
-@Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default" })
-    </div>
-
-
+    @Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2  btn btn-default" })
+    @Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default", id = "next-button" })
+</div>
+<script type="text/javascript">
+    function GetNext() {
+        PageMethods.Next();
+    }
+</script>
