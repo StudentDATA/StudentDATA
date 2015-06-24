@@ -23,8 +23,10 @@
 }
 @foreach (var post in ViewBag.FlowList)
 {
-    <div>
-        <label><a href="@post[2]">@post[0]</a></label>
-        <p>@post[1]</p>
-    </div>
+    <center>
+        <div class="post-div" onmouseover=resizingOpen(this) onmouseout="resizingClose(this)   ">
+            <label>@post[0]</label>
+            <div class="content">@post[1]</div>
+        </div>
+    </center>
 }

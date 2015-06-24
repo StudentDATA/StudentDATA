@@ -9,20 +9,46 @@
 {
     DateTime currentDay = DateTime.Now.Date;
     DateTime begin = e.Beg;
+    string path;
 
     // int result = DateTime.Compare(begin, currentDay);
 
     if (currentDay.Date == begin.Date)
     {
-        <div>
-            <label>@e.Title</label><br />
-            <label>@e.Location</label><br />
-            <label>@e.TeachersToString</label><br />
-            <label>@e.Code</label><br />
-            <label>@e.BegToString</label><br />
-            <label>@e.EndToString</label><br />
-            <label>-------------------------</label>
-        </div>
+        if ((string)e.Title == "Projet Informatique")
+        {
+            path = "/Images/PI-Patch.png";
+        }
+        else if (e.Title == "PFH")
+        {
+            path = "/Images/PFH-Patch.png";
+        }
+        else if(e.Title == "Anglais")
+        {
+            path = "/Images/ANG-Patch.png";
+        }
+        else if ( e.Title == "Libre")
+        {
+            path = "/Images/LIBRE-Patch.png";
+        }
+        else
+        {
+            path = "/Images/COURS-Patch.png";
+        }
+        <center>
+            <div class="half-day-container">
+                <div class="act-illustrator"><img src="@path" /></div>
+                <div class="information">
+                    <label>@e.Title</label><br />
+                    <label>@e.Location</label><br />
+                    <label>@e.TeachersToString</label><br />
+                    <label>@e.Code</label><br />
+                    <label>@e.BegToString</label><br />
+                    <label>@e.EndToString</label><br />
+                    <label>-------------------------</label>
+                </div>
+            </div>
+        </center>
     }
 
 }
