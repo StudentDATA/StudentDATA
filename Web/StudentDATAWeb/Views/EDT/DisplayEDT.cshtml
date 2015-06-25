@@ -23,11 +23,11 @@
         {
             path = "/Images/PFH-Patch.png";
         }
-        else if(e.Title == "Anglais")
+        else if (e.Title == "Anglais")
         {
             path = "/Images/ANG-Patch.png";
         }
-        else if ( e.Title == "Libre")
+        else if (e.Title == "Libre")
         {
             path = "/Images/LIBRE-Patch.png";
         }
@@ -37,7 +37,6 @@
         }
         <center>
             <div class="half-day-container">
-                <div class="act-illustrator"><img src="@path" /></div>
                 <div class="information">
                     <label>@e.Title</label><br />
                     <label>@e.Location</label><br />
@@ -47,14 +46,17 @@
                     <label>@e.EndToString</label><br />
                     <label>-------------------------</label>
                 </div>
+                <div class="act-illustrator"><img src="@path" /></div>
             </div>
         </center>
     }
 
 }
 <div class="edt-button-container">
+
     @Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2  btn btn-default" })
     @Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default", id = "next-button" })
+
 </div>
 <script type="text/javascript">
     function GetNext() {
