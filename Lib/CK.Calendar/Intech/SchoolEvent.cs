@@ -17,6 +17,7 @@ namespace CK.Calendar.Intech
         StudentClass[] _classes;
         string _code;
         string _title;
+		//string _description;
         string[] _teachers;
         string _location;
         DateTime _beg;
@@ -38,6 +39,19 @@ namespace CK.Calendar.Intech
             _beg = beg;
             _end = end;
         }
+
+		public SchoolEvent(string subjectTitle,
+			string[] teachers,
+			string location,
+			DateTime beg,
+			DateTime end)
+		{
+			_title = subjectTitle;
+			_teachers = teachers;
+			_location = location;
+			_beg = beg;
+			_end = end;
+		}
 
 		
         static readonly Regex _rClass = new Regex( @"[0-9]{4}(S|M)-(S(?<1>10|0[1-9])|A(?<2>4|5))-(?<3>IL|SR)", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture |RegexOptions.Compiled );
