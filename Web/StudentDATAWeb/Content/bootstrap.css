@@ -43,18 +43,16 @@ summary {
     position: relative;
 }
 
-.unlogged-banner {
-    padding-left: 15%;
+.unlogged-banner #registerLink {
+    margin-left: 200px;
 }
 
-.logged-banner {
-    /*padding-left: 5%;*/
-}
 
-    .logged-banner .btn,
-    .logged-banner .btn-default {
-        width: 200px;
-    }
+
+.logged-banner .btn,
+.logged-banner .btn-default {
+    width: 200px;
+}
 
 #banner {
     background-color: #803810;
@@ -69,10 +67,27 @@ summary {
 }
 
 @media screen and (max-width : 1000px) {
-    #banner {
+    .logged-banner {
         min-height: 200px;
         padding-top: 1px;
         padding-bottom: 10px;
+    }
+
+        .logged-banner #right-fox {
+            margin-top: -207px;
+        }
+
+    .unlogged-banner {
+        min-height: 100px !important;
+    }
+
+        .unlogged-banner #right-fox {
+            margin-top: -85px;
+        }
+
+    #registerLink {
+        margin-left: 0px !important;
+        margin-top: 5px;
     }
 }
 
@@ -90,6 +105,7 @@ summary {
     display: block;
     float: right;
     position: relative;
+    text-decoration:;
 }
 
 #loginForm {
@@ -102,7 +118,7 @@ summary {
     max-width: 100px !important;
 }
 
-.sort-form input[type="checkbox"]:not(:checked) {
+.sort-form input[type="checkbox"] {
     margin-left: 3px;
     margin-right: 7px;
 }
@@ -248,15 +264,13 @@ select, option {
     }
 
     .opened {
-        max-width: 100%;
-    }
-     #right-fox {
-        margin-top: -207px;
+        max-width: 100% !important;
     }
 }
 
 .post-div .content {
     height: 20px;
+    overflow : hidden;
 }
 
 .opened {

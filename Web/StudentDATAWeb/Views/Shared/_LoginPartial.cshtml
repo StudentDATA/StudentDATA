@@ -11,7 +11,7 @@
             { @Html.AntiForgeryToken()
                 <a href="javascript:document.getElementById('logoutForm').submit()" class="col-md-2 btn btn-default">Se déconnecter</a>
             }
-        </center> 
+        </center>
         <img src="/Images/FoxHead.png" id="right-fox" />
     </div>
 }
@@ -19,8 +19,10 @@ else
 {
     <div id="banner" class="unlogged-banner">
         <img src="/Images/FoxHead.png" id="left-fox" />
-        @Html.ActionLink("S'inscrire", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "col-md-2  btn btn-default" })
-        @Html.ActionLink("Se connecter", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = " col-md-2 btn btn-default" })
+        <center>
+            @Html.ActionLink("S'inscrire", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "col-md-2  btn btn-default" })
+            @Html.ActionLink("Se connecter", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = " col-md-2 btn btn-default" })
+        </center>
         <img src="/Images/FoxHead.png" id="right-fox" />
     </div>
 }
