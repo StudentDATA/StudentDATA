@@ -117,7 +117,7 @@ namespace CK.Calendar.Tests
 			if (ie != null) m.RemoveData(ie);
 
 			var ie2 = events.Where(x => x.Title == "Titre5").FirstOrDefault();
-			if (ie2 != null) m.RemoveData(ie.Code); ;
+			if (ie2 != null) m.RemoveData(ie2.Code); ;
 
 			m.SaveData();
 			/*foreach (var e in events)
