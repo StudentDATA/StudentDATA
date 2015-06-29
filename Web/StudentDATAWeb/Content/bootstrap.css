@@ -125,9 +125,6 @@ summary {
 
 #page-number-container {
     display: table;
-    height: 26px;
-    width: 200px;
-    margin-left: 48%;
     position: relative;
 }
 
@@ -155,8 +152,6 @@ summary {
 }
 
 .page-button-div {
-    height: 25px;
-    width: 25px;
     float: none;
 }
 
