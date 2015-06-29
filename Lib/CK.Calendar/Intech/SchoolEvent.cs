@@ -51,6 +51,7 @@ namespace CK.Calendar.Intech
 			_location = location;
 			_beg = beg;
 			_end = end;
+			_code = this.GetHashCode().ToString();
 		}
 
 		

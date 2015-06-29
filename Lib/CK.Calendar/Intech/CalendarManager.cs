@@ -255,20 +255,44 @@ namespace CK.Calendar.Intech
 
 		public void AddData(string title, string[] organizer, string location, DateTime beg,	DateTime end)
 		{
-			List<SchoolEvent> events = new List<SchoolEvent>();
-			//Gerer les dates,et autres erreurs
-			if (_planning.Events.Count() > 0) events.AddRange(_planning.Events);
-			var ie = new SchoolEvent(title, organizer, location, beg, end);
-			if ( ie != null )
+			if ( calendarSDVerif() )
 			{
-				events.Add(ie);
-				_planning = new Planning(events);
+				List<SchoolEvent> events = new List<SchoolEvent>();
+				//Gerer les dates,et autres erreurs
+				if (_planning.Events.Count() > 0) events.AddRange(_planning.Events);
+				var ie = new SchoolEvent(title, organizer, location, beg, end);
+				if ( ie != null )
+				{
+					events.Add(ie);
+					_planning = new Planning(events);
+				}
+				else
+				{
+					_iAmonitor.Error().Send("No Events");//Lister error
+				}
 			}
-			else
+
+		}
+
+		public void RemoveData(SchoolEvent e)
+		{
+			if (calendarSDVerif())
 			{
-				_iAmonitor.Error().Send("No Events");//Lister error
+				_planning.DeleteEvent(e);
 			}
-			
+		}
+
+		public void RemoveData(string code)
+		{
+			if (calendarSDVerif())
+			{
+				_planning.DeleteEvent(_planning.Events.Where(x => x.Code == code).FirstOrDefault());
+			}
+		}
+
+		public void UpDateData(SchoolEvent e)
+		{
+			//_planning.AddEvent(e);
 		}
 
 		public void SaveData()
@@ -284,6 +308,15 @@ namespace CK.Calendar.Intech
 			{
 				_iAmonitor.Error().Send("No Planning");
 			}
+		}
+
+		public bool calendarSDVerif()
+		{
+			if (_persoFind != String.Empty || _eventITIfind)
+			{
+				return true;
+			}
+			else return false;
 		}
 
     }
