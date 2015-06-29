@@ -144,9 +144,9 @@ namespace CK.Calendar.Tests
 		}
 
 
-		[Test]
-		[TestCase("Perso-54FEDGkDL")]
-		[TestCase("EventITI")]
+		//[Test]
+		//[TestCase("Perso-54FEDGkDL")]
+		//[TestCase("EventITI")]
 		public void UpdateData(string calendarName)
 		{
 			CalendarManager m = new CalendarManager(TestHelper.CacheFolder);
