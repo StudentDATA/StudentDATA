@@ -10,10 +10,20 @@ namespace CK.Calendar.Intech
 {
     public class Planning
     {
-        readonly List<SchoolEvent> _events;
+       // readonly List<SchoolEvent> _events;
+		List<SchoolEvent> _events;
 		string _teacher;
 		string _filiere;
 
+		internal void DeleteEvent(SchoolEvent e)
+		{
+			_events.Remove(e);
+		}
+
+		internal void UpDateEvent(SchoolEvent e)
+		{
+
+		}
 		public string Teacher
 		{
 			get { return _teacher; }
@@ -161,5 +171,6 @@ namespace CK.Calendar.Intech
 
 			//Faire pareil pour TOUS les prof IL et SR
 		}
-    }
+
+	}
 }
