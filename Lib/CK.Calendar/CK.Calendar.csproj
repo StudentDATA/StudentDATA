@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Intech\CalendarManager.cs" />
+    <Compile Include="Intech\Helper.cs" />
     <Compile Include="Intech\SchoolEvent.cs" />
     <Compile Include="Intech\SchoolEventExtension.cs" />
     <Compile Include="Intech\StudentClass.cs" />

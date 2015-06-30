@@ -134,6 +134,7 @@ namespace CK.Calendar.Tests
                 p = Path.GetDirectoryName( p );
             }
             while (!Directory.Exists(Path.Combine(p, "RSSFluxSD")));
+            //while( !File.Exists( Path.Combine( p, "CalManager.sln" ) ) );
             _solutionFolder = p;
 
             ConsoleMonitor.Info().Send( "SolutionFolder is: {1}\r\nTestFolder is: {0}", _testFolder, _solutionFolder );

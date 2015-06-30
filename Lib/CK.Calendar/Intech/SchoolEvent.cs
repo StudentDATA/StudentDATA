@@ -17,6 +17,7 @@ namespace CK.Calendar.Intech
         StudentClass[] _classes;
         string _code;
         string _title;
+		//string _description;
         string[] _teachers;
         string _location;
         DateTime _beg;
@@ -39,7 +40,19 @@ namespace CK.Calendar.Intech
             _end = end;
         }
 
-		//A comprendre
+		public SchoolEvent(string subjectTitle,
+			string[] teachers,
+			string location,
+			DateTime beg,
+			DateTime end)
+		{
+			_title = subjectTitle;
+			_teachers = teachers;
+			_location = location;
+			_beg = beg;
+			_end = end;
+			_code = this.GetHashCode().ToString();
+		}
 
 		
         static readonly Regex _rClass = new Regex( @"[0-9]{4}(S|M)-(S(?<1>10|0[1-9])|A(?<2>4|5))-(?<3>IL|SR)", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture |RegexOptions.Compiled );
@@ -80,8 +93,8 @@ namespace CK.Calendar.Intech
                     string subjectCode = null;
                     string subjectTitle = null;
                     string location = e.Location;
-					//verifier pour les S07/S08 ET S09/S010 
-                    Match match = ExtractSameMatch( ref all, _rClass );
+					//verifier pour les S07/S08 ET S09/S010 : ENCORE
+					Match match = Helper.ExtractSameMatch(ref all, _rClass);
                     if( match != null )
                     {
                         bool isIL = match.Groups[3].Value == "IL";
@@ -107,7 +120,7 @@ namespace CK.Calendar.Intech
                     }
                     else
                     {
-                        match = ExtractSameMatch( ref all, _rClassIntechA );
+						match = Helper.ExtractSameMatch(ref all, _rClassIntechA);
                         if( match != null )
                         {
                             int year = Int32.Parse( match.Groups[1].Value );
@@ -118,7 +131,7 @@ namespace CK.Calendar.Intech
                             else sc = new StudentClass[] { StudentClass.S09, StudentClass.S10 };
                         }
                     }
-                    match = ExtractSameMatch( ref all, _rSubjectCode );
+                    match = Helper.ExtractSameMatch( ref all, _rSubjectCode );
                     if( match != null )
                     {
                         subjectCode = match.Groups[1].Value;
@@ -147,7 +160,6 @@ namespace CK.Calendar.Intech
                         location = String.Empty;
                     }
                     else all = all.Replace( location, String.Empty );
-					//L'utilité du All replace
                     all = all.Replace( currentSemester, String.Empty );
                     all = all.Replace( "Enseignant :", String.Empty );
                     all = all.Replace( "Enseignants :", String.Empty );
@@ -197,20 +209,6 @@ namespace CK.Calendar.Intech
                 }
                 return null;
             }
-        }
-
-        static Match ExtractSameMatch( ref string d, Regex r )
-        {
-            Match m = r.Match( d );
-            string v = m.Value;
-            if( !m.Success ) return null;
-            Match mS = m;
-            while( (mS = mS.NextMatch()) != null && mS.Success )
-            {
-                if( mS.Value != v ) throw new InvalidDataException( "Incoherent match: '" + v + "' <=> '" + mS.Value +"'." );
-            }
-            d = r.Replace( d, " " );
-            return m;
         }
 
         public IReadOnlyList<StudentClass> Classes

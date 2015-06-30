@@ -6,11 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using CK.Core;
 using DDay.iCal;
+using System.Text.RegularExpressions;
 
 namespace CK.Calendar.Intech
 {
     public class CalendarManager
     {
+
+		static readonly Regex _rSemester = new Regex(@"^S(?<1>10|0[1-9])", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+		static readonly Regex _rFiliere = new Regex(@"(SR)|(IL)", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+		static readonly Regex _rTeachers = new Regex(@"^[a-zA-Z]+$", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+		static readonly Regex _rPerso = new Regex(@"^Perso-(?<1>[a-zA-Z0-9]+$)", RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+
         static readonly string[] _teacherNames = new string[] { 
             "ALEXIADE", 
             "BLOCH", 
@@ -19,6 +26,7 @@ namespace CK.Calendar.Intech
             "BROUSTE", 
             "COCKS", 
             "DORIGNAC", 
+			"DANESI",
             "FARCY",
             "FIALEK",
             "FRANCESHI",
@@ -30,11 +38,14 @@ namespace CK.Calendar.Intech
             "HUET",
             "JOUBERT",
             "JOUVENT",
+			"Adjevi KOUDOSSOU",
             "KOUDOSSOU", 
             "LALITTE", 
+			"MARSAUD",
             "PUCHAUX",
 			"RAQUILLET",
             "SOULEZ",
+			"SANCHEZ",
             "SPINELLI", 
             "SPY",
             "TALAVERA", 
@@ -46,6 +57,11 @@ namespace CK.Calendar.Intech
         readonly string _dbPath;
         Planning _planning;
 		StudentClass _sClass;
+		IActivityMonitor _iAmonitor;
+		string _teacherFind = String.Empty;
+		string _filiereFind = String.Empty;
+		string _persoFind = String.Empty;
+		bool _eventITIfind = false;
 
         public CalendarManager( string dbPath )
         {
@@ -66,27 +82,78 @@ namespace CK.Calendar.Intech
             get { return _planning; }
         }
 
+		public void Load(IActivityMonitor m,string calendarName = "ALL", bool forceReload = false)
+			_iAmonitor = m;
+			_eventITIfind = false;
+			_persoFind = String.Empty;
+			Match match = Helper.ExtractSameMatch(ref calendarName, _rSemester);
+			if ( match != null )
+			{
+				var resultMatch = match.Groups[0].Value;
+				var resultMatch2 = match.Groups[1].Value;
+				var resultMatch3 = match.Groups[2].Value;
+				if (resultMatch == "S01") _sClass = StudentClass.S01;
+				else if (resultMatch == "S02") _sClass = StudentClass.S02;
+				else if (resultMatch == "S02") _sClass = StudentClass.S02;
+				else if (resultMatch == "S03") _sClass = StudentClass.S03;
+				else if (resultMatch == "S04") _sClass = StudentClass.S04;
+				else if (resultMatch == "S05") _sClass = StudentClass.S05;
+				else if (resultMatch == "S07" || resultMatch == "S08") _sClass = StudentClass.S07;
+				else if (resultMatch == "S09" || resultMatch == "S10") _sClass = StudentClass.S09;
+				else _sClass = StudentClass.SemesterMask;
+				m.Trace().Send( "Semester find : " + resultMatch);
 
-		public void Load(IActivityMonitor m,string semester = "ALL", bool forceReload = false)
-		{
-            //Action<string> _logAction = Log_To_File;    
+				match = Helper.ExtractSameMatch(ref calendarName, _rFiliere);
+				if (match != null)
+				{
+					_filiereFind = match.Groups[0].Value;
+					m.Trace().Send("Filiere find : " + _filiereFind);
+				}
+				else m.Error().Send("No Filiere Find");
+			}
+			else if ( calendarName == "EventITI" )
+			{
+				_eventITIfind = true;
+			}
+			else
+			{
+				match = Helper.ExtractSameMatch(ref calendarName, _rPerso);
+				if ( match != null )
+				{
+					_persoFind = match.Groups[1].Value;
+				}
+				else
+				{
+					match = Helper.ExtractSameMatch(ref calendarName, _rTeachers);
+					if ( match != null)
+					{
+						var resultMatch = match.Groups[0].Value;
+						_sClass = StudentClass.SemesterMask;
+						foreach (var t in _teacherNames)
+						{
+							if ( resultMatch == t)
+							{
+								_teacherFind = resultMatch;
+							}
+						}
+						if ( _teacherFind == String.Empty)
+						{
+							m.Error().Send("No teacher Find : {0}", calendarName);
+						}
 
-			if (semester == "S01") _sClass = StudentClass.S01;
-			else if (semester == "S02") _sClass = StudentClass.S02;
-			else if (semester == "S02") _sClass = StudentClass.S02;
-			else if (semester == "S03") _sClass = StudentClass.S03;
-			else if (semester == "S04") _sClass = StudentClass.S04;
-			else if (semester == "S05") _sClass = StudentClass.S05;
-			else if (semester == "S07" || semester == "S08") _sClass = StudentClass.S07;
-			else if (semester == "S09" || semester == "S10") _sClass = StudentClass.S09;
-			else _sClass = StudentClass.SemesterMask;
-
+					}
+					m.Error().Send("No Perso Or EventITI Or Teachers Find : {0}", calendarName);
+				}
+				//else m.Error().Send("No groups Find");
+			}
+			
 			if (forceReload || !File.Exists(FilePlanningPath))
 			{
 				_planning = GetHyperPlanning(m, _sClass);
 				using (var s = File.OpenWrite(FilePlanningPath))
 				{
 					_planning.Save(s);
+					filterFind();
 				}
 			}
 			else
@@ -94,15 +161,37 @@ namespace CK.Calendar.Intech
 				using (var s = File.OpenRead(FilePlanningPath))
 				{
 					_planning = Planning.Load(s);
+					filterFind();
 				}
+			}
+		}
+
+		void filterFind()
+		{
+			if (_teacherFind != String.Empty)
+			{
+				_planning.Teacher = _teacherFind;
+				_teacherFind = String.Empty;
+			}
+			if (_filiereFind != String.Empty)
+			{
+				_planning.Filiere = _filiereFind;
+				_filiereFind = String.Empty;
 			}
 		}
 
         string FilePlanningPath
         {
+			//A FACTORISER
             get 
 			{ 
-				if ( _sClass != StudentClass.SemesterMask )
+				if ( _sClass == 0)
+				{
+					if (_eventITIfind) return Path.Combine(_dbPath, "Event-ITI-Calendar.bin");
+					else if (_persoFind != String.Empty ) return Path.Combine(_dbPath, "Personal-Caldendar-SD-" + _persoFind + ".bin");
+					else return Path.Combine(_dbPath, "ErrorPlanning.bin");
+				}
+				else if ( _sClass != StudentClass.SemesterMask )
 				{
 					return Path.Combine(_dbPath, _sClass.ToExplicitString() + "_Planning.bin");
 				}
@@ -117,17 +206,20 @@ namespace CK.Calendar.Intech
 		Planning GetHyperPlanning(IActivityMonitor m, StudentClass defaultClass)
 		{
 			List<SchoolEvent> events = new List<SchoolEvent>();
-			foreach (KeyValuePair<StudentClass, string> kvp in _hyperplanningacces)
+			if ( defaultClass != 0)
 			{
-				//REFAIRE
-				if ( defaultClass == StudentClass.SemesterMask)
+				foreach (KeyValuePair<StudentClass, string> kvp in _hyperplanningacces)
 				{
-					GetData(events, m, kvp.Key, kvp.Value);
+					//REFAIRE
+					if ( defaultClass == StudentClass.SemesterMask)
+					{
+						GetData(events, m, kvp.Key, kvp.Value);
+					}
+					else if ( defaultClass == kvp.Key)
+					{
+						GetData(events, m, kvp.Key, kvp.Value);
+					}	
 				}
-				else if ( defaultClass == kvp.Key)
-				{
-					GetData(events, m, kvp.Key, kvp.Value);
-				}	
 			}
 			return new Planning(events);
 		}
@@ -158,8 +250,73 @@ namespace CK.Calendar.Intech
                     }
                 }
             }
-
         }
+
+		public void AddData(string title, string[] organizer, string location, DateTime beg,	DateTime end)
+		{
+			if ( calendarSDVerif() )
+			{
+				List<SchoolEvent> events = new List<SchoolEvent>();
+				//Gerer les dates,et autres erreurs
+				if (_planning.Events.Count() > 0) events.AddRange(_planning.Events);
+				var ie = new SchoolEvent(title, organizer, location, beg, end);
+				if ( ie != null )
+				{
+					events.Add(ie);
+					_planning = new Planning(events);
+				}
+				else
+				{
+					_iAmonitor.Error().Send("No Events");//Lister error
+				}
+			}
+
+		}
+
+		public void RemoveData(SchoolEvent e)
+		{
+			if (calendarSDVerif())
+			{
+				_planning.DeleteEvent(e);
+			}
+		}
+
+		public void RemoveData(string code)
+		{
+			if (calendarSDVerif())
+			{
+				_planning.DeleteEvent(_planning.Events.Where(x => x.Code == code).FirstOrDefault());
+			}
+		}
+
+		public void UpDateData(SchoolEvent e)
+		{
+			//_planning.AddEvent(e);
+		}
+
+		public void SaveData()
+		{
+			if ( _planning != null )
+			{
+				using (var s = File.OpenWrite(FilePlanningPath))
+				{
+					_planning.Save(s);
+				}
+			}
+			else
+			{
+				_iAmonitor.Error().Send("No Planning");
+			}
+		}
+
+		public bool calendarSDVerif()
+		{
+			if (_persoFind != String.Empty || _eventITIfind)
+			{
+				return true;
+			}
+			else return false;
+		}
 
     }
 }
