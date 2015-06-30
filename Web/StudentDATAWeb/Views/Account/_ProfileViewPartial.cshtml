@@ -1,60 +1,60 @@
 ﻿@{
     ViewBag.Title = "_ProfileViewPartial";
 }
+<h2 class="center-block">Votre profil</h2>
+    <div>
+        <strong>
+            Pseudo :
+        </strong>
+        <p>
+            @ViewBag.UserPseudo
+        </p>
+        <strong>
+            Nom et prénom :
+        </strong>
+        <p>
+            @ViewBag.UserName
+        </p>
+        <strong>
+            Semestre :
+        </strong>
+        <p>
+            @ViewBag.UserSemester
+        </p>
+        <strong>
+            Filière :
+        </strong>
+        <p>
+            @ViewBag.UserField
+        </p>
+        <strong>
+            Job ou Projet actuel:
+        </strong>
+        <p>
+            @ViewBag.UserActivity
+        </p>
+        <strong>
+            Adresse Mail :
+        </strong>
+        <p>
+            @ViewBag.MailAdress
+        </p>
 
-<div>
-    <strong>
-        Pseudo :
-    </strong>
-    <p >
-        @ViewBag.UserPseudo
-    </p>
-    <strong >
-        Nom et prénom :
-    </strong>
-    <p >
-        @ViewBag.UserName
-    </p>
-    <strong >
-        Semestre :
-    </strong>
-    <p >
-        @ViewBag.UserSemester
-    </p>
-    <strong >
-        Filière :
-    </strong>
-    <p >
-        @ViewBag.UserField
-    </p>
-    <strong >
-        Job ou Projet actuel:
-    </strong>
-    <p >
-        @ViewBag.UserActivity
-    </p>
-    <strong >
-        Adresse Mail :
-    </strong>
-    <p >
-        @ViewBag.MailAdress
-    </p>
+        <strong>
+            Permissions :
+        </strong>
+        <p>
+            @ViewBag.UserPermission
+        </p>
+    </div>
+    @Html.ActionLink("Modifier", "ChangeFormProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileModifLink", @class = "btn btn-primary" })<br />
+    @Html.ActionLink("Modifier mot de passe", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-primary", title = "Modifier mot de passe" })
+    <div>
+        @if (ViewBag.UserPermission == StudentDATAWeb.Models.PermissionEnum.Admin)
+        {
+            @Html.ActionLink("Administration", "ManageAccount", "Admin", routeValues: null, htmlAttributes: new { @class = " btn btn-primary", title = "Gestion profil" })
 
-    <strong >
-        Permissions :
-    </strong>
-    <p >
-        @ViewBag.UserPermission
-    </p>
-</div>
-@Html.ActionLink("Modifier", "ChangeFormProfile", "Profile", routeValues: null, htmlAttributes: new { id = "profileModifLink", @class = "btn btn-primary" })<br />
-@Html.ActionLink("Modifier mot de passe", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-primary", title = "Modifier mot de passe" })
-<div>
-    @if (ViewBag.UserPermission == StudentDATAWeb.Models.PermissionEnum.Admin)
-    {
-        @Html.ActionLink("Administration", "ManageAccount", "Admin", routeValues: null, htmlAttributes: new { @class = " btn btn-primary", title = "Gestion profil" })
-        
-    }
-</div>
+        }
+    </div>
 
- 
+

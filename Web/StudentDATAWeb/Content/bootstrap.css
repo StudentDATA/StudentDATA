@@ -14,8 +14,16 @@ html {
 body {
     margin: 0;
     list-style-type: none;
+    background-image: url("/Images/Brown Blue Believe.jpg");
+    background-size: 100%;
     /* background: -webkit-linear-gradient(#7f370f 40%,#035867);
     background-repeat: no-repeat;*/
+}
+
+@media screen and (max-width : 1000px) {
+    body {
+        background-image: url("");
+    }
 }
 
 article,
@@ -55,7 +63,7 @@ summary {
 }
 
 #banner {
-    background-color: #803810;
+    border-radius: 4px;
     min-height: 70px;
     max-height: 800px;
     margin-left: auto;
@@ -105,7 +113,6 @@ summary {
     display: block;
     float: right;
     position: relative;
-    text-decoration:;
 }
 
 #loginForm {
@@ -135,7 +142,8 @@ summary {
     border: solid #337ab7 3px;
     border-radius: 4px;
     vertical-align: middle;
-    color: black;
+    color: orange;
+    font-weight: bolder;
     margin: auto;
     display: table-cell;
 }
@@ -149,6 +157,7 @@ summary {
     margin: auto;
     vertical-align: middle;
     display: table-cell;
+    color: black;
 }
 
 .page-button-div {
@@ -167,6 +176,9 @@ center .half-day-container {
     max-width: 400px;
     max-height: 400px;
     display: inline-block;
+    background: rgba(142,70,30, 0.7);
+    padding: 15px;
+    border-radius: 10px;
 }
 
 .act-illustrator {
@@ -183,8 +195,13 @@ center .half-day-container {
 .information {
     display: block;
     text-align: left;
-    min-width: 140px;
+    width: 160px;
     float: left;
+}
+
+.lesson-title {
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .title {
@@ -246,16 +263,18 @@ select, option {
 .post-div {
     background-color: white;
     max-width: 30%;
-    color: black;
+    color: white;
     margin-top: 10px;
     opacity: 0.8;
     overflow: hidden;
     max-height: 60px;
+    background: rgba(142,70,30, 0.7);
 }
 
 @media screen and (max-width : 1000px) {
     .post-div {
         max-width: 100%;
+        background: rgba(142,70,30,1);
     }
 
     .opened {
@@ -265,7 +284,7 @@ select, option {
 
 .post-div .content {
     height: 20px;
-    overflow : hidden;
+    overflow: hidden;
 }
 
 .opened {
@@ -1670,7 +1689,6 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
-    color: white;
     background-color: #035867;
 }
 
@@ -1685,13 +1703,13 @@ textarea {
 }
 
 a {
-    color: #CED8F6;
+    color: black;
     text-decoration: none;
 }
 
     a:hover,
     a:focus {
-        color: #23527c;
+        color: black;
         text-decoration: underline;
     }
 
@@ -3431,7 +3449,6 @@ label {
     max-width: 100%;
     margin-bottom: 5px;
     font-weight: bold;
-    color: #CED8F6;
 }
 
 input[type="search"] {
