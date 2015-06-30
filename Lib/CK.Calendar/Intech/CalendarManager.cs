@@ -199,6 +199,7 @@ namespace CK.Calendar.Intech
 				else
 				{
 					return Path.Combine( _dbPath, "Planning.bin" ); 
+					
 				}
 
 			}
@@ -290,9 +291,19 @@ namespace CK.Calendar.Intech
 			}
 		}
 
-		public void UpDateData(SchoolEvent e)
+		public void UpDateData(SchoolEvent e,string title,string location, string[] organizer, DateTime beg, DateTime end)
 		{
-			//_planning.AddEvent(e);
+
+			var ie = _planning.Events.SingleOrDefault(x => x.Code == e.Code);
+
+			if (ie != null)
+			{
+				ie.Title = title;
+				ie.Location = location;
+				ie.Teachers = organizer;
+				ie.Beg = beg;
+				ie.End = end;
+			}
 		}
 
 		public void SaveData()
@@ -317,6 +328,12 @@ namespace CK.Calendar.Intech
 				return true;
 			}
 			else return false;
+		}
+
+		public bool DataVerif()
+		{
+			
+			return true;
 		}
 
     }

@@ -18,6 +18,8 @@ namespace CK.Calendar.Intech
 			iCal.Version = "1.0";
 			iCal.Name = "Student DATA Calendar";
 			iCal.ProductID = "Calendar Manager SD & Olivier Spinelli";
+
+			//Refaire personna
             foreach( var e in @this )
             {
                 Event evt = iCal.Create<Event>();

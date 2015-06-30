@@ -20,10 +20,7 @@ namespace CK.Calendar.Intech
 			_events.Remove(e);
 		}
 
-		internal void UpDateEvent(SchoolEvent e)
-		{
 
-		}
 		public string Teacher
 		{
 			get { return _teacher; }
