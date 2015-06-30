@@ -26,8 +26,8 @@
         <input type="hidden" name="UserName" value="@user.UserName" />
     }
 }
-
-    @using (Html.BeginForm("ManageAccountRed", "Admin",FormMethod.Post, new { id = "page-number-container" }))
+<center>
+    @using (Html.BeginForm("ManageAccountRed", "Admin", FormMethod.Post, new { id = "page-number-container" }))
     {
         for (int i = 1; i <= ViewBag.PageQuant; i++)
         {
@@ -43,3 +43,4 @@
             }
         }
     }
+</center>

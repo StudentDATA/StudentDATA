@@ -14,7 +14,7 @@ namespace StudentDATAWeb.Controllers
         private UserProfile currentuser;
         private UserProfile user;
 
-        private System.Data.Entity.DbSet<UserProfile> userlist;
+        private IQueryable<UserProfile> profiles;
         //int i = 0;
         //
         // GET: /Admin/
@@ -25,17 +25,10 @@ namespace StudentDATAWeb.Controllers
         }
         public ActionResult ManageAccount(UsersContext db)
         {
-            userlist = db.UserProfiles;
+            profiles = db.UserProfiles.OrderByDescending( p => p.UserId ).Take(10);
+
+
             List<UserProfile> tmpProfiles = new List<UserProfile>();
-            int i = 0;
-            while (tmpProfiles.Count < 10 && userlist.ToList().LastOrDefault() != userlist.Find(i))
-            {
-                if (userlist.Find(i) != null)
-                {
-                    tmpProfiles.Add(userlist.Find(i));
-                }
-                i++;
-            }
 
             List<SelectListItem> permissionManage = new List<SelectListItem>();
             permissionManage.Add(new SelectListItem { Text = "Student", Value = "0" });
@@ -44,11 +37,11 @@ namespace StudentDATAWeb.Controllers
 
 
             ViewBag.PermissionList = permissionManage;
-            ViewBag.UserList = tmpProfiles;
-            if (userlist.Count() % 10 > 0)
-                ViewBag.PageQuant = Math.Truncate((double)userlist.Count() / 10) + 1;
+            ViewBag.UserList = profiles;
+            if (db.UserProfiles.Count() % 10 > 0)
+                ViewBag.PageQuant = Math.Truncate((double)profiles.Count() / 10) + 1;
             else
-                ViewBag.PageQuant = Math.Truncate((double)userlist.Count() / 10);
+                ViewBag.PageQuant = Math.Truncate((double)profiles.Count() / 10);
             ViewBag.ActualPage = 1;
             return View("/Views/ManageAccount/ManageAllUser.cshtml");
         }
@@ -108,22 +101,9 @@ namespace StudentDATAWeb.Controllers
             {
                 index = Convert.ToInt32(collection["Index"]);
             }
-            userlist = db.UserProfiles;
+            profiles = db.UserProfiles.OrderByDescending(p => p.UserId).Skip((index -1) *10).Take(10);
             List<UserProfile> tmpProfiles = new List<UserProfile>();
             int i = 10 * (index - 1);
-            while (tmpProfiles.Count < 10
-                && tmpProfiles.Count < userlist.Count() - (10 * (index - 1))
-                && userlist.ToList().LastOrDefault() != userlist.Find(i))
-            {
-                if (i > 0)
-                {
-
-                    tmpProfiles.Add(userlist.ToList().Find(u => u != null));
-
-                }
-
-                i++;
-            }
 
             List<SelectListItem> permissionManage = new List<SelectListItem>();
             permissionManage.Add(new SelectListItem { Text = "Student", Value = "0" });
@@ -132,11 +112,11 @@ namespace StudentDATAWeb.Controllers
 
 
             ViewBag.PermissionList = permissionManage;
-            ViewBag.UserList = tmpProfiles;
-            if (userlist.Count() % 10 > 0)
-                ViewBag.PageQuant = Math.Truncate((double)userlist.Count() / 10) + 1;
+            ViewBag.UserList = profiles;
+            if (db.UserProfiles.Count() % 10 > 0)
+                ViewBag.PageQuant = Math.Truncate((double)db.UserProfiles.Count() / 10) + 1;
             else
-                ViewBag.PageQuant = Math.Truncate((double)userlist.Count() / 10);
+                ViewBag.PageQuant = Math.Truncate((double)db.UserProfiles.Count() / 10);
             ViewBag.ActualPage = 1;
             ViewBag.ActualPage = index;
             return View("/Views/ManageAccount/ManageAllUser.cshtml");

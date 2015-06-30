@@ -20,6 +20,7 @@ namespace StudentDATAWeb.Models
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<RSSFlowsDatas> RSSFlowsDatasList { get; set; }
         public DbSet<ProfessionalPosts> ProfessionalPostsList { get; set; }
+        public DbSet<UsersSettings> UsersSettingsList { get; set; }
     }
 
     [Table("UserProfile")]
@@ -41,6 +42,16 @@ namespace StudentDATAWeb.Models
         public string MailAdress { get; set; }
         public PermissionEnum Permission { get; set; }
 
+    }
+    [Table("Usersettings")]
+    public class UsersSettings
+    {
+        [Key]
+        [Required]
+        public int UserKey { get; set; }
+        public bool SemesterShow { get; set; }
+        public bool FieldShow { get; set; }
+        public bool PfhShow { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -157,8 +168,6 @@ namespace StudentDATAWeb.Models
         [Column("URLAdress", Order = 2, TypeName = "varchar")]
         [Required]
         public string Adress { get; set; }
-
-
     }
     public class FlowPostModel
     {
@@ -180,6 +189,15 @@ namespace StudentDATAWeb.Models
         public string FlowUrl { get; set; }
 
 
+    }
+    public class SortPostModel
+    {
+        [Display(Name = "Semestre")]
+        public bool Semester { get; set; }
+        [Display(Name = "Filière")]
+        public bool Field { get; set; }
+        [Display(Name = "PFH")]
+        public bool Pfh { get; set; }
     }
     public class ProfileModel
     {

@@ -2,7 +2,7 @@
     ViewBag.Title = "DisplayEDT";
 }
 
-<h2 class="center-block">DisplayEDT</h2>
+<h2 class="center-block">Votre emploi du temps</h2>
 @{
     string day="";
 }
@@ -11,20 +11,46 @@
 {
     DateTime currentDay = ViewBag.currentday;
     DateTime begin = e.Beg;
-   // int result = DateTime.Compare(begin, currentDay);
+    string path;
+
+    // int result = DateTime.Compare(begin, currentDay);
 
     if (currentDay.Date == begin.Date)
     {
-        day = e.BegToString;
-        <div>
-            <label>@e.Title</label><br />
-            <label>@e.Location</label><br />
-            <label>@e.TeachersToString</label><br />
-            <label>@e.Code</label><br />
-            <label>@e.BegToString</label><br />
-            <label>@e.EndToString</label><br />
-            <label>-------------------------</label>
-        </div>
+        if ((string)e.Title == "Projet Informatique")
+        {
+            path = "/Images/PI-Patch.png";
+        }
+        else if (e.Title == "PFH")
+        {
+            path = "/Images/PFH-Patch.png";
+        }
+        else if (e.Title == "Anglais")
+        {
+            path = "/Images/ANG-Patch.png";
+        }
+        else if (e.Title == "Libre")
+        {
+            path = "/Images/LIBRE-Patch.png";
+        }
+        else
+        {
+            path = "/Images/COURS-Patch.png";
+        }
+        <center>
+            <div class="half-day-container">
+                <div class="information">
+                    <label>@e.Title</label><br />
+                    <label>@e.Location</label><br />
+                    <label>@e.TeachersToString</label><br />
+                    <label>@e.Code</label><br />
+                    <label>@e.BegToString</label><br />
+                    <label>@e.EndToString</label><br />
+                    <label>-------------------------</label>
+                </div>
+                <div class="act-illustrator"><img src="@path" /></div>
+            </div>
+        </center>
     
      @*using (Html.BeginForm("DeleteEvent", "EDT"))
     {
@@ -32,7 +58,7 @@
         <input type="hidden" name="DeleteEvent" value="@e" />
     }*@
     }
-    
+
      
 }
 @foreach (var e in ViewBag.PlanningEventAll)
@@ -76,8 +102,14 @@
 @*@Html.ActionLink("Supprimer", "DeleteEvent", "EDT", routeValues: null, htmlAttributes: new { id = e, title = "Supprimer un évènement", @class = " col-md-offset-5 btn btn-default" });*@
 @Html.ActionLink("Ajouter", "AddEvent", "EDT", routeValues: null, htmlAttributes: new { title = "Ajouter un évènement", @class=" col-md-offset-3 btn btn-primary" })
 @*<div class="edt-button-container">
-@Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2  btn btn-default" })
-@Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default" })
-    </div>*@
+    </div>
 
+    @Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2  btn btn-default" })
+    @Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default", id = "next-button" })
 
+</div>
+<script type="text/javascript">
+    function GetNext() {
+        PageMethods.Next();
+    }
+</script>

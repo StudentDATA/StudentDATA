@@ -287,7 +287,12 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\ANG-Patch.png" />
+    <Content Include="Images\COURS-Patch.png" />
+    <Content Include="Images\LIBRE-Patch.png" />
     <Content Include="Images\LogoSD.png" />
+    <Content Include="Images\PFH-Patch.png" />
+    <Content Include="Images\PI-Patch.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\bootstrap.css.map" />
