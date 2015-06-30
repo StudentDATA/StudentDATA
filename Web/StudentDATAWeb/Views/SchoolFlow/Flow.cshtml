@@ -6,12 +6,12 @@
 <h2 >Flow</h2>
 @if(ViewBag.IsWriter)
 {
-    @Html.ActionLink("Ajouter", "AddPost", "Flow", routeValues: null, htmlAttributes: new { id = "AddPostLink" })
+    @Html.ActionLink("Ajouter", "AddPost", "Flow", routeValues: null, htmlAttributes: new { id = "AddPostLink", @class ="btn btn-primary" })
 }
 @foreach(var post in ViewBag.FlowList)
 {
     <div>
-        <label ><a href="@post[2]">@post[0]</a></label>
+        <div class="post-div " onmouseover=resizingOpen(this) onmouseout="resizingClose(this)   ">
         <p >@post[1]</p>
     </div>
 }
