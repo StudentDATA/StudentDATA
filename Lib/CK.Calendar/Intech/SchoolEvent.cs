@@ -12,16 +12,12 @@ using DDay.iCal;
 namespace CK.Calendar.Intech
 {
     [Serializable]
-    public class SchoolEvent
+	public class SchoolEvent : ITIEvent
     {
         StudentClass[] _classes;
-        string _code;
-        string _title;
 		//string _description;
         string[] _teachers;
-        string _location;
-        DateTime _beg;
-        DateTime _end;
+
 
         SchoolEvent( StudentClass[] classes,
                     string subjectCode,
@@ -216,55 +212,15 @@ namespace CK.Calendar.Intech
             get { return _classes; }
         }
 
-        public string Code 
-        {
-            get { return _code; } 
-        }
 
-        public string Title 
-        { 
-            get { return _title; }
-        }
 
         public IReadOnlyList<string> Teachers 
         { 
-            get { return _teachers; } 
+            get { return _teachers; }
+			internal set { _teachers = value.ToArray(); }
         }
 
-        public string Location 
-        { 
-            get { return _location; } 
-        }
 
-        public DateTime Beg
-        {
-            get { return _beg; }
-        }
-
-        public TimeSpan Length
-        {
-            get { return _end - _beg; }
-        }
-
-        public DateTime End 
-        { 
-            get { return _end; } 
-        }
-
-		public String BegToString
-		{
-			get { return _beg.ToLocalTime().ToString(); }
-		}
-
-		public String LenghtToString
-		{
-			get { return Length.Hours + ":" + Length.Minutes.ToString("00"); }
-		}
-
-		public String EndToString
-		{
-			get { return _end.ToLocalTime().ToString(); }
-		}
 
 		public String ClassesToString
 		{
@@ -301,5 +257,14 @@ namespace CK.Calendar.Intech
 			}
             return b.ToString();
         }
-    }
+
+		public void Change(string title,string location, string[] organizer, DateTime beg, DateTime end)
+		{
+			_title = title;
+			_location = location;
+			_teachers = organizer;
+			_beg = Beg;
+			_end = end;
+		}
+	}
 }
