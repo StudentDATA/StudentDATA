@@ -14,13 +14,10 @@ namespace RSSFluxSD
         {
             get { return msg_error; }
             private set { msg_error = value; }
-            
         }
 
 
-        List<RSS> RSSList = new List<RSS>();
-        
-        
+		List<RSS> RSSList = new List<RSS>();
 		public RSS readRSS(string url)
 		{
 			//Si même url, voir s'il y a des difference dans les flows
@@ -74,7 +71,7 @@ namespace RSSFluxSD
             }
         }
 
-        
+
 		private void addArticle(string url, List<Article> article)
         {
 			//article contient titre et contenu : id = titre+numero du article

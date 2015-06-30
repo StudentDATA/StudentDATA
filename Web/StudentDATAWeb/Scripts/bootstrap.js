@@ -15,42 +15,7 @@ if (typeof jQuery === 'undefined') {
     throw new Error('Bootstrap\'s JavaScript requires jQuery version 1.9.1 or higher')
   }
 }(jQuery);
-/* ========================================================================
-   Personnal modifications 
 
-   ======================================================================== */
-    //// Expand Panel
-    //$(".open").click(function(){
-    //    $(".content").slideDown("fast", function() {
-    //       $(".content").animate({"height": "+=5px", }, "fast");
-    //       $(".content").animate({"height": "-=5px", }, "fast");
-    //    });
-    //    $(".open").hide();
-    //    $(".close").show();
-    //});
-
-
-    //// Collapse Panel
-    //$(".close").click(function(){
-    //    $(".content").animate({"height": "+=10px", }, "fast");
-    //    $(".content").slideUp("fast", function() {
-    //       $(".content").animate({"height": "-=10px", }, "fast");
-    //       $(".close").hide();
-    //       $(".open").show();
-    //    });
-//});
-function resizingOpen(element) {
-    $(element).removeClass("post-div");
-    $(element).children(".content").removeClass("content");
-    $(element).addClass("opened");
-    $(element).children(".content").addClass("content-opened");
-}
-function resizingClose(element) {
-    $(element).removeClass("opened");
-    $(element).children(".content").removeClass("content-opened");
-    $(element).addClass("post-div");
-    $(element).children(".content").addClass("content");
-}
 /* ========================================================================
  * Bootstrap: transition.js v3.3.4
  * http://getbootstrap.com/javascript/#transitions
