@@ -27,6 +27,15 @@ namespace StudentDATAWeb.Controllers
             return View("/Views/EDT/DisplayEDT.cshtml");
         }
 
+        public ActionResult AddEvent()
+        {
+            return View("/Views/EDT/AddEventToEDT.cshtml");
+        }
+        public ActionResult AddEventToEDT()
+        {
+            return View();
+        }
+
         public ActionResult ViewPlanning(UsersContext db)
         {
             var day = TempData["Day"];

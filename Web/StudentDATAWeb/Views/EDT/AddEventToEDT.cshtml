@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "AddEventToEDT";
+}
+
+<h2>AddEventToEDT</h2>
+
+<section id="AddEventForm">
+    @using (Html.BeginForm("AddEventToEDT","EDT"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+
+        <fieldset>
+            <div class="row">
+                <label>Titre : </label>
+                <label>Salle :</label>
+                <label>Professeur : </label>
+                <label>Début : </label>
+                <label>Fin : </label>
+                <label>Semestre : </label>
+            </div>
+
+            <div class="row">
+                <input class=" btn btn-primary" type="submit" value="Ajouter" />
+            </div>
+        </fieldset>
+    }
+</section>
+
+
+
+@*<label>@e.Title</label><br />
+<label>@e.Location</label><br />
+<label>@e.TeachersToString</label><br />
+<label>@e.Code</label><br />
+<label>@e.BegToString</label><br />
+<label>@e.EndToString</label><br />*@
