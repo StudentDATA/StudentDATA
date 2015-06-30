@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "DisplayEDT";
+}
+
+<h2 class="center-block">DisplayEDT</h2>
+@{
+    string day="";
+}
+
+@foreach (var e in ViewBag.Planning)
+{
+    DateTime currentDay = ViewBag.currentday;
+    DateTime begin = e.Beg;
+   // int result = DateTime.Compare(begin, currentDay);
+
+    if (currentDay.Date == begin.Date)
+    {
+        day = e.BegToString;
+        <div>
+            <label>@e.Title</label><br />
+            <label>@e.Location</label><br />
+            <label>@e.TeachersToString</label><br />
+            <label>@e.Code</label><br />
+            <label>@e.BegToString</label><br />
+            <label>@e.EndToString</label><br />
+            <label>-------------------------</label>
+        </div>
+    
+     @*using (Html.BeginForm("DeleteEvent", "EDT"))
+    {
+    <input class="btn btn-primary col-md-offset-3" type="submit" value="Supprimer" /><br />
+        <input type="hidden" name="DeleteEvent" value="@e" />
+    }*@
+    }
+    
+     
+}
+@foreach (var e in ViewBag.PlanningEventAll)
+{
+    DateTime currentDay = ViewBag.currentday;
+    DateTime begin = e.Beg;
+   // int result = DateTime.Compare(begin, currentDay);
+
+    if (currentDay.Date == begin.Date)
+    {
+        day = e.BegToString;
+        <div>
+            <label>@e.Title</label><br />
+            <label>@e.Location</label><br />
+            <label>@e.TeachersToString</label><br />
+            <label>@e.Code</label><br />
+            <label>@e.BegToString</label><br />
+            <label>@e.EndToString</label><br />
+            <label>-------------------------</label>
+        </div>
+    
+    @*using (Html.BeginForm("DeleteEvent", "EDT"))
+    {
+    <input class="btn btn-primary col-md-offset-3" type="submit" value="Supprimer" /><br />
+    <input type="hidden" name="DeleteEvent" value="@e" />
+    }*@
+    }
+}
+
+
+    @using (Html.BeginForm("PreviousDayPlanning", "EDT"))
+    {
+    <input class="btn btn-primary col-md-offset-5" type="submit" value="Jour précédent" /><br />
+        <input type="hidden" name="CurrentDayHidden" value="@day" />
+    }
+    @using (Html.BeginForm("NextDayPlanning", "EDT"))
+    {
+    <input class="btn btn-primary col-md-offset-5" type="submit" value="Jour suivant" /><br />
+    <input type="hidden" name="CurrentDayHidden" value="@day" />
+    }
+@*@Html.ActionLink("Supprimer", "DeleteEvent", "EDT", routeValues: null, htmlAttributes: new { id = e, title = "Supprimer un évènement", @class = " col-md-offset-5 btn btn-default" });*@
+@Html.ActionLink("Ajouter", "AddEvent", "EDT", routeValues: null, htmlAttributes: new { title = "Ajouter un évènement", @class=" col-md-offset-3 btn btn-primary" })
+@*<div class="edt-button-container">
+@Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2  btn btn-default" })
+@Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default" })
+    </div>*@
+
+

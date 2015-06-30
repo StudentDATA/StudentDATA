@@ -268,12 +268,21 @@ namespace CK.Calendar.Intech
 
 		public String ClassesToString
 		{
-			get { return String.Join( ", ", _classes.Select( c => c.ToExplicitString() ));}
+            get
+            {
+                if (_classes != null && _classes.Count()>0) return String.Join(", ", _classes.Select(c => c.ToExplicitString()));
+                else return String.Empty;
+            }
+                
 		}
 
 		public String TeachersToString
 		{
-			get { return String.Join(", ", _teachers); }
+			get
+            {
+                if (_teachers != null && _teachers.Count()>0) return String.Join(", ", _teachers);
+                else return String.Empty;
+            }
 		}
 
         public override string ToString()
