@@ -3,6 +3,7 @@ using CK.Core;
 using StudentDATAWeb.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -29,17 +30,72 @@ namespace StudentDATAWeb.Controllers
 
         public ActionResult AddEvent()
         {
+
             return View("/Views/EDT/AddEventToEDT.cshtml");
         }
-        public ActionResult AddEventToEDT()
+        public ActionResult AddEventToEDT(EventModel em)
         {
-            return View();
+            string titre = em.Title;
+            string[] organizer = {em.Teacher};
+            string salle = em.Salle;
+            CultureInfo frFR = new CultureInfo("fr-FR");
+
+            DateTime beg = DateTime.ParseExact(em.Begin, "yyyy-MM-dd HH:mm", frFR);
+            DateTime end = DateTime.ParseExact(em.End, "yyyy-MM-dd HH:mm", frFR);
+
+                _monitor = new ActivityMonitor();
+                _monitor.Output.BridgeTarget.HonorMonitorFilter = false;
+                Action<string> _logAction = Log_To_File;
+                _log = new ActivityMonitorTextWriterClient(_logAction);
+                _monitor.Output.RegisterClients(_log);
+
+            _dbPath = (System.Web.HttpContext.Current == null)
+            ? System.Web.Hosting.HostingEnvironment.MapPath("~/Content/CALENDAR/")
+            : System.Web.HttpContext.Current.Server.MapPath("~/Content/CALENDAR/");
+
+            CalendarManager m = new CalendarManager(_dbPath);
+            m.Load(_monitor, "EventITI");
+
+            m.AddData(titre, organizer, salle, beg, end);
+
+            //Sauvergarde du calendrier
+            m.SaveData();
+
+            return RedirectToAction("ViewPlanning");
+        }
+
+        public ActionResult DeleteEvent(FormCollection collection)
+        {
+            _monitor = new ActivityMonitor();
+            _monitor.Output.BridgeTarget.HonorMonitorFilter = false;
+            Action<string> _logAction = Log_To_File;
+            _log = new ActivityMonitorTextWriterClient(_logAction);
+            _monitor.Output.RegisterClients(_log);
+
+            _dbPath = (System.Web.HttpContext.Current == null)
+            ? System.Web.Hosting.HostingEnvironment.MapPath("~/Content/CALENDAR/")
+            : System.Web.HttpContext.Current.Server.MapPath("~/Content/CALENDAR/");
+
+            CalendarManager m = new CalendarManager(_dbPath);
+            m.Load(_monitor, "EventITI");
+            
+            var popo = collection["DeleteEvent"];
+            m.RemoveData(popo);
+            m.SaveData();
+            return RedirectToAction("ViewPlanning");
         }
 
         public ActionResult ViewPlanning(UsersContext db)
         {
             var day = TempData["Day"];
-            ViewBag.currentday = day;
+            if(day != null)
+            {
+                ViewBag.currentday = day;
+            }
+            else
+            {
+                ViewBag.currentday = currentDay;
+            }
 
             if (WebSecurity.IsAuthenticated)
             {
@@ -62,25 +118,33 @@ namespace StudentDATAWeb.Controllers
                 _dbPath = (System.Web.HttpContext.Current == null)
                ? System.Web.Hosting.HostingEnvironment.MapPath("~/Content/CALENDAR/")
                : System.Web.HttpContext.Current.Server.MapPath("~/Content/CALENDAR/");
-                var test = "S"+ViewBag.UserSemester;
-                var test2 = ViewBag.UserField;
+
+                string semester = "S"+ViewBag.UserSemester+ViewBag.UserField;
+                string eventPlanning = "EventITI";
                 CalendarManager m = new CalendarManager(_dbPath);
-                m.Load(_monitor, test);
+                CalendarManager m2 = new CalendarManager(_dbPath);
+                m.Load(_monitor, semester);
+                m2.Load(_monitor, eventPlanning);
+               
 
                 if (ViewBag.UserField == "IL")
                 {
                     var planningIL = m.Planning.EventsIL;
                     ViewBag.Planning = planningIL;
+                    ViewBag.PlanningEventAll = m2.Planning.Events;
                 }
                 if (ViewBag.UserField == "SR")
                 {
                     var planningSR = m.Planning.EventsSR;
                     ViewBag.Planning = planningSR;
+                    ViewBag.PlanningEventAll = m2.Planning.Events;
+
                 }
                 if (ViewBag.UserField != "IL" && ViewBag.UserField != "SR")
                 {
                     var planningDATE = m.Planning.EventsByDate;
                     ViewBag.Planning = planningDATE;
+                    ViewBag.PlanningEventAll = m2.Planning.Events;
                 }
             }
 

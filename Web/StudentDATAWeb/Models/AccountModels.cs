@@ -85,6 +85,29 @@ namespace StudentDATAWeb.Models
         [Display(Name = "Connexion automatique :")]
         public bool RememberMe { get; set; }
     }
+
+    public class EventModel
+    {
+        [Required]
+        [Display(Name = "Titre de l'évènement :")]
+        public string Title { get; set; }
+
+        [Required]
+        [Display(Name = "Professeur ou équipe en charge :")]
+        public string Teacher { get; set; }
+
+        [Required]
+        [Display(Name = "Salle :")]
+        public string Salle { get; set; }
+
+        [Required]
+        [Display(Name = "Date début (AAAA-MM-JJ HH:MM) :")]
+        public string Begin { get; set; }
+
+        [Required]
+        [Display(Name = "Date fin (AAAA-MM-JJ HH:MM) :")]
+        public string End { get; set; }
+    }
     public class RegisterModel
     {
         [Required]

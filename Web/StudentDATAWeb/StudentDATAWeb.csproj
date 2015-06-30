@@ -40,10 +40,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CK.Calendar, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\CK.Calendar\obj\Debug\CK.Calendar.dll</HintPath>
-    </Reference>
     <Reference Include="CK.Core, Version=4.2.0.0, Culture=neutral, PublicKeyToken=edfa2f62fc978217, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\CK.Core.4.2.0\lib\net45\CK.Core.dll</HintPath>
@@ -359,6 +355,7 @@
     <Content Include="Views\ManageAccount\ManageAllUser.cshtml" />
     <Content Include="Views\SchoolFlow\AddNewFlowPost.cshtml" />
     <Content Include="Views\EDT\DisplayEDT.cshtml" />
+    <Content Include="Views\EDT\AddEventToEDT.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -372,6 +369,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Lib\CK.Calendar\CK.Calendar.csproj">
+      <Project>{8c1cc765-3c83-43b6-af43-ff67d05b569b}</Project>
+      <Name>CK.Calendar</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Lib\JobsFluxSD\JobsFluxSD.csproj">
       <Project>{740c0d9f-5656-4f07-9f49-02b05246d23c}</Project>
       <Name>JobsFluxSD</Name>

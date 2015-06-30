@@ -1,4 +1,6 @@
-﻿@{
+﻿@model StudentDATAWeb.Models.EventModel
+
+@{
     ViewBag.Title = "AddEventToEDT";
 }
 
@@ -12,14 +14,20 @@
 
 
         <fieldset>
-            <div class="row">
-                <label>Titre : </label>
-                <label>Salle :</label>
-                <label>Professeur : </label>
-                <label>Début : </label>
-                <label>Fin : </label>
-                <label>Semestre : </label>
-            </div>
+            @Html.LabelFor(m => m.Title)<br />
+            @Html.TextBoxFor(m => m.Title)<br />
+
+            @Html.LabelFor(m => m.Teacher)<br />
+            @Html.TextBoxFor(m => m.Teacher)<br />
+
+            @Html.LabelFor(m => m.Salle)<br />
+            @Html.TextBoxFor(m => m.Salle)<br />
+
+            @Html.LabelFor(m => m.Begin)<br />
+            @Html.TextBoxFor(m => m.Begin)<br />
+
+            @Html.LabelFor(m => m.End)<br />
+            @Html.TextBoxFor(m => m.End)<br />
 
             <div class="row">
                 <input class=" btn btn-primary" type="submit" value="Ajouter" />
