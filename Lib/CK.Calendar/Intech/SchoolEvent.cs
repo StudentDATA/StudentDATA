@@ -37,17 +37,12 @@ namespace CK.Calendar.Intech
         }
 
 		public SchoolEvent(string subjectTitle,
-			string[] teachers,
+			Dictionary<string,string> organizer,
 			string location,
 			DateTime beg,
 			DateTime end)
+			: base(subjectTitle,organizer,location,beg,end)
 		{
-			_title = subjectTitle;
-			_teachers = teachers;
-			_location = location;
-			_beg = beg;
-			_end = end;
-			_code = this.GetHashCode().ToString();
 		}
 
 		
@@ -224,21 +219,21 @@ namespace CK.Calendar.Intech
 
 		public String ClassesToString
 		{
-            get
-            {
-                if (_classes != null && _classes.Count()>0) return String.Join(", ", _classes.Select(c => c.ToExplicitString()));
-                else return String.Empty;
-            }
-                
+			get 
+			{
+				if (_classes != null && _classes.Count() > 0) return String.Join(", ", _classes.Select(c => c.ToExplicitString()));
+				else return String.Empty;
+				
+			}
 		}
 
 		public String TeachersToString
 		{
-			get
-            {
-                if (_teachers != null && _teachers.Count()>0) return String.Join(", ", _teachers);
-                else return String.Empty;
-            }
+			get 
+			{
+				if (_teachers != null && _teachers.Count() > 0) return String.Join(", ", _teachers);
+				else return String.Empty;
+			}
 		}
 
         public override string ToString()

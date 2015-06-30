@@ -25,7 +25,17 @@ namespace CK.Calendar.Intech
                 Event evt = iCal.Create<Event>();
                 evt.Start = new iCalDateTime( e.Beg );
                 evt.End = new iCalDateTime( e.End );
+
+				//Refaire l'organiseur avec le parse pour plusieurs
+				evt.Organizer = new Organizer(e.Organizer.Values.FirstOrDefault());
+				evt.Organizer.CommonName = e.Organizer.Keys.FirstOrDefault();
+
+				//Pour rajouter Nom du ficher : retouver la nom de la prioprieté
+				evt.AddProperty("", "");
+
                 evt.Location = e.Location;
+
+				//Refaire pour l'ITIEVENT
                 evt.Summary = String.Join( ", ", e.Classes.Select( c => c.ToExplicitString() ) ) + " / " + String.Join( ", ", e.Teachers );
                 evt.Description = e.Code + " / " + e.Title;
             }

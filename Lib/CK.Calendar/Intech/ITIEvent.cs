@@ -14,35 +14,27 @@ namespace CK.Calendar.Intech
 		protected DateTime _end;
 		protected string _code;
 		protected string _title;
-		private string[][] _organizer;
-		private Dictionary<string,string> _listOrganizer;
+		private Dictionary<string,string> _organizer;
 
-
-		public IReadOnlyDictionary<string, string> Organizer
+		public ITIEvent(string subjectTitle,
+			Dictionary<string, string> organizer,
+			string location,
+			DateTime beg,
+			DateTime end)
 		{
-			get 
-			{
-				_listOrganizer = new Dictionary<string,string>();
-				try
-				{
-					for (int i = 0; i < _organizer.Count(); i++ )
-					{
-						
-						_listOrganizer.Add(_organizer[i][0],_organizer[i][1]);
-					}
-				}
-				catch
-				{
-					//Errror
-				}
+			_title = subjectTitle;
+			_organizer = organizer;
+			_location = location;
+			_beg = beg;
+			_end = end;
+			_code = this.GetHashCode().ToString();
+		}
 
-				return _listOrganizer; 
-			}
-			/*internal set 
-			{
-				//_organizer = value; 
-				_organizer = value;
-			}*/
+		public ITIEvent() { }
+		public Dictionary<string, string> Organizer
+		{
+			get { return _organizer; }
+			internal set { _organizer = value; }
 		}
 
 		public string Location

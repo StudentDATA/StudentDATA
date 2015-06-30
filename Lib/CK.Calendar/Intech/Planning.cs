@@ -15,6 +15,7 @@ namespace CK.Calendar.Intech
 		string _teacher;
 		string _filiere;
 
+	
 		internal void DeleteEvent(SchoolEvent e)
 		{
 			_events.Remove(e);
@@ -50,6 +51,7 @@ namespace CK.Calendar.Intech
             BinaryFormatter f = new BinaryFormatter();
             List<SchoolEvent> ev = (List<SchoolEvent>)f.Deserialize( s );
             return new Planning( ev );
+			
         }
 
         public IEnumerable<SchoolEvent> Events

@@ -24,7 +24,9 @@ namespace CK.Calendar.Tests
 
 				m.Load(TestHelper.ConsoleMonitor, calendarName, true);
 
-				string [] organizer = { "Orga1", "Orga2"};
+				//string [] organizer = { "Orga1", "Orga2"};
+				var organizer = new Dictionary<string,string>();
+				organizer.Add("OrgaName","Orga@mail.com");
 
 				//Ajoute Time : Année,Mois,Jour,Heure,Minute,Secondes,UTC
 				DateTime beg = new DateTime(2015,6,28,21,39,0,DateTimeKind.Local);
@@ -41,7 +43,8 @@ namespace CK.Calendar.Tests
 			{
 				CalendarManager m = new CalendarManager(TestHelper.CacheFolder);
 				m.Load(TestHelper.ConsoleMonitor, calendarName);
-				string[] organizer = { "Orga4", "Orga3" };
+				var organizer = new Dictionary<string, string>();
+				organizer.Add("OrgaName", "Orga@mail.com");
 				DateTime beg = new DateTime(2015, 6, 30, 21, 39, 0, DateTimeKind.Local);
 				DateTime end = new DateTime(2015, 6, 30, 22, 00, 0, DateTimeKind.Local);
 				m.AddData("Titre2", organizer, "EO9", beg, end);
@@ -58,7 +61,8 @@ namespace CK.Calendar.Tests
 		{
 			CalendarManager m = new CalendarManager(TestHelper.CacheFolder);
 			m.Load(TestHelper.ConsoleMonitor, calendarName);
-			string[] organizer = { "Orga7", "Orga8" };
+			var organizer = new Dictionary<string, string>();
+			organizer.Add("OrgaName", "Orga@mail.com");
 			DateTime beg = new DateTime(2015, 6, 30, 11, 39, 0, DateTimeKind.Local);
 			DateTime end = new DateTime(2015, 6, 29, 22, 00, 0, DateTimeKind.Local);
 			m.AddData("Titre1", organizer, "EO5", beg, end);
@@ -153,7 +157,8 @@ namespace CK.Calendar.Tests
 			m.Load(TestHelper.ConsoleMonitor, calendarName);
 			var events = m.Planning.Events;
 
-			string[] organizer = { "Or1", "Org7" };
+			var organizer = new Dictionary<string, string>();
+			organizer.Add("OrgaName", "Orga@mail.com");
 
 			DateTime beg = new DateTime(2016, 6, 15, 11, 39, 0, DateTimeKind.Local);
 			DateTime end = new DateTime(2016, 6, 29, 22, 00, 0, DateTimeKind.Local);
@@ -193,8 +198,10 @@ namespace CK.Calendar.Tests
 			Assert.That(m.Planning != null);
 			Assert.That(m.Planning.Events.Count() == 0);
 
-			string[] organizer = { "Organizer1", "Organizer7" };
-			string[] organizer2 = { "Organizer2", "Organizer6" };
+			var organizer = new Dictionary<string, string>();
+			organizer.Add("OrgaName", "Orga@mail.com");
+			var organizer2 = new Dictionary<string, string>();
+			organizer.Add("OrgaName2", "Orga2@mail.com");
 
 			DateTime beg = new DateTime(2015, 6, 15, 11, 39, 0, DateTimeKind.Local);
 			DateTime beg2 = new DateTime(2015, 6, 1, 11, 39, 0, DateTimeKind.Local);
