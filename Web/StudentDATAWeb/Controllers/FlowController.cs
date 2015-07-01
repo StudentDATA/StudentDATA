@@ -13,36 +13,22 @@ namespace StudentDATAWeb.Controllers
 {
     public class FlowController : Controller
     {
-        private UserProfile _profile;
-        private RSSManage _rssManager;
-        private UsersContext db;
+        UserProfile profile;
+        RSSManage rssManager;
+        UsersContext db;
         public ActionResult Index(UsersContext db)
         {
             this.db = db;
             if (WebSecurity.IsAuthenticated)
             {
-                //Initialization of database datas
-                _profile = db.UserProfiles.Find(WebSecurity.GetUserId(User.Identity.Name));
-                _rssManager = new RSSManage();
-
-                //Creating RSSFloxs ifnotexists
+                profile = db.UserProfiles.Find(WebSecurity.GetUserId(User.Identity.Name));
+                rssManager = new RSSManage();
                 InitializeRSSFlowsDatas();
-
-                SortEnum userSettings = SortEnum.NONE;
-                UsersSettings currentUserSet = db.UsersSettingsList.Find(WebSecurity.CurrentUserId);
-                if (currentUserSet.SemesterShow)
-                    userSettings = userSettings | SortEnum.SEMESTER;
-                if (currentUserSet.FieldShow)
-                    userSettings = userSettings | SortEnum.FIELD;
-                if (currentUserSet.PfhShow)
-                    userSettings = userSettings | SortEnum.EVENT;
-
-                //Using datas to get the true flows 
                 List<List<string>> ll = new List<List<string>>();
                 IReadOnlyList<Article> decompressor = new List<Article>();
-                foreach (string adress in GetRSSByProfile(userSettings))
+                foreach (string adress in GetRSSByProfile())
                 {
-                    decompressor = _rssManager.readRSS(adress).GetAllArticle();
+                    decompressor = rssManager.readRSS(adress).GetAllArticle();
                     foreach (Article flow in decompressor)
                     {
                         if (ll.Count < 20)
@@ -51,8 +37,8 @@ namespace StudentDATAWeb.Controllers
                 }
                 ll.OrderByDescending(a => a[3]);
                 ViewBag.FlowList = ll;
-                // TODO : Change isWriter set
-                if (_profile.Permission == PermissionEnum.WriterStudent || _profile.Permission == PermissionEnum.Admin)
+                // TODO : CHange isWriter set
+                if (profile.Permission == PermissionEnum.WriterStudent || profile.Permission == PermissionEnum.Admin)
                     ViewBag.IsWriter = true;
                 else
                     ViewBag.IsWriter = false;
@@ -93,7 +79,7 @@ namespace StudentDATAWeb.Controllers
                         if (!System.IO.File.Exists(tmp.Adress))
                         {
                             // System.IO.File.Create(tmp.Adress);
-                            _rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
+                            rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
                         }
 
                         db.Entry(tmp).State = System.Data.Entity.EntityState.Added;
@@ -124,7 +110,7 @@ namespace StudentDATAWeb.Controllers
                             : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml");
                 if (!System.IO.File.Exists(tmp.Adress))
                 {
-                    _rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
+                    rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
 
                 }
                 //  System.IO.File.Create(tmp.Adress);
@@ -141,7 +127,7 @@ namespace StudentDATAWeb.Controllers
                             : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml");
                 if (!System.IO.File.Exists(tmp.Adress))
                 {
-                    _rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
+                    rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
 
                 }
                 // System.IO.File.Create(tmp.Adress);
@@ -158,7 +144,7 @@ namespace StudentDATAWeb.Controllers
                             : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml");
                 if (!System.IO.File.Exists(tmp.Adress))
                 {
-                    _rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
+                    rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
 
                 }
                 // System.IO.File.Create(tmp.Adress);
@@ -176,7 +162,7 @@ namespace StudentDATAWeb.Controllers
                             : System.Web.HttpContext.Current.Server.MapPath("~/Content/RSSXML/" + tmp.FlowName + ".xml");
                 if (!System.IO.File.Exists(tmp.Adress))
                 {
-                    _rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
+                    rssManager.createRSS(tmp.Adress, tmp.FlowName, "", Helper.CategorieRSSEnum.Etudiant).Save(Helper.FormatRSSEnum.RSS20);
 
                 }
                 //     System.IO.File.Create(tmp.Adress);
@@ -185,166 +171,134 @@ namespace StudentDATAWeb.Controllers
             }
 
         }
-        public List<string> GetRSSByProfile(SortEnum getType)
+        public List<string> GetRSSByProfile()
         {
-            List<string> tmpList = CodeCutter(_profile.Code);
+            List<string> tmpList = CodeCutter(profile.Code);
             List<string> adressStack = new List<string>();
             #region BySemester
-            if ((getType & SortEnum.SEMESTER) == SortEnum.SEMESTER)
+            if (tmpList[0] == "01")
             {
-                for (int i = 1; i <= 10; i++)
-                {
-                    if (tmpList[0] == "0" + i.ToString() && i < 10)
-                    {
-                        var elements = from element in db.RSSFlowsDatasList
-                                       where element.FlowName == "S0" + i.ToString()
-                                       select element;
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "S01"
+                               select element;
 
-                        adressStack.Add(elements.FirstOrDefault().Adress);
+                adressStack.Add(elements.FirstOrDefault().Adress);
 
-                    }
-                    else if (tmpList[0] == i.ToString() && i == 10)
-                    {
-                        var elements = from element in db.RSSFlowsDatasList
-                                       where element.FlowName == "S" + i.ToString()
-                                       select element;
-
-                        adressStack.Add(elements.FirstOrDefault().Adress);
-
-                    }
-                }
-                //if (tmpList[0] == "01")
-                //{
-                //    var elements = from element in db.RSSFlowsDatasList
-                //                   where element.FlowName == "S01"
-                //                   select element;
-
-                //    adressStack.Add(elements.FirstOrDefault().Adress);
-
-                //}
-                //else if (tmpList[0] == "02")
-                //{
-                //    var elements = from element in db.RSSFlowsDatasList
-                //                   where element.FlowName == "S02"
-                //                   select element;
-
-                //    adressStack.Add(elements.FirstOrDefault().Adress);
-                //}
-                //else if (tmpList[0] == "03")
-                //{
-                //    var elements = from element in db.RSSFlowsDatasList
-                //                   where element.FlowName == "S03"
-                //                   select element;
-
-                //    adressStack.Add(elements.FirstOrDefault().Adress);
-                //}
-                //else if (tmpList[0] == "04")
-                //{
-                //    var elements = from element in db.RSSFlowsDatasList
-                //                   where element.FlowName == "S04"
-                //                   select element;
-
-                //    adressStack.Add(elements.FirstOrDefault().Adress);
-                //}
-                //else if (tmpList[0] == "05")
-                //{
-                //    var elements = from element in db.RSSFlowsDatasList
-                //                   where element.FlowName == "S05"
-                //                   select element;
-
-                //    adressStack.Add(elements.FirstOrDefault().Adress);
-                //}
-                //else if (tmpList[0] == "06")
-                //{
-                //    var elements = from element in db.RSSFlowsDatasList
-                //                   where element.FlowName == "S06"
-                //                   select element;
-
-                //    adressStack.Add(elements.FirstOrDefault().Adress);
-                //}
-                //else if (tmpList[0] == "07")
-                //{
-                //    var elements = from element in db.RSSFlowsDatasList
-                //                   where element.FlowName == "S07"
-                //                   select element;
-
-                //    adressStack.Add(elements.FirstOrDefault().Adress);
-                //}
-                //else if (tmpList[0] == "08")
-                //{
-                //    var elements = from element in db.RSSFlowsDatasList
-                //                   where element.FlowName == "S08"
-                //                   select element;
-
-                //    adressStack.Add(elements.FirstOrDefault().Adress);
-                //}
-                //else if (tmpList[0] == "09")
-                //{
-                //    var elements = from element in db.RSSFlowsDatasList
-                //                   where element.FlowName == "S09"
-                //                   select element;
-
-                //    adressStack.Add(elements.FirstOrDefault().Adress);
-                //}
-                //else if (tmpList[0] == "10")
-                //{
-                //    var elements = from element in db.RSSFlowsDatasList
-                //                   where element.FlowName == "S10"
-                //                   select element;
-
-                //    adressStack.Add(elements.FirstOrDefault().Adress);
-                //}
-                //else
-                //    adressStack.Add("");
             }
+            else if (tmpList[0] == "02")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "S02"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else if (tmpList[0] == "03")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "S03"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else if (tmpList[0] == "04")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "S04"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else if (tmpList[0] == "05")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "S05"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else if (tmpList[0] == "06")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "S06"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else if (tmpList[0] == "07")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "S07"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else if (tmpList[0] == "08")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "S08"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else if (tmpList[0] == "09")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "S09"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else if (tmpList[0] == "10")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "S10"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else
+                adressStack.Add("");
+
             #endregion
             #region ByField
-            if ((getType & SortEnum.FIELD) == SortEnum.FIELD)
+            if (tmpList[1] == "IL")
             {
-                if (tmpList[1] == "IL")
-                {
-                    var elements = from element in db.RSSFlowsDatasList
-                                   where element.FlowName == "IL"
-                                   select element;
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "IL"
+                               select element;
 
-                    adressStack.Add(elements.FirstOrDefault().Adress);
-                }
-                else if (tmpList[1] == "SR")
-                {
-                    var elements = from element in db.RSSFlowsDatasList
-                                   where element.FlowName == "SR"
-                                   select element;
-
-                    adressStack.Add(elements.FirstOrDefault().Adress);
-                }
-                else if (tmpList[1] == "Tronc Commun")
-                {
-                    var elements = from element in db.RSSFlowsDatasList
-                                   where element.FlowName == "TC"
-                                   select element;
-
-                    adressStack.Add(elements.FirstOrDefault().Adress);
-                }
-                else if (tmpList[1] == "pedago")
-                {
-                    var elements = from element in db.RSSFlowsDatasList
-                                   where element.FlowName == "TC"
-                                   select element;
-
-                    adressStack.Add(elements.FirstOrDefault().Adress);
-                }
-                else
-                    adressStack.Add("");
+                adressStack.Add(elements.FirstOrDefault().Adress);
             }
+            else if (tmpList[1] == "SR")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "SR"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else if (tmpList[1] == "Tronc Commun")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "TC"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else if (tmpList[1] == "pedago")
+            {
+                var elements = from element in db.RSSFlowsDatasList
+                               where element.FlowName == "TC"
+                               select element;
+
+                adressStack.Add(elements.FirstOrDefault().Adress);
+            }
+            else
+                adressStack.Add("");
             #endregion
             return adressStack;
         }
-        /// <summary>
-        /// Gets recorded code , parse it , and return a List of strings 
-        /// [0] : semester ; [1] : field
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
         public List<string> CodeCutter(string code)
         {
             if (code != null)
@@ -413,75 +367,15 @@ namespace StudentDATAWeb.Controllers
         [HttpPost]
         public ActionResult AddNewPost(FlowPostModel fpm, string FlowList)
         {
-            _rssManager = new RSSManage();
+            rssManager = new RSSManage();
             //Flow tmpFlow = new Flow(fpm.Title, fpm.Content);
             List<Article> listFlow = new List<Article>() { new Article(fpm.Title, fpm.Content) };
-            RSS tmpRss = _rssManager.readRSS(FlowList);
+            RSS tmpRss = rssManager.readRSS(FlowList);
             tmpRss.AddArticle(listFlow);
             tmpRss.Save(Helper.FormatRSSEnum.RSS20);
-            RSS tmpRss2 = _rssManager.readRSS(FlowList);
+            RSS tmpRss2 = rssManager.readRSS(FlowList);
             //rssManager.addFlow(FlowList, listFlow);
             return RedirectToAction("Index");
-        }
-
-        public ActionResult SortedPosts(UsersContext db, SortPostModel spm)
-        {
-            this.db = db;
-            _rssManager = new RSSManage();
-            _profile = db.UserProfiles.Find(WebSecurity.GetUserId(User.Identity.Name));
-            SortEnum getSelector;
-            getSelector = SortEnum.NONE;
-            if (spm.Semester)
-            {
-                getSelector = (getSelector | SortEnum.SEMESTER);
-                db.UsersSettingsList.Find(WebSecurity.CurrentUserId).SemesterShow = true;
-            }
-            else
-            {
-                db.UsersSettingsList.Find(WebSecurity.CurrentUserId).SemesterShow = false;
-            }
-            if (spm.Field)
-            {
-                getSelector = (getSelector | SortEnum.FIELD);
-                db.UsersSettingsList.Find(WebSecurity.CurrentUserId).FieldShow = true;
-            }
-            else
-            {
-                db.UsersSettingsList.Find(WebSecurity.CurrentUserId).FieldShow = false;
-            }
-            if (spm.Pfh)
-            {
-                db.UsersSettingsList.Find(WebSecurity.CurrentUserId).PfhShow = true;
-                getSelector = (getSelector | SortEnum.EVENT);
-            }
-            else
-            {
-                db.UsersSettingsList.Find(WebSecurity.CurrentUserId).PfhShow = false;
-            }
-
-            db.Entry(db.UsersSettingsList.Find(WebSecurity.CurrentUserId)).State = System.Data.Entity.EntityState.Modified;
-            db.SaveChanges();
-            //Using datas to get the true flows 
-            List<List<string>> ll = new List<List<string>>();
-            IReadOnlyList<Article> decompressor = new List<Article>();
-            foreach (string adress in GetRSSByProfile(getSelector))
-            {
-                decompressor = _rssManager.readRSS(adress).GetAllArticle();
-                foreach (Article flow in decompressor)
-                {
-                    if (ll.Count < 20)
-                        ll.Add(new List<string>() { flow.Title, flow.Content, flow.Date.ToString(), flow.Url });
-                }
-            }
-            ll.OrderByDescending(a => a[3]);
-            ViewBag.FlowList = ll;
-            // TODO : Change isWriter set
-            if (_profile.Permission == PermissionEnum.WriterStudent || _profile.Permission == PermissionEnum.Admin)
-                ViewBag.IsWriter = true;
-            else
-                ViewBag.IsWriter = false;
-            return View("/Views/SchoolFlow/Flow.cshtml");
-
         }
 
     }
@@ -502,14 +396,5 @@ namespace StudentDATAWeb.Controllers
         SR = 12,
         COMMON = 13,
         ADMIN = 14
-    }
-    public enum SortEnum
-    {
-        NONE = 0,
-        SEMESTER = 1 << 1,
-        FIELD = 1 << 2,
-        EVENT = 1 << 3,
-        ALL = 15
-
     }
 }

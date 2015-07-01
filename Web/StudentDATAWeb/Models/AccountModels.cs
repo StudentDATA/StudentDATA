@@ -20,7 +20,6 @@ namespace StudentDATAWeb.Models
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<RSSFlowsDatas> RSSFlowsDatasList { get; set; }
         public DbSet<ProfessionalPosts> ProfessionalPostsList { get; set; }
-        public DbSet<UsersSettings> UsersSettingsList { get; set; }
     }
 
     [Table("UserProfile")]
@@ -42,16 +41,6 @@ namespace StudentDATAWeb.Models
         public string MailAdress { get; set; }
         public PermissionEnum Permission { get; set; }
 
-    }
-    [Table("Usersettings")]
-    public class UsersSettings
-    {
-        [Key]
-        [Required]
-        public int UserKey { get; set; }
-        public bool SemesterShow { get; set; }
-        public bool FieldShow { get; set; }
-        public bool PfhShow { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -95,6 +84,29 @@ namespace StudentDATAWeb.Models
 
         [Display(Name = "Connexion automatique :")]
         public bool RememberMe { get; set; }
+    }
+
+    public class EventModel
+    {
+        [Required]
+        [Display(Name = "Titre de l'évènement :")]
+        public string Title { get; set; }
+
+        [Required]
+        [Display(Name = "Professeur ou équipe en charge :")]
+        public string Teacher { get; set; }
+
+        [Required]
+        [Display(Name = "Salle :")]
+        public string Salle { get; set; }
+
+        [Required]
+        [Display(Name = "Date début (AAAA-MM-JJ HH:MM) :")]
+        public string Begin { get; set; }
+
+        [Required]
+        [Display(Name = "Date fin (AAAA-MM-JJ HH:MM) :")]
+        public string End { get; set; }
     }
     public class RegisterModel
     {
@@ -145,6 +157,8 @@ namespace StudentDATAWeb.Models
         [Column("URLAdress", Order = 2, TypeName = "varchar")]
         [Required]
         public string Adress { get; set; }
+
+
     }
     public class FlowPostModel
     {
@@ -166,15 +180,6 @@ namespace StudentDATAWeb.Models
         public string FlowUrl { get; set; }
 
 
-    }
-    public class SortPostModel
-    {
-        [Display(Name = "Semestre")]
-        public bool Semester { get; set; }
-        [Display(Name = "Filière")]
-        public bool Field { get; set; }
-        [Display(Name = "PFH")]
-        public bool Pfh { get; set; }
     }
     public class ProfileModel
     {

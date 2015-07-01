@@ -2,6 +2,7 @@
     ViewBag.Title = "DisplayEDT";
 }
 
+<<<<<<< HEAD
 <h2 class="center-block">DisplayEDT</h2>
 @{
     string day="";
@@ -10,11 +11,22 @@
 @foreach (var e in ViewBag.Planning)
 {
     DateTime currentDay = ViewBag.currentday;
+=======
+<h2 class="center-block">Votre emploi du temps</h2>
+
+
+@foreach (var e in ViewBag.Planning)
+{
+    DateTime currentDay = DateTime.Now.Date;
+>>>>>>> origin/edtstyling
     DateTime begin = e.Beg;
-   // int result = DateTime.Compare(begin, currentDay);
+    string path;
+
+    // int result = DateTime.Compare(begin, currentDay);
 
     if (currentDay.Date == begin.Date)
     {
+<<<<<<< HEAD
         day = e.BegToString;
         <div>
             <label>@e.Title</label><br />
@@ -45,7 +57,7 @@
     {
         day = e.BegToString;
         <div>
-                    <label class="lesson-title">@e.Title</label><br />
+            <label>@e.Title</label><br />
             <label>@e.Location</label><br />
             <label>@e.TeachersToString</label><br />
             <label>@e.Code</label><br />
@@ -79,5 +91,53 @@
 @Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2  btn btn-default" })
 @Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default" })
     </div>*@
+=======
+        if ((string)e.Title == "Projet Informatique")
+        {
+            path = "/Images/PI-Patch.png";
+        }
+        else if (e.Title == "PFH")
+        {
+            path = "/Images/PFH-Patch.png";
+        }
+        else if (e.Title == "Anglais")
+        {
+            path = "/Images/ANG-Patch.png";
+        }
+        else if (e.Title == "Libre")
+        {
+            path = "/Images/LIBRE-Patch.png";
+        }
+        else
+        {
+            path = "/Images/COURS-Patch.png";
+        }
+        <center>
+            <div class="half-day-container">
+                <div class="information">
+                    <label>@e.Title</label><br />
+                    <label>@e.Location</label><br />
+                    <label>@e.TeachersToString</label><br />
+                    <label>@e.Code</label><br />
+                    <label>@e.BegToString</label><br />
+                    <label>@e.EndToString</label><br />
+                    <label>-------------------------</label>
+                </div>
+                <div class="act-illustrator"><img src="@path" /></div>
+            </div>
+        </center>
+    }
 
+}
+<div class="edt-button-container">
+>>>>>>> origin/edtstyling
 
+    @Html.ActionLink("Jour précédent", "PreviousDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2  btn btn-default" })
+    @Html.ActionLink("Jour suivant", "NextDayPlanning", "EDT", routeValues: null, htmlAttributes: new { title = "Mes flux d'actualités", @class = "col-md-2 btn btn-default", id = "next-button" })
+
+</div>
+<script type="text/javascript">
+    function GetNext() {
+        PageMethods.Next();
+    }
+</script>

@@ -82,8 +82,24 @@ namespace CK.Calendar.Intech
             get { return _planning; }
         }
 
+<<<<<<< HEAD
+
+		public void Load(IActivityMonitor m,string semester = "ALL", bool forceReload = false)
+		{
+            //Action<string> _logAction = Log_To_File;    
+
+			if (semester == "S01") _sClass = StudentClass.S01;
+			else if (semester == "S02") _sClass = StudentClass.S02;
+			else if (semester == "S02") _sClass = StudentClass.S02;
+			else if (semester == "S03") _sClass = StudentClass.S03;
+			else if (semester == "S04") _sClass = StudentClass.S04;
+			else if (semester == "S05") _sClass = StudentClass.S05;
+			else if (semester == "S07" || semester == "S08") _sClass = StudentClass.S07;
+			else if (semester == "S09" || semester == "S10") _sClass = StudentClass.S09;
+			else _sClass = StudentClass.SemesterMask;
+=======
 		public void Load(IActivityMonitor m,string calendarName = "ALL", bool forceReload = false)
-        {
+		{
 			_iAmonitor = m;
 			_eventITIfind = false;
 			_persoFind = String.Empty;
@@ -141,6 +157,7 @@ namespace CK.Calendar.Intech
 						{
 							m.Error().Send("No teacher Find : {0}", calendarName);
 						}
+>>>>>>> origin/dev
 
 					}
 					m.Error().Send("No Perso Or EventITI Or Teachers Find : {0}", calendarName);
@@ -154,7 +171,10 @@ namespace CK.Calendar.Intech
 				using (var s = File.OpenWrite(FilePlanningPath))
 				{
 					_planning.Save(s);
+<<<<<<< HEAD
+=======
 					filterFind();
+>>>>>>> origin/dev
 				}
 			}
 			else
@@ -162,7 +182,10 @@ namespace CK.Calendar.Intech
 				using (var s = File.OpenRead(FilePlanningPath))
 				{
 					_planning = Planning.Load(s);
+<<<<<<< HEAD
+=======
 					filterFind();
+>>>>>>> origin/dev
 				}
 			}
 		}
