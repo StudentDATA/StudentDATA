@@ -1,9 +1,22 @@
-﻿@model StudentDATAWeb.Models.FlowPostModel
+﻿@model StudentDATAWeb.Models.SortPostModel
 @{
     ViewBag.Title = "Flow";
 }
 
 <h2>Flux d'actualités</h2>
+<div class="sort-form">
+    @using (Html.BeginForm("SortedPosts", "Flow"))
+    {
+        <h3>Flux préférés</h3>
+        @Html.LabelFor(m => m.Semester)
+        @Html.CheckBoxFor(m => m.Semester)
+        @Html.LabelFor(m => m.Field)
+        @Html.CheckBoxFor(m => m.Field)
+        @Html.LabelFor(m => m.Pfh)
+        @Html.CheckBoxFor(m => m.Pfh)
+        <input type="submit" class="btn btn-primary" value="Trier" />
+    }
+</div>
 @if(ViewBag.IsWriter)
 {
     @Html.ActionLink("Ajouter", "AddPost", "Flow", routeValues: null, htmlAttributes: new { id = "AddPostLink", @class ="btn btn-primary" })
