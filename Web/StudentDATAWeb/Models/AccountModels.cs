@@ -19,9 +19,19 @@ namespace StudentDATAWeb.Models
 
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<RSSFlowsDatas> RSSFlowsDatasList { get; set; }
+        public DbSet<UsersSettings> UsersSettingsList { get; set; }
         public DbSet<ProfessionalPosts> ProfessionalPostsList { get; set; }
     }
-
+    [Table("Usersettings")]
+    public class UsersSettings
+    {
+        [Key]
+        [Required]
+        public int UserKey { get; set; }
+        public bool SemesterShow { get; set; }
+        public bool FieldShow { get; set; }
+        public bool PfhShow { get; set; }
+    }
     [Table("UserProfile")]
     public class UserProfile
     {
@@ -42,7 +52,15 @@ namespace StudentDATAWeb.Models
         public PermissionEnum Permission { get; set; }
 
     }
-
+    public class SortPostModel
+    {
+        [Display(Name = "Semestre")]
+        public bool Semester { get; set; }
+        [Display(Name = "Filière")]
+        public bool Field { get; set; }
+        [Display(Name = "PFH")]
+        public bool Pfh { get; set; }
+    }
     public class RegisterExternalLoginModel
     {
         [Required]
