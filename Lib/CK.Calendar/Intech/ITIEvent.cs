@@ -14,10 +14,10 @@ namespace CK.Calendar.Intech
 		protected DateTime _end;
 		protected string _code;
 		protected string _title;
-		private Dictionary<string,string> _organizer;
+		private string[] _organizer;
 
 		public ITIEvent(string subjectTitle,
-			Dictionary<string, string> organizer,
+			string[] organizer,
 			string location,
 			DateTime beg,
 			DateTime end)
@@ -31,7 +31,7 @@ namespace CK.Calendar.Intech
 		}
 
 		public ITIEvent() { }
-		public Dictionary<string, string> Organizer
+		public string[] Organizer
 		{
 			get { return _organizer; }
 			internal set { _organizer = value; }

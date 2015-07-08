@@ -27,8 +27,8 @@ namespace CK.Calendar.Intech
                 evt.End = new iCalDateTime( e.End );
 
 				//Refaire l'organiseur avec le parse pour plusieurs
-				evt.Organizer = new Organizer(e.Organizer.Values.FirstOrDefault());
-				evt.Organizer.CommonName = e.Organizer.Keys.FirstOrDefault();
+				//evt.Organizer = new Organizer(e.Organizer.Values.FirstOrDefault());
+				//evt.Organizer.CommonName = e.Organizer.Keys.FirstOrDefault();
 
 				//Pour rajouter Nom du ficher : retouver la nom de la prioprieté
 				evt.AddProperty("", "");

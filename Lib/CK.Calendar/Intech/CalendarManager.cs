@@ -256,7 +256,7 @@ namespace CK.Calendar.Intech
             }
         }
 
-		public void AddData(string title, Dictionary<string, string> organizer, string location, DateTime beg, DateTime end)
+		public void AddData(string title, string[] organizer, string location, DateTime beg, DateTime end)
 		{
 			if (calendarSDVerif() && DataVerif(title,organizer,location,beg,end))
 			{
@@ -293,7 +293,7 @@ namespace CK.Calendar.Intech
 			}
 		}
 
-		public void UpDateData(SchoolEvent e,string title,string location, Dictionary<string,string> organizer, DateTime beg, DateTime end)
+		public void UpDateData(SchoolEvent e, string title, string location, string[] organizer, DateTime beg, DateTime end)
 		{
 			if (calendarSDVerif() && DataVerif(title, organizer, location, beg, end))
 			{
@@ -334,7 +334,7 @@ namespace CK.Calendar.Intech
 			else return false;
 		}
 
-		public bool DataVerif(string title, Dictionary<string, string> organizer, string location, DateTime beg, DateTime end)
+		public bool DataVerif(string title, string[] organizer, string location, DateTime beg, DateTime end)
 		{
 			//A REFAIRE
 			if (title == null) return false;

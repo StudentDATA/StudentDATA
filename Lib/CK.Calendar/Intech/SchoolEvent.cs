@@ -37,7 +37,7 @@ namespace CK.Calendar.Intech
         }
 
 		public SchoolEvent(string subjectTitle,
-			Dictionary<string,string> organizer,
+			string[] organizer,
 			string location,
 			DateTime beg,
 			DateTime end)
