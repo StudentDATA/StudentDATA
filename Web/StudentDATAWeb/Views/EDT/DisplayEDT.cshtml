@@ -2,7 +2,7 @@
     ViewBag.Title = "DisplayEDT";
 }
 
-<h2 class="center-block">DisplayEDT</h2>
+
 @{
     string day = "";
 }
@@ -16,6 +16,8 @@
 
     if (currentDay.Date == begin.Date)
     {
+        
+        <h2 class="center-block">@currentDay.DayOfWeek @currentDay.Day @currentDay.Month</h2>
         day = e.BegToString;
 
         if (currentDay.Date == begin.Date)
@@ -83,14 +85,15 @@
                     <label>@e.EndToString</label><br />
                     <label>-------------------------</label>
                 </div>
+                @using (Html.BeginForm("DeleteEvent", "EDT"))
+                {
+                <input class="btn btn-danger col-md-offset-3" type="submit" value="X" /><br />
+                <input type="hidden" name="DeleteEvent" value="@e.Code" />
+                }
             </div>
         </center>
 
-        @*using (Html.BeginForm("DeleteEvent", "EDT"))
-            {
-            <input class="btn btn-primary col-md-offset-3" type="submit" value="Supprimer" /><br />
-            <input type="hidden" name="DeleteEvent" value="@e" />
-            }*@
+       
     }
 }
 

@@ -79,8 +79,23 @@ namespace StudentDATAWeb.Controllers
             CalendarManager m = new CalendarManager(_dbPath);
             m.Load(_monitor, "EventITI");
             
-            var popo = collection["DeleteEvent"];
-            m.RemoveData(popo);
+           
+            string ev = collection["DeleteEvent"];
+            try
+            {
+                foreach (var e in m.Planning.Events)
+                {
+                    if (e.Code == ev)
+                    {
+                        m.RemoveData(e);
+                    }
+                }
+            }
+            catch
+            {
+                return RedirectToAction("ViewPlanning");
+            }
+            // m.RemoveData(popo);
             m.SaveData();
             return RedirectToAction("ViewPlanning");
         }

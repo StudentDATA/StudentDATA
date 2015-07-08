@@ -8,6 +8,7 @@ using StudentDATAWeb.Models;
 using WebMatrix.WebData;
 using System.IO;
 using System.Data.Entity.Validation;
+using System.Globalization;
 
 namespace StudentDATAWeb.Controllers
 {
@@ -30,6 +31,16 @@ namespace StudentDATAWeb.Controllers
 
                 SortEnum userSettings = SortEnum.NONE;
                 UsersSettings currentUserSet = db.UsersSettingsList.Find(WebSecurity.CurrentUserId);
+                if (currentUserSet == null)
+                {
+                    currentUserSet = new UsersSettings();
+                   currentUserSet.SemesterShow=true;
+                   currentUserSet.FieldShow = true;
+                   currentUserSet.PfhShow = true;
+                   currentUserSet.UserKey = WebSecurity.CurrentUserId;
+                   db.Entry(currentUserSet).State = System.Data.Entity.EntityState.Added;
+                   db.SaveChanges();
+                }
                 if (currentUserSet.SemesterShow)
                     userSettings = userSettings | SortEnum.SEMESTER;
                 if (currentUserSet.FieldShow)
@@ -46,10 +57,12 @@ namespace StudentDATAWeb.Controllers
                     foreach (Article flow in decompressor)
                     {
                         if (ll.Count < 20)
+                        {
                             ll.Add(new List<string>() { flow.Title, flow.Content, flow.Date.ToString(), flow.Url });
+                        }
                     }
                 }
-                ll.OrderByDescending(a => a[3]);
+                ll.OrderBy(a => a[2]);
                 ViewBag.FlowList = ll;
                 // TODO : Change isWriter set
                 if (_profile.Permission == PermissionEnum.WriterStudent || _profile.Permission == PermissionEnum.Admin)
@@ -452,7 +465,7 @@ namespace StudentDATAWeb.Controllers
                         ll.Add(new List<string>() { flow.Title, flow.Content, flow.Date.ToString(), flow.Url });
                 }
             }
-            ll.OrderByDescending(a => a[3]);
+            ll.OrderBy(a => a[2]);
             ViewBag.FlowList = ll;
             // TODO : Change isWriter set
             if (_profile.Permission == PermissionEnum.WriterStudent || _profile.Permission == PermissionEnum.Admin)
