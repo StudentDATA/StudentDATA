@@ -47,7 +47,7 @@ namespace StudentDATAWeb.Controllers
 						userSettings = userSettings | SortEnum.FIELD;
 					if (currentUserSet.PfhShow)
 						userSettings = userSettings | SortEnum.EVENT;
-				}
+				
 
 
 
