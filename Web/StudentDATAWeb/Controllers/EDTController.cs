@@ -164,6 +164,10 @@ namespace StudentDATAWeb.Controllers
 					ViewBag.NoProfil = true;
 				else ViewBag.NoProfil = false;
 
+				if (user.Code.Contains("S00")) ViewBag.NoSemester = true;
+				else ViewBag.NoSemester = false;
+
+
                /* if (ViewBag.UserField == "IL")
                 {
                     var planningIL = m.Planning.EventsIL;
