@@ -356,6 +356,7 @@
     <Content Include="Views\SchoolFlow\AddNewFlowPost.cshtml" />
     <Content Include="Views\EDT\DisplayEDT.cshtml" />
     <Content Include="Views\EDT\AddEventToEDT.cshtml" />
+    <Content Include="Views\EDT\DisplayEDT2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

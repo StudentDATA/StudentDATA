@@ -10,9 +10,11 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using StudentDATAWeb.Filters;
 using StudentDATAWeb.Models;
+using System.Data.Entity;
 
 namespace StudentDATAWeb.Controllers
 {
+
 	[Authorize]
 	[InitializeSimpleMembership]
 	public class AccountController : Controller
@@ -54,6 +56,7 @@ namespace StudentDATAWeb.Controllers
 		{
 			WebSecurity.Logout();
 
+
 			return RedirectToAction("Index", "Home");
 		}
 
@@ -81,6 +84,13 @@ namespace StudentDATAWeb.Controllers
 				{
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new { Permission = model.Role });
 					WebSecurity.Login(model.UserName, model.Password);
+
+					var db = new UsersContext();
+					UserProfile user = db.UserProfiles.Find(WebSecurity.GetUserId(model.UserName));
+					user.Code = "Nothing";
+					db.Entry(user).State = EntityState.Modified;
+					db.SaveChanges();
+					
 					return RedirectToAction("Index", "Home");
 				}
 				catch (MembershipCreateUserException e)

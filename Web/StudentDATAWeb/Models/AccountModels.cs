@@ -138,10 +138,13 @@ namespace StudentDATAWeb.Models
         [Display(Name = "Mot de passe :")]
         public string Password { get; set; }
 
+		[Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirmer le mot de passe :")]
         [Compare("Password", ErrorMessage = "Le mot de passe et le mot de passe de confirmation ne correspondent pas.")]
         public string ConfirmPassword { get; set; }
+
+
         [Required]
         public PermissionEnum Role
         {

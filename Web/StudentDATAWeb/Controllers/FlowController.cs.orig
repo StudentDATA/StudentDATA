@@ -31,6 +31,7 @@ namespace StudentDATAWeb.Controllers
 
                 SortEnum userSettings = SortEnum.NONE;
                 UsersSettings currentUserSet = db.UsersSettingsList.Find(WebSecurity.CurrentUserId);
+<<<<<<< HEAD
                 if (currentUserSet == null)
                 {
                     currentUserSet = new UsersSettings();
@@ -41,6 +42,15 @@ namespace StudentDATAWeb.Controllers
                    db.Entry(currentUserSet).State = System.Data.Entity.EntityState.Added;
                    db.SaveChanges();
                 }
+                if (currentUserSet.SemesterShow)
+                    userSettings = userSettings | SortEnum.SEMESTER;
+                if (currentUserSet.FieldShow)
+                    userSettings = userSettings | SortEnum.FIELD;
+                if (currentUserSet.PfhShow)
+                    userSettings = userSettings | SortEnum.EVENT;
+=======
+				if ( currentUserSet != null )
+				{
 					if (currentUserSet.SemesterShow)
 						userSettings = userSettings | SortEnum.SEMESTER;
 					if (currentUserSet.FieldShow)
@@ -51,6 +61,7 @@ namespace StudentDATAWeb.Controllers
 
 
 
+>>>>>>> CD-Test-Personalitation
 
                 //Using datas to get the true flows 
                 List<List<string>> ll = new List<List<string>>();

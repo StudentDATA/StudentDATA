@@ -61,7 +61,7 @@ namespace CK.Calendar.Intech
 		string _teacherFind = String.Empty;
 		string _filiereFind = String.Empty;
 		string _persoFind = String.Empty;
-		bool _eventITIfind = false;
+		bool _eventITIfind;
 
         public CalendarManager( string dbPath )
         {
@@ -87,6 +87,8 @@ namespace CK.Calendar.Intech
 			_iAmonitor = m;
 			_eventITIfind = false;
 			_persoFind = String.Empty;
+
+
 			Match match = Helper.ExtractSameMatch(ref calendarName, _rSemester);
 			if ( match != null )
 			{
@@ -199,6 +201,7 @@ namespace CK.Calendar.Intech
 				else
 				{
 					return Path.Combine( _dbPath, "Planning.bin" ); 
+					
 				}
 
 			}
@@ -253,9 +256,9 @@ namespace CK.Calendar.Intech
             }
         }
 
-		public void AddData(string title, string[] organizer, string location, DateTime beg,	DateTime end)
+		public void AddData(string title, string[] organizer, string location, DateTime beg, DateTime end)
 		{
-			if ( calendarSDVerif() )
+			if (calendarSDVerif() && DataVerif(title,organizer,location,beg,end))
 			{
 				List<SchoolEvent> events = new List<SchoolEvent>();
 				//Gerer les dates,et autres erreurs
@@ -290,9 +293,21 @@ namespace CK.Calendar.Intech
 			}
 		}
 
-		public void UpDateData(SchoolEvent e)
+		public void UpDateData(SchoolEvent e, string title, string location, string[] organizer, DateTime beg, DateTime end)
 		{
-			//_planning.AddEvent(e);
+			if (calendarSDVerif() && DataVerif(title, organizer, location, beg, end))
+			{
+				var ie = _planning.Events.SingleOrDefault(x => x.Code == e.Code);
+
+				if (ie != null)
+				{
+					ie.Title = title;
+					ie.Location = location;
+					ie.Organizer = organizer;
+					ie.Beg = beg;
+					ie.End = end;
+				}
+			}
 		}
 
 		public void SaveData()
@@ -317,6 +332,22 @@ namespace CK.Calendar.Intech
 				return true;
 			}
 			else return false;
+		}
+
+		public bool DataVerif(string title, string[] organizer, string location, DateTime beg, DateTime end)
+		{
+			//A REFAIRE
+			if (title == null) return false;
+
+			//Qu'il y a le nom et l'email
+			if (organizer == null) return false;
+			//Location, Lettre , chiffres , accents
+			if (location == null) return false;
+
+			//Que les doit soit correcte entre début 2015 et fin 2020 et que end soit supérieur à beg 
+			//if (beg > end) return false;
+			return true;
+
 		}
 
     }

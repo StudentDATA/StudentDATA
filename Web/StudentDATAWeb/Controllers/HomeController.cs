@@ -17,7 +17,10 @@ namespace StudentDATAWeb.Controllers
                 return RedirectToAction("Index", "Flow");
             
             else
-                return View();
+			{
+				RemoveCookies();
+				return View();
+			}
 		}
 
 		public ActionResult About()
@@ -34,5 +37,13 @@ namespace StudentDATAWeb.Controllers
 			return View();
 		}
  
+		public void RemoveCookies()
+		{
+			string[] myCookies = Request.Cookies.AllKeys;
+			foreach (string cookie in myCookies)
+			{
+				Response.Cookies[cookie].Expires = DateTime.Now.AddDays(-1);
+			}
+		}
 	}
 }

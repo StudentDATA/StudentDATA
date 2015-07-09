@@ -25,6 +25,8 @@ namespace CK.Calendar.Tests
 				m.Load(TestHelper.ConsoleMonitor, calendarName, true);
 
 				string [] organizer = { "Orga1", "Orga2"};
+				//var organizer = new Dictionary<string,string>();
+				//organizer.Add("OrgaName","Orga@mail.com");
 
 				//Ajoute Time : Année,Mois,Jour,Heure,Minute,Secondes,UTC
 				DateTime beg = new DateTime(2015,6,28,21,39,0,DateTimeKind.Local);
@@ -41,7 +43,11 @@ namespace CK.Calendar.Tests
 			{
 				CalendarManager m = new CalendarManager(TestHelper.CacheFolder);
 				m.Load(TestHelper.ConsoleMonitor, calendarName);
-				string[] organizer = { "Orga4", "Orga3" };
+
+				/*var organizer = new Dictionary<string, string>();
+				organizer.Add("OrgaName", "Orga@mail.com");*/
+				string[] organizer = { "Orga5", "Orga7" };
+
 				DateTime beg = new DateTime(2015, 6, 30, 21, 39, 0, DateTimeKind.Local);
 				DateTime end = new DateTime(2015, 6, 30, 22, 00, 0, DateTimeKind.Local);
 				m.AddData("Titre2", organizer, "EO9", beg, end);
@@ -58,7 +64,13 @@ namespace CK.Calendar.Tests
 		{
 			CalendarManager m = new CalendarManager(TestHelper.CacheFolder);
 			m.Load(TestHelper.ConsoleMonitor, calendarName);
-			string[] organizer = { "Orga7", "Orga8" };
+
+			/*var organizer = new Dictionary<string, string>();
+			organizer.Add("OrgaName", "Orga@mail.com");*/
+
+			string[] organizer = { "Orga4", "Orga9" };
+
+
 			DateTime beg = new DateTime(2015, 6, 30, 11, 39, 0, DateTimeKind.Local);
 			DateTime end = new DateTime(2015, 6, 29, 22, 00, 0, DateTimeKind.Local);
 			m.AddData("Titre1", organizer, "EO5", beg, end);
@@ -144,19 +156,44 @@ namespace CK.Calendar.Tests
 		}
 
 
-		//[Test]
-		//[TestCase("Perso-54FEDGkDL")]
-		//[TestCase("EventITI")]
+		[Test]
+		[TestCase("Perso-54FEDGkDL")]
+		[TestCase("EventITI")]
 		public void UpdateData(string calendarName)
 		{
 			CalendarManager m = new CalendarManager(TestHelper.CacheFolder);
 			m.Load(TestHelper.ConsoleMonitor, calendarName);
 			var events = m.Planning.Events;
 
+			/*var organizer = new Dictionary<string, string>();
+			organizer.Add("OrgaName", "Orga@mail.com");*/
+
+			string[] organizer = { "Orga0", "Orga54" };
+
+			DateTime beg = new DateTime(2016, 6, 15, 11, 39, 0, DateTimeKind.Local);
+			DateTime end = new DateTime(2016, 6, 29, 22, 00, 0, DateTimeKind.Local);
+
+
+			Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
+			foreach (var e in events)
+			{
+				if (e.Title == "Titre5") m.UpDateData(e, "TitreTest", "Os2", organizer, beg, end);
+				if (e.Title == "Titre1") m.UpDateData(e, e.Title, e.Location, organizer, e.Beg, e.End);
+				if (e.Title == "Titre2") e.Change("Titre0","84s",e.Teachers.ToArray(),e.Beg,e.End);
+
+				Console.WriteLine("----------");
+				Console.WriteLine("Début : " + e.BegToString);
+				Console.WriteLine("Durée : " + e.LenghtToString);
+				Console.WriteLine("Fin : " + e.EndToString);
+				Console.WriteLine("Titre : " + e.Title);
+				Console.WriteLine("Salle : " + e.Location);
+				Console.WriteLine("Organizer : " + e.TeachersToString);
+				Console.WriteLine("Code : " + e.Code);
+			}
+
 			Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
 
 
-			//m.UpDateData();
 		}
 
 		[Test]
@@ -171,8 +208,13 @@ namespace CK.Calendar.Tests
 			Assert.That(m.Planning != null);
 			Assert.That(m.Planning.Events.Count() == 0);
 
-			string[] organizer = { "Organizer1", "Organizer7" };
-			string[] organizer2 = { "Organizer2", "Organizer6" };
+			/*var organizer = new Dictionary<string, string>();
+			organizer.Add("OrgaName", "Orga@mail.com");
+			var organizer2 = new Dictionary<string, string>();
+			organizer.Add("OrgaName2", "Orga2@mail.com");*/
+
+			string[] organizer = { "Orga1.1", "Orga1.1" };
+			string[] organizer2 = { "Orga2.1", "Orga2.2" };
 
 			DateTime beg = new DateTime(2015, 6, 15, 11, 39, 0, DateTimeKind.Local);
 			DateTime beg2 = new DateTime(2015, 6, 1, 11, 39, 0, DateTimeKind.Local);
@@ -182,43 +224,44 @@ namespace CK.Calendar.Tests
 			m.AddData("Titre5", organizer, "EO85", beg, end);
 			m.AddData("Titre8", organizer2, "EO657", beg2, end);
 			m.AddData("Titre44", organizer2, "EO657", beg2, end);
-			m.AddData("Titre44", organizer2, "EO657", beg2, end);
 
-			//Assert.That(m.Planning.Events.Count() == 4);
+			Assert.That(m.Planning.Events.Count() == 4);
 
 			var events = m.Planning.Events;
 
 			var ie = events.Where(x => x.Title == "Titre0").FirstOrDefault();
 			if (ie != null) m.RemoveData(ie);
 
-			//Assert.That(m.Planning.Events.Count() == 3);
+			Assert.That(m.Planning.Events.Count() == 3);
 
 			var ie2 = events.Where(x => x.Title == "Titre8").FirstOrDefault();
 			if (ie2 != null) m.RemoveData(ie2.Code);
 
-			//Assert.That(m.Planning.Events.Count() == 2);
+			Assert.That(m.Planning.Events.Count() == 2);
 
 			m.SaveData();
 
 			Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
 			foreach (var e in events)
 			{
-				Console.WriteLine("----------");
-				Console.WriteLine("Début : " + e.BegToString);
-				Console.WriteLine("Durée : " + e.LenghtToString);
-				Console.WriteLine("Fin : " + e.EndToString);
-				Console.WriteLine("Titre : " + e.Title);
-				Console.WriteLine("Salle : " + e.Location);
-				Console.WriteLine("Organizer : " + e.TeachersToString);
-				Console.WriteLine("Code : " + e.Code);
+				if (e.Title == "Titre5") m.RemoveData(e);
+				else
+				{
+					Console.WriteLine("----------");
+					Console.WriteLine("Début : " + e.BegToString);
+					Console.WriteLine("Durée : " + e.LenghtToString);
+					Console.WriteLine("Fin : " + e.EndToString);
+					Console.WriteLine("Titre : " + e.Title);
+					Console.WriteLine("Salle : " + e.Location);
+					Console.WriteLine("Organizer : " + e.TeachersToString);
+					Console.WriteLine("Code : " + e.Code);
 
-				//Bouton Supp
-				if ( e.Title == "Titre5") m.RemoveData(e);
+				}
 			}
 
 			Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
 
-			//Assert.That(m.Planning.Events.Count() == 1);
+			Assert.That(m.Planning.Events.Count() == 1);
 
 		}
 	}
