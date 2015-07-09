@@ -11,7 +11,7 @@
     string day = "";
 }
 
-@if (ViewBag.NoSemester)
+@if (ViewBag.NoProfil)
 {
     <div class="half-day-container">
     Veuillez Completer votre profil pour acceder à l'emploi du temps.
@@ -31,7 +31,7 @@ else
         if (currentDay.Date == begin.Date)
         {
         
-        <h2 class="center-block">@currentDay.DayOfWeek @currentDay.Day @currentDay.Month</h2>
+        
             day = e.BegToString;
 
             if (currentDay.Date == begin.Date)

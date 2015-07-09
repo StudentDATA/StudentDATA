@@ -87,7 +87,11 @@ namespace StudentDATAWeb.Controllers
 
 					var db = new UsersContext();
 					UserProfile user = db.UserProfiles.Find(WebSecurity.GetUserId(model.UserName));
-					user.Code = "Nothing";
+					user.Code = "S00";
+					user.ActualActivity = String.Empty;
+					user.FirstName = String.Empty;
+					user.LastName = String.Empty;
+					user.MailAdress = String.Empty;
 					db.Entry(user).State = EntityState.Modified;
 					db.SaveChanges();
 					

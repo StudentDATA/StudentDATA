@@ -160,9 +160,9 @@ namespace StudentDATAWeb.Controllers
 					ViewBag.PlanningEventAll = m2.Planning.Events;
 				}
 
-				Console.WriteLine(user.Code);
-				if (user.Code == "Nothing") ViewBag.NoSemester = true;
-				else ViewBag.NoSemester = false;
+				if (user.Code == "Nothing" || user.Code == "S" || user.Code == String.Empty || user.FirstName == String.Empty || user.LastName == String.Empty || user.MailAdress == String.Empty || user.ActualActivity == String.Empty) 
+					ViewBag.NoProfil = true;
+				else ViewBag.NoProfil = false;
 
                /* if (ViewBag.UserField == "IL")
                 {
@@ -240,7 +240,7 @@ namespace StudentDATAWeb.Controllers
 
            public List<string> CodeCutter(string code)
         {
-            if (code != null)
+			if (code != null && code != "Nothing" && code != String.Empty && code != "S")
             {
                 List<string> tmpList = new List<string>();
                 bool isCommon = true;

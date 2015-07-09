@@ -54,7 +54,7 @@ namespace StudentDATAWeb.Controllers
         /// <returns></returns>
         public List<string> CodeCutter(string code)
         {
-            if (code != null && code != "Nothing")
+			if (code != null && code != String.Empty)
             {
                 List<string> tmpList = new List<string>();
                 bool isCommon = true;
