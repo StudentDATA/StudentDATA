@@ -90,12 +90,12 @@ namespace CK.Calendar.Intech
 		{
 			get { return _events.OrderBy(x => x.Beg); }
 		}
-
+        [Obsolete]
 		public IEnumerable<SchoolEvent> EventsIL
 		{
 			get { return _events.Where(ILFilter).OrderBy(x => x.Beg); }
 		}
-
+        [Obsolete]
 		public IEnumerable<SchoolEvent> EventsSR
 		{
 			get { return _events.Where(SRFilter).OrderBy(x => x.Beg); }
