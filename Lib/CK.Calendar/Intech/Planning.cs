@@ -10,9 +10,17 @@ namespace CK.Calendar.Intech
 {
     public class Planning
     {
-        readonly List<SchoolEvent> _events;
+       // readonly List<SchoolEvent> _events;
+		List<SchoolEvent> _events;
 		string _teacher;
 		string _filiere;
+
+	
+		internal void DeleteEvent(SchoolEvent e)
+		{
+			_events.Remove(e);
+		}
+
 
 		public string Teacher
 		{
@@ -43,6 +51,7 @@ namespace CK.Calendar.Intech
             BinaryFormatter f = new BinaryFormatter();
             List<SchoolEvent> ev = (List<SchoolEvent>)f.Deserialize( s );
             return new Planning( ev );
+			
         }
 
         public IEnumerable<SchoolEvent> Events
@@ -80,12 +89,12 @@ namespace CK.Calendar.Intech
 		{
 			get { return _events.OrderBy(x => x.Beg); }
 		}
-
+        [Obsolete]
 		public IEnumerable<SchoolEvent> EventsIL
 		{
 			get { return _events.Where(ILFilter).OrderBy(x => x.Beg); }
 		}
-
+        [Obsolete]
 		public IEnumerable<SchoolEvent> EventsSR
 		{
 			get { return _events.Where(SRFilter).OrderBy(x => x.Beg); }
@@ -161,5 +170,6 @@ namespace CK.Calendar.Intech
 
 			//Faire pareil pour TOUS les prof IL et SR
 		}
-    }
+
+	}
 }

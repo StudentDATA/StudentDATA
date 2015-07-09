@@ -111,8 +111,13 @@ namespace CK.Calendar.Tests
         public void display_spi_calendar()
         {
             CalendarManager m = new CalendarManager( TestHelper.CacheFolder );
+<<<<<<< HEAD
             m.Load( TestHelper.ConsoleMonitor);
+            var all = m.Planning.Events.Where( SpiFilter ).OrderBy( e => e.Beg );
+=======
+            m.Load( TestHelper.ConsoleMonitor );
 			var all = m.Planning.Events.Where(SpiFilter).OrderBy(e => e.Beg);
+>>>>>>> origin/dev
 
             Console.WriteLine( "+++++++++++++++++++++++++++++++++++++++++" );
             foreach( var e in all )
@@ -130,8 +135,15 @@ namespace CK.Calendar.Tests
 		public void display_semester_calendar(string test)
 		{
 			CalendarManager m = new CalendarManager(TestHelper.CacheFolder);
+<<<<<<< HEAD
+			m.Load(TestHelper.ConsoleMonitor);
+			var all = m.Planning.EventsIL;
+
+			//var all = m.Planning.EventsByTeacher("SPINELLI","SPINELLI");
+=======
 			m.Load(TestHelper.ConsoleMonitor, test);
 			var all = m.Planning.Events;
+>>>>>>> origin/dev
 
 			Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++");
 			foreach (var e in all)

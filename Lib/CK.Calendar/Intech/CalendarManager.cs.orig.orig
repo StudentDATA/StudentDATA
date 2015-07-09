@@ -61,7 +61,7 @@ namespace CK.Calendar.Intech
 		string _teacherFind = String.Empty;
 		string _filiereFind = String.Empty;
 		string _persoFind = String.Empty;
-		bool _eventITIfind;
+		bool _eventITIfind = false;
 
         public CalendarManager( string dbPath )
         {
@@ -82,13 +82,27 @@ namespace CK.Calendar.Intech
             get { return _planning; }
         }
 
+<<<<<<< HEAD
+
+		public void Load(IActivityMonitor m,string semester = "ALL", bool forceReload = false)
+		{
+            //Action<string> _logAction = Log_To_File;    
+
+			if (semester == "S01") _sClass = StudentClass.S01;
+			else if (semester == "S02") _sClass = StudentClass.S02;
+			else if (semester == "S02") _sClass = StudentClass.S02;
+			else if (semester == "S03") _sClass = StudentClass.S03;
+			else if (semester == "S04") _sClass = StudentClass.S04;
+			else if (semester == "S05") _sClass = StudentClass.S05;
+			else if (semester == "S07" || semester == "S08") _sClass = StudentClass.S07;
+			else if (semester == "S09" || semester == "S10") _sClass = StudentClass.S09;
+			else _sClass = StudentClass.SemesterMask;
+=======
 		public void Load(IActivityMonitor m,string calendarName = "ALL", bool forceReload = false)
-        {
+		{
 			_iAmonitor = m;
 			_eventITIfind = false;
 			_persoFind = String.Empty;
-
-
 			Match match = Helper.ExtractSameMatch(ref calendarName, _rSemester);
 			if ( match != null )
 			{
@@ -143,6 +157,7 @@ namespace CK.Calendar.Intech
 						{
 							m.Error().Send("No teacher Find : {0}", calendarName);
 						}
+>>>>>>> origin/dev
 
 					}
 					m.Error().Send("No Perso Or EventITI Or Teachers Find : {0}", calendarName);
@@ -156,7 +171,10 @@ namespace CK.Calendar.Intech
 				using (var s = File.OpenWrite(FilePlanningPath))
 				{
 					_planning.Save(s);
+<<<<<<< HEAD
+=======
 					filterFind();
+>>>>>>> origin/dev
 				}
 			}
 			else
@@ -164,7 +182,10 @@ namespace CK.Calendar.Intech
 				using (var s = File.OpenRead(FilePlanningPath))
 				{
 					_planning = Planning.Load(s);
+<<<<<<< HEAD
+=======
 					filterFind();
+>>>>>>> origin/dev
 				}
 			}
 		}
@@ -201,7 +222,6 @@ namespace CK.Calendar.Intech
 				else
 				{
 					return Path.Combine( _dbPath, "Planning.bin" ); 
-					
 				}
 
 			}
@@ -256,9 +276,9 @@ namespace CK.Calendar.Intech
             }
         }
 
-		public void AddData(string title, string[] organizer, string location, DateTime beg, DateTime end)
+		public void AddData(string title, string[] organizer, string location, DateTime beg,	DateTime end)
 		{
-			if (calendarSDVerif() && DataVerif(title,organizer,location,beg,end))
+			if ( calendarSDVerif() )
 			{
 				List<SchoolEvent> events = new List<SchoolEvent>();
 				//Gerer les dates,et autres erreurs
@@ -293,21 +313,9 @@ namespace CK.Calendar.Intech
 			}
 		}
 
-		public void UpDateData(SchoolEvent e, string title, string location, string[] organizer, DateTime beg, DateTime end)
+		public void UpDateData(SchoolEvent e)
 		{
-			if (calendarSDVerif() && DataVerif(title, organizer, location, beg, end))
-			{
-				var ie = _planning.Events.SingleOrDefault(x => x.Code == e.Code);
-
-				if (ie != null)
-				{
-					ie.Title = title;
-					ie.Location = location;
-					ie.Organizer = organizer;
-					ie.Beg = beg;
-					ie.End = end;
-				}
-			}
+			//_planning.AddEvent(e);
 		}
 
 		public void SaveData()
@@ -332,22 +340,6 @@ namespace CK.Calendar.Intech
 				return true;
 			}
 			else return false;
-		}
-
-		public bool DataVerif(string title, string[] organizer, string location, DateTime beg, DateTime end)
-		{
-			//A REFAIRE
-			if (title == null) return false;
-
-			//Qu'il y a le nom et l'email
-			if (organizer == null) return false;
-			//Location, Lettre , chiffres , accents
-			if (location == null) return false;
-
-			//Que les doit soit correcte entre début 2015 et fin 2020 et que end soit supérieur à beg 
-			//if (beg > end) return false;
-			return true;
-
 		}
 
     }

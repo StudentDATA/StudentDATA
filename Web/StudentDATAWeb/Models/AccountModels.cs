@@ -19,9 +19,19 @@ namespace StudentDATAWeb.Models
 
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<RSSFlowsDatas> RSSFlowsDatasList { get; set; }
+        public DbSet<UsersSettings> UsersSettingsList { get; set; }
         public DbSet<ProfessionalPosts> ProfessionalPostsList { get; set; }
     }
-
+    [Table("Usersettings")]
+    public class UsersSettings
+    {
+        [Key]
+        [Required]
+        public int UserKey { get; set; }
+        public bool SemesterShow { get; set; }
+        public bool FieldShow { get; set; }
+        public bool PfhShow { get; set; }
+    }
     [Table("UserProfile")]
     public class UserProfile
     {
@@ -42,7 +52,15 @@ namespace StudentDATAWeb.Models
         public PermissionEnum Permission { get; set; }
 
     }
-
+    public class SortPostModel
+    {
+        [Display(Name = "Semestre")]
+        public bool Semester { get; set; }
+        [Display(Name = "Filière")]
+        public bool Field { get; set; }
+        [Display(Name = "PFH")]
+        public bool Pfh { get; set; }
+    }
     public class RegisterExternalLoginModel
     {
         [Required]
@@ -85,6 +103,29 @@ namespace StudentDATAWeb.Models
         [Display(Name = "Connexion automatique :")]
         public bool RememberMe { get; set; }
     }
+
+    public class EventModel
+    {
+        [Required]
+        [Display(Name = "Titre de l'évènement :")]
+        public string Title { get; set; }
+
+        [Required]
+        [Display(Name = "Professeur ou équipe en charge :")]
+        public string Teacher { get; set; }
+
+        [Required]
+        [Display(Name = "Salle :")]
+        public string Salle { get; set; }
+
+        [Required]
+        [Display(Name = "Date début (AAAA-MM-JJ HH:MM) :")]
+        public string Begin { get; set; }
+
+        [Required]
+        [Display(Name = "Date fin (AAAA-MM-JJ HH:MM) :")]
+        public string End { get; set; }
+    }
     public class RegisterModel
     {
         [Required]
@@ -97,10 +138,13 @@ namespace StudentDATAWeb.Models
         [Display(Name = "Mot de passe :")]
         public string Password { get; set; }
 
+		[Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirmer le mot de passe :")]
         [Compare("Password", ErrorMessage = "Le mot de passe et le mot de passe de confirmation ne correspondent pas.")]
         public string ConfirmPassword { get; set; }
+
+
         [Required]
         public PermissionEnum Role
         {

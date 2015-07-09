@@ -37,7 +37,7 @@ namespace CK.Calendar.Intech
         }
 
 		public SchoolEvent(string subjectTitle,
-			string[] organizer,
+			Dictionary<string,string> organizer,
 			string location,
 			DateTime beg,
 			DateTime end)
@@ -219,21 +219,38 @@ namespace CK.Calendar.Intech
 
 		public String ClassesToString
 		{
+<<<<<<< HEAD
+            get
+            {
+                if (_classes != null && _classes.Count()>0) return String.Join(", ", _classes.Select(c => c.ToExplicitString()));
+                else return String.Empty;
+            }
+                
+=======
 			get 
 			{
 				if (_classes != null && _classes.Count() > 0) return String.Join(", ", _classes.Select(c => c.ToExplicitString()));
 				else return String.Empty;
 				
 			}
+>>>>>>> Test improve ITIEvent
 		}
 
 		public String TeachersToString
 		{
+<<<<<<< HEAD
+			get
+            {
+                if (_teachers != null && _teachers.Count()>0) return String.Join(", ", _teachers);
+                else return String.Empty;
+            }
+=======
 			get 
 			{
 				if (_teachers != null && _teachers.Count() > 0) return String.Join(", ", _teachers);
 				else return String.Empty;
 			}
+>>>>>>> Test improve ITIEvent
 		}
 
         public override string ToString()
