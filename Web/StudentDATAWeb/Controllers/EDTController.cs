@@ -28,6 +28,12 @@ namespace StudentDATAWeb.Controllers
             return View("/Views/EDT/DisplayEDT.cshtml");
         }
 
+		public ActionResult Index2()
+		{
+			return View("/Views/EDT/DisplayEDT2.cshtml");
+		}
+
+
         public ActionResult AddEvent()
         {
 
@@ -120,14 +126,30 @@ namespace StudentDATAWeb.Controllers
                : System.Web.HttpContext.Current.Server.MapPath("~/Content/CALENDAR/");
 
                 string semester = "S"+ViewBag.UserSemester+ViewBag.UserField;
+				if ( ViewBag.UserField != null )
+				{
+					if (ViewBag.UserField == "IL" || ViewBag.UserField == "SR")
+					{
+						semester += "-" + ViewBag.UserField;
+					}
+				}
                 string eventPlanning = "EventITI";
                 CalendarManager m = new CalendarManager(_dbPath);
                 CalendarManager m2 = new CalendarManager(_dbPath);
                 m.Load(_monitor, semester);
                 m2.Load(_monitor, eventPlanning);
                
+				if ( m.Planning != null )
+				{
+					ViewBag.Planning = m.Planning.Events;
+					ViewBag.PlanningEventAll = m2.Planning.Events;
+				}
 
-                if (ViewBag.UserField == "IL")
+				Console.WriteLine(user.Code);
+				if (user.Code == "Nothing") ViewBag.NoSemester = true;
+				else ViewBag.NoSemester = false;
+
+               /* if (ViewBag.UserField == "IL")
                 {
                     var planningIL = m.Planning.EventsIL;
                     ViewBag.Planning = planningIL;
@@ -145,7 +167,7 @@ namespace StudentDATAWeb.Controllers
                     var planningDATE = m.Planning.EventsByDate;
                     ViewBag.Planning = planningDATE;
                     ViewBag.PlanningEventAll = m2.Planning.Events;
-                }
+                }*/
             }
 
                 return View("/Views/EDT/DisplayEDT.cshtml");

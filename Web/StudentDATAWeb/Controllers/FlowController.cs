@@ -30,12 +30,18 @@ namespace StudentDATAWeb.Controllers
 
                 SortEnum userSettings = SortEnum.NONE;
                 UsersSettings currentUserSet = db.UsersSettingsList.Find(WebSecurity.CurrentUserId);
-                if (currentUserSet.SemesterShow)
-                    userSettings = userSettings | SortEnum.SEMESTER;
-                if (currentUserSet.FieldShow)
-                    userSettings = userSettings | SortEnum.FIELD;
-                if (currentUserSet.PfhShow)
-                    userSettings = userSettings | SortEnum.EVENT;
+				if ( currentUserSet != null )
+				{
+					if (currentUserSet.SemesterShow)
+						userSettings = userSettings | SortEnum.SEMESTER;
+					if (currentUserSet.FieldShow)
+						userSettings = userSettings | SortEnum.FIELD;
+					if (currentUserSet.PfhShow)
+						userSettings = userSettings | SortEnum.EVENT;
+				}
+
+
+
 
                 //Using datas to get the true flows 
                 List<List<string>> ll = new List<List<string>>();

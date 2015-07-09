@@ -345,7 +345,7 @@ namespace CK.Calendar.Intech
 			if (location == null) return false;
 
 			//Que les doit soit correcte entre début 2015 et fin 2020 et que end soit supérieur à beg 
-			if (beg > end) return false;
+			//if (beg > end) return false;
 			return true;
 
 		}
