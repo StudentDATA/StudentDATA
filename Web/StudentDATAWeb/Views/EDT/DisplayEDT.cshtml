@@ -1,8 +1,12 @@
 ﻿@{
     ViewBag.Title = "DisplayEDT";
 }
-
-
+@{
+    var culture = new System.Globalization.CultureInfo("fr-FR");
+    var dayOfWeek = culture.DateTimeFormat.GetDayName(@ViewBag.currentDay.DayOfWeek);
+    var month = culture.DateTimeFormat.GetMonthName(@ViewBag.currentDay.Month);
+}
+<h2 class="center-block"> @dayOfWeek @ViewBag.currentDay.Day @month </h2>
 @{
     string day = "";
 }

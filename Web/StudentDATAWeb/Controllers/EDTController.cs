@@ -60,7 +60,7 @@ namespace StudentDATAWeb.Controllers
 
             //Sauvergarde du calendrier
             m.SaveData();
-
+            
             return RedirectToAction("ViewPlanning");
         }
 
