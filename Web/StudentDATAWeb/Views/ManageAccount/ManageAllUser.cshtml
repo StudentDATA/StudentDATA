@@ -3,7 +3,7 @@
     ViewBag.Title = "ManageAllUser";
 }
 
-<h2>ManageAllUser</h2>
+<h2>Gestion des utilisateurs : </h2>
 @foreach (StudentDATAWeb.Models.UserProfile user in ViewBag.UserList)
 {
 
@@ -21,8 +21,8 @@
             @user.Code<br />
             @Html.LabelFor(m => m.Permission)
             @Html.DropDownList("PermissionList", (IEnumerable<SelectListItem>)ViewBag.PermissionList, user.Permission.ToString(), new { id = "PermissionLists" })<br />
-        </fieldset>
-        <input class="btn btn-primary" type="submit" value="Modifier" /><br />
+         </fieldset>
+        <input class="btn btn-primary" type="submit" value="Modifier" /><br /><br /><br />
         <input type="hidden" name="UserName" value="@user.UserName" />
     }
 }

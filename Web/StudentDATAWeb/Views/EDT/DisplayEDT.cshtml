@@ -5,11 +5,22 @@
 
 @{
     string day = "";
+    DateTime currentDay = ViewBag.currentday;
+    var culture = new System.Globalization.CultureInfo("fr-FR");
+    var dayday = culture.DateTimeFormat.GetDayName(currentDay.DayOfWeek);
+    var daymonth = culture.DateTimeFormat.GetMonthName(currentDay.Month);
 }
+<h2 class="center-block">@dayday @currentDay.Day @daymonth</h2>
 
 @foreach (var e in ViewBag.Planning)
 {
-    DateTime currentDay = ViewBag.currentday;
+    int heuredeb = e.Beg.TimeOfDay.Hours + 2;
+    int heurefin = e.End.TimeOfDay.Hours + 2;
+    string minutdeb = String.Format("{0:00}", e.Beg.TimeOfDay.Minutes);
+    string minutfin = String.Format("{0:00}", e.End.TimeOfDay.Minutes);
+    
+    string heuredebut = heuredeb.ToString() + " h " + minutdeb;
+    string heurefinale = heurefin.ToString() + " h " + minutfin;
     string path;
     DateTime begin = e.Beg;
     // int result = DateTime.Compare(begin, currentDay);
@@ -17,7 +28,6 @@
     if (currentDay.Date == begin.Date)
     {
         
-        <h2 class="center-block">@currentDay.DayOfWeek @currentDay.Day @currentDay.Month</h2>
         day = e.BegToString;
 
         if (currentDay.Date == begin.Date)
@@ -50,9 +60,8 @@
                         <label>@e.Location</label><br />
                         <label>@e.TeachersToString</label><br />
                         <label>@e.Code</label><br />
-                        <label>@e.BegToString</label><br />
-                        <label>@e.EndToString</label><br />
-                        <label>-------------------------</label>
+                        <label>@heuredebut</label><br />
+                        <label>@heurefinale</label><br />
                     </div>
                     <div class="act-illustrator"><img src="@path" /></div>
                 </div>
@@ -68,7 +77,14 @@
 }
 @foreach (var e in ViewBag.PlanningEventAll)
 {
-    DateTime currentDay = ViewBag.currentday;
+    int heuredeb = e.Beg.TimeOfDay.Hours -2 ;
+    int heurefin = e.End.TimeOfDay.Hours -2 ;
+    string minutdeb = String.Format("{0:00}", e.Beg.TimeOfDay.Minutes);
+    string minutfin = String.Format("{0:00}", e.End.TimeOfDay.Minutes);
+
+    string heuredebut = heuredeb.ToString() + " h " + minutdeb;
+    string heurefinale = heurefin.ToString() + " h " + minutfin;
+    //DateTime currentDay = ViewBag.currentday;
     DateTime begin = e.Beg;
     // int result = DateTime.Compare(begin, currentDay);
 
@@ -80,10 +96,9 @@
                     <label class="lesson-title">@e.Title</label><br />
                     <label>@e.Location</label><br />
                     <label>@e.TeachersToString</label><br />
-                    <label>@e.Code</label><br />
-                    <label>@e.BegToString</label><br />
-                    <label>@e.EndToString</label><br />
-                    <label>-------------------------</label>
+                    @*<label>@e.Code</label><br />*@
+                    <label>@heuredebut</label><br />
+                    <label>@heurefinale</label><br />
                 </div>
                 @using (Html.BeginForm("DeleteEvent", "EDT"))
                 {
