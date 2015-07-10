@@ -48,7 +48,8 @@ namespace StudentDATAWeb.Controllers
 
             DateTime beg = DateTime.ParseExact(em.Begin, "yyyy-MM-dd HH:mm", frFR);
             DateTime end = DateTime.ParseExact(em.End, "yyyy-MM-dd HH:mm", frFR);
-
+            
+            string heure = beg.TimeOfDay.Hours.ToString() + " : " + beg.TimeOfDay.Minutes.ToString();
                 _monitor = new ActivityMonitor();
                 _monitor.Output.BridgeTarget.HonorMonitorFilter = false;
                 Action<string> _logAction = Log_To_File;
@@ -62,7 +63,7 @@ namespace StudentDATAWeb.Controllers
             CalendarManager m = new CalendarManager(_dbPath);
             m.Load(_monitor, "EventITI");
 
-            m.AddData(titre, organizer, salle, beg, end);
+            m.AddData(titre, organizer, salle, beg.ToLocalTime(), end.ToLocalTime());
 
             //Sauvergarde du calendrier
             m.SaveData();
@@ -200,6 +201,10 @@ namespace StudentDATAWeb.Controllers
         {
             string currentDayHidden = collection["CurrentDayHidden"];
             DateTime currentDayHiddenConvert = Convert.ToDateTime(currentDayHidden);
+            if(currentDayHiddenConvert.Month == 7 && currentDayHiddenConvert.Day == 10)
+            {
+                return RedirectToAction("ViewPlanning");
+            }
             if (currentDayHiddenConvert.DayOfWeek == DayOfWeek.Friday)
             {
                 currentDayHiddenConvert = currentDayHiddenConvert.AddDays(3);
